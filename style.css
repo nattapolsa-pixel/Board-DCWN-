@@ -960,99 +960,47 @@ body.is-portal #portalView {
   }
 }
 
-/* Home Welcome Card */
-.home-welcome-card {
-  background: linear-gradient(135deg, #054826 0%, #006f3a 50%, #009b4d 100%);
+/* Home Canvas Card */
+.home-canvas-card {
+  background: #ffffff;
+  border: 1.5px solid var(--line);
   border-radius: var(--radius-xl);
-  padding: 40px 44px;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-  box-shadow: 0 16px 40px rgba(0, 70, 35, 0.22);
-  margin-bottom: 28px;
-  position: relative;
-  overflow: hidden;
+  padding: 48px 36px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  max-width: 760px;
+  margin: 40px auto;
 }
 
-.home-welcome-text {
-  max-width: 650px;
-  z-index: 1;
-}
-
-.home-welcome-tag {
+.home-canvas-badge {
   display: inline-flex;
-  padding: 4px 12px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 4px 14px;
+  background: #eef8f2;
+  border: 1px solid #c7ecd5;
   border-radius: var(--radius-full);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
-  margin-bottom: 12px;
-  letter-spacing: 0.3px;
+  color: var(--pt-green-dark);
+  margin-bottom: 16px;
 }
 
-.home-welcome-text h2 {
-  font-size: 28px;
+.home-canvas-card h2 {
+  font-size: 24px;
   font-weight: 800;
-  letter-spacing: -0.5px;
+  color: var(--text);
   margin-bottom: 10px;
-  line-height: 1.25;
 }
 
-.home-welcome-text p {
-  font-size: 14px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 20px;
+.home-canvas-card p {
+  font-size: 14.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
 }
 
-.btn-home-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 12px 24px;
-  background: #ffffff;
-  color: var(--pt-green-deep);
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 800;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.btn-home-primary svg {
-  width: 17px;
-  height: 17px;
-  stroke: var(--pt-green-deep);
-}
-
-.btn-home-primary:hover {
-  background: #f0faf4;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-}
-
-.home-welcome-logo {
-  flex-shrink: 0;
-  width: 130px;
-  height: 130px;
-  background: #ffffff;
-  border-radius: 26px;
-  padding: 12px;
+.home-canvas-actions {
   display: flex;
-  align-items: center;
   justify-content: center;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
-  z-index: 1;
-}
-
-.home-welcome-logo img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
 }
 
 /* Home Highlights Grid */

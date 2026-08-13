@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "MPPTG0555": { name: "นายศรัญญู อดกลั้น",         role: "RT" },
   };
 
-  // ─── Core DC Portal Systems (Default 5 Systems) ───────────
+  // ─── Core DC Portal Systems (All 7 Systems) ───────────────
   const DEFAULT_SYSTEMS = [
     {
       id: "dc-ops-monitor",
@@ -288,6 +288,30 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "🏬",
       badge: "Apps Script Web App · Auto Alert",
       desc: "ระบบบริหารจัดการและวางแผนการจัดส่งสินค้าสำหรับสาขาเปิดใหม่ (New Store) ติดตามสถานะเตรียมสินค้า (Alloc, Pick, QC, Ship) และสรุปรายงาน",
+      isCustom: false
+    },
+    {
+      id: "put-away-system",
+      name: "Put-away & Storage Master (Put-away 2026)",
+      url: "https://pro-warehouse.github.io/pro-scanner/",
+      category: "ops",
+      categoryName: "จัดเก็บ & Put-away",
+      theme: "light-green",
+      icon: "📥",
+      badge: "WMS Inbound · Storage Sync",
+      desc: "ระบบจัดเก็บและจัดการตำแหน่ง Shelf สินค้า (Put-away) นำสินค้าเข้าตาม Zone และ Location ในคลังสินค้าอย่างถูกต้อง",
+      isCustom: false
+    },
+    {
+      id: "zone-time-monitor",
+      name: "Warehouse Monitor Time by Zone",
+      url: "https://dc-ops-monitor-v2.onrender.com/",
+      category: "ops",
+      categoryName: "มอนิเตอร์เวลาตามโซน",
+      theme: "blue",
+      icon: "⏱️",
+      badge: "Time Tracking · Zone SLA",
+      desc: "ระบบติดตามระยะเวลาการปฏิบัติงานแยกตามโซนคลังสินค้า (AA, AL, AN, CA, EA, AG, AI) ควบคุม SLA และรอบส่งมอบ",
       isCustom: false
     }
   ];
@@ -647,9 +671,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Set greeting on home tab
-    const homeGreetingTitle = document.getElementById("homeGreetingTitle");
-    if (homeGreetingTitle && empName) {
-      homeGreetingTitle.textContent = `ยินดีต้อนรับ, คุณ${empName}`;
+    const homeWelcomeName = document.getElementById("homeWelcomeName");
+    if (homeWelcomeName && empName) {
+      homeWelcomeName.textContent = `ยินดีต้อนรับ, คุณ${empName}`;
     }
 
     // Default to Home tab

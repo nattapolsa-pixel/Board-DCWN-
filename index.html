@@ -229,15 +229,14 @@
     <main class="main-content">
 
       <!-- ============================================================
-           TAB 1: HOME (หน้าแรก - ยินดีต้อนรับ & ภาพรวม)
+           TAB 1: HOME (หน้าหลัก)
            ============================================================ -->
       <div id="tabContent-home" class="tab-pane active">
-        <!-- Sub-header bar / Kicker -->
         <div class="workspace-header">
           <div class="workspace-header-inner">
             <div>
               <p class="workspace-kicker">PT ENERGY · DC CENTRAL PORTAL</p>
-              <h1 class="workspace-title" id="homeGreetingTitle">ยินดีต้อนรับสู่ DC Central Portal</h1>
+              <h1 class="workspace-title" id="homeGreetingTitle">หน้าหลัก</h1>
             </div>
             <div class="workspace-actions">
               <button class="btn-primary-action" id="homeGoToSystemsBtn" type="button">
@@ -247,63 +246,28 @@
                   <rect x="14" y="14" width="7" height="7"/>
                   <rect x="3" y="14" width="7" height="7"/>
                 </svg>
-                <span>เข้าสู่ บอร์ดรวมระบบ DC →</span>
+                <span>ไปที่ บอร์ดรวมระบบ DC →</span>
               </button>
             </div>
           </div>
         </div>
 
         <section class="workspace">
-          <!-- Welcome Hero Card -->
-          <div class="home-welcome-card">
-            <div class="home-welcome-text">
-              <span class="home-welcome-tag">ศูนย์กระจายสินค้า PTG วังน้อย</span>
-              <h2>ยินดีต้อนรับสู่ระบบศูนย์กลาง DC Central Portal</h2>
-              <p>ระบบศูนย์รวมเครื่องมือ แดชบอร์ดมอนิเตอร์ และระบบงานปฏิบัติการทั้งหมดของคลังสินค้า PTG ช่วยให้ทีมงานติดตามสถานะงาน วางแผน Wave และปฏิบัติงานได้อย่างมีประสิทธิภาพและรวดเร็ว</p>
-              <div class="home-welcome-actions">
-                <button class="btn-home-primary" id="homeHeroBtn" type="button">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;">
-                    <rect x="3" y="3" width="7" height="7"/>
-                    <rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/>
-                    <rect x="3" y="14" width="7" height="7"/>
-                  </svg>
-                  <span>เปิด บอร์ดรวมระบบ DC ทันที</span>
-                </button>
-              </div>
-            </div>
-            <div class="home-welcome-logo">
-              <img src="PTGDCWN.png" alt="PTG Logo" width="100" height="100" style="max-width:100px;max-height:100px;object-fit:contain;" />
-            </div>
-          </div>
-
-          <!-- Highlight System Cards on Home -->
-          <div class="home-highlights-grid">
-            <div class="highlight-card" id="highlightOpsCard" style="cursor: pointer;">
-              <div class="highlight-icon green">📊</div>
-              <div class="highlight-body">
-                <h4>DC Ops Monitor V2</h4>
-                <p>มอนิเตอร์และวางแผน Wave งานคลังสินค้าเรียลไทม์</p>
-              </div>
-              <span class="highlight-arrow">→</span>
-            </div>
-
-            <div class="highlight-card" id="highlightPickerCard" style="cursor: pointer;">
-              <div class="highlight-icon light-green">⚡</div>
-              <div class="highlight-body">
-                <h4>Picker Productivity V2</h4>
-                <p>แดชบอร์ดวัดประสิทธิภาพ UPH ความเร็วการหยิบสินค้า</p>
-              </div>
-              <span class="highlight-arrow">→</span>
-            </div>
-
-            <div class="highlight-card" id="highlightScannerCard" style="cursor: pointer;">
-              <div class="highlight-icon purple">📱</div>
-              <div class="highlight-body">
-                <h4>Pro LPN Scanner</h4>
-                <p>ระบบสแกนเนอร์บาร์โค้ด Handheld ยิง Wave ปิดกล่อง</p>
-              </div>
-              <span class="highlight-arrow">→</span>
+          <!-- Clean Home Canvas -->
+          <div class="home-canvas-card">
+            <div class="home-canvas-badge">พื้นที่หน้าหลัก</div>
+            <h2 id="homeWelcomeName">ยินดีต้อนรับสู่ระบบศูนย์กลาง DC</h2>
+            <p>พื้นที่หน้าหลักนี้เตรียมพร้อมสำหรับต่อยอดฟีเจอร์และแดชบอร์ดใหม่ในอนาคต</p>
+            <div class="home-canvas-actions">
+              <button class="btn-primary-action" id="homeHeroBtn" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                  <rect x="3" y="3" width="7" height="7"/>
+                  <rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                <span>เปิดดู บอร์ดรวมระบบ DC (7 ระบบ)</span>
+              </button>
             </div>
           </div>
         </section>
