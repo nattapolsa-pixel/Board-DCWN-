@@ -646,7 +646,14 @@ document.addEventListener("DOMContentLoaded", () => {
         : `รหัสพนักงาน: ${empId}`;
     }
 
-    // Render board
+    // Set greeting on home tab
+    const homeGreetingTitle = document.getElementById("homeGreetingTitle");
+    if (homeGreetingTitle && empName) {
+      homeGreetingTitle.textContent = `ยินดีต้อนรับ, คุณ${empName}`;
+    }
+
+    // Default to Home tab
+    setActiveTab("home");
     renderSystems();
   }
 
@@ -733,6 +740,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const navOverlay     = document.getElementById("navOverlay");
   const navLinks       = document.querySelectorAll(".nav-link");
   const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+  const tabPanes       = document.querySelectorAll(".tab-pane");
 
   function toggleMobileNav(forceState) {
     const isOpen = typeof forceState === "boolean"
@@ -749,8 +757,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ─── Active Tab Switching ───────────────────────────────────
   function setActiveTab(tabId) {
+    if (!tabId) return;
+
+    // Toggle active on navbar links
     navLinks.forEach((l) => l.classList.toggle("active", l.getAttribute("data-tab") === tabId));
     mobileNavLinks.forEach((l) => l.classList.toggle("active", l.getAttribute("data-tab") === tabId));
+
+    // Toggle active on tab-pane contents
+    tabPanes.forEach((pane) => {
+      const isTarget = pane.id === `tabContent-${tabId}`;
+      pane.classList.toggle("active", isTarget);
+    });
+
+    // Re-render systems if switching to systems board
+    if (tabId === "systems") {
+      renderSystems();
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   navLinks.forEach((link) => {
@@ -771,6 +795,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // Home shortcuts to Systems Board
+  document.getElementById("homeGoToSystemsBtn")?.addEventListener("click", () => setActiveTab("systems"));
+  document.getElementById("homeHeroBtn")?.addEventListener("click", () => setActiveTab("systems"));
+  document.getElementById("highlightOpsCard")?.addEventListener("click", () => setActiveTab("systems"));
+  document.getElementById("highlightPickerCard")?.addEventListener("click", () => setActiveTab("systems"));
+  document.getElementById("highlightScannerCard")?.addEventListener("click", () => setActiveTab("systems"));
 
   window.addEventListener("resize", () => {
     if (window.innerWidth > 900) toggleMobileNav(false);

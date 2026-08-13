@@ -227,76 +227,197 @@
 
     <!-- Main Workspace -->
     <main class="main-content">
-      <!-- Sub-header bar / Kicker -->
-      <div class="workspace-header">
-        <div class="workspace-header-inner">
-          <div>
-            <p class="workspace-kicker">DC CENTRAL PORTAL</p>
-            <h1 class="workspace-title">ศูนย์รวมระบบและแดชบอร์ดปฏิบัติการ</h1>
-          </div>
-          <div class="workspace-actions">
-            <button class="btn-primary-action" id="openAddModalBtn" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19"/>
-                <line x1="5" y1="12" x2="19" y2="12"/>
-              </svg>
-              <span>เพิ่มลิงก์ระบบใหม่</span>
-            </button>
+
+      <!-- ============================================================
+           TAB 1: HOME (หน้าแรก - ยินดีต้อนรับ & ภาพรวม)
+           ============================================================ -->
+      <div id="tabContent-home" class="tab-pane active">
+        <!-- Sub-header bar / Kicker -->
+        <div class="workspace-header">
+          <div class="workspace-header-inner">
+            <div>
+              <p class="workspace-kicker">PT ENERGY · DC CENTRAL PORTAL</p>
+              <h1 class="workspace-title" id="homeGreetingTitle">ยินดีต้อนรับสู่ DC Central Portal</h1>
+            </div>
+            <div class="workspace-actions">
+              <button class="btn-primary-action" id="homeGoToSystemsBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="7" height="7"/>
+                  <rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                <span>เข้าสู่ บอร์ดรวมระบบ DC →</span>
+              </button>
+            </div>
           </div>
         </div>
+
+        <section class="workspace">
+          <!-- Welcome Hero Card -->
+          <div class="home-welcome-card">
+            <div class="home-welcome-text">
+              <span class="home-welcome-tag">ศูนย์กระจายสินค้า PTG วังน้อย</span>
+              <h2>ยินดีต้อนรับสู่ระบบศูนย์กลาง DC Central Portal</h2>
+              <p>ระบบศูนย์รวมเครื่องมือ แดชบอร์ดมอนิเตอร์ และระบบงานปฏิบัติการทั้งหมดของคลังสินค้า PTG ช่วยให้ทีมงานติดตามสถานะงาน วางแผน Wave และปฏิบัติงานได้อย่างมีประสิทธิภาพและรวดเร็ว</p>
+              <div class="home-welcome-actions">
+                <button class="btn-home-primary" id="homeHeroBtn" type="button">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                  </svg>
+                  <span>เปิด บอร์ดรวมระบบ DC ทันที</span>
+                </button>
+              </div>
+            </div>
+            <div class="home-welcome-logo">
+              <img src="PTGDCWN.png" alt="PTG Logo" />
+            </div>
+          </div>
+
+          <!-- Highlight System Cards on Home -->
+          <div class="home-highlights-grid">
+            <div class="highlight-card" id="highlightOpsCard" style="cursor: pointer;">
+              <div class="highlight-icon green">📊</div>
+              <div class="highlight-body">
+                <h4>DC Ops Monitor V2</h4>
+                <p>มอนิเตอร์และวางแผน Wave งานคลังสินค้าเรียลไทม์</p>
+              </div>
+              <span class="highlight-arrow">→</span>
+            </div>
+
+            <div class="highlight-card" id="highlightPickerCard" style="cursor: pointer;">
+              <div class="highlight-icon light-green">⚡</div>
+              <div class="highlight-body">
+                <h4>Picker Productivity V2</h4>
+                <p>แดชบอร์ดวัดประสิทธิภาพ UPH ความเร็วการหยิบสินค้า</p>
+              </div>
+              <span class="highlight-arrow">→</span>
+            </div>
+
+            <div class="highlight-card" id="highlightScannerCard" style="cursor: pointer;">
+              <div class="highlight-icon purple">📱</div>
+              <div class="highlight-body">
+                <h4>Pro LPN Scanner</h4>
+                <p>ระบบสแกนเนอร์บาร์โค้ด Handheld ยิง Wave ปิดกล่อง</p>
+              </div>
+              <span class="highlight-arrow">→</span>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <!-- Workspace Body: Systems Board -->
-      <section class="workspace" id="workspace">
-        
-        <!-- Board Filter & Fast Drop Bar -->
-        <div class="board-controls-wrap">
-          <!-- Search & Filter Row -->
-          <div class="search-filter-row">
-            <div class="search-box">
-              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"/>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-              </svg>
-              <input type="text" id="boardSearchInput" placeholder="ค้นหาชื่อระบบ, หมวดหมู่, หรือการใช้งาน..." autocomplete="off" />
-              <button id="clearSearchBtn" class="clear-search-btn" title="ล้างการค้นหา" style="display:none;">✕</button>
+      <!-- ============================================================
+           TAB 2: SYSTEMS BOARD (บอร์ดรวมระบบ DC - กรอบรวมระบบ)
+           ============================================================ -->
+      <div id="tabContent-systems" class="tab-pane">
+        <!-- Sub-header bar / Kicker -->
+        <div class="workspace-header">
+          <div class="workspace-header-inner">
+            <div>
+              <p class="workspace-kicker">DC CENTRAL PORTAL</p>
+              <h1 class="workspace-title">ศูนย์รวมระบบและแดชบอร์ดปฏิบัติการ</h1>
+            </div>
+            <div class="workspace-actions">
+              <button class="btn-primary-action" id="openAddModalBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                <span>เพิ่มลิงก์ระบบใหม่</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workspace Body: Systems Board -->
+        <section class="workspace" id="workspace">
+          <!-- Board Filter & Fast Drop Bar -->
+          <div class="board-controls-wrap">
+            <!-- Search & Filter Row -->
+            <div class="search-filter-row">
+              <div class="search-box">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="boardSearchInput" placeholder="ค้นหาชื่อระบบ, หมวดหมู่, หรือการใช้งาน..." autocomplete="off" />
+                <button id="clearSearchBtn" class="clear-search-btn" title="ล้างการค้นหา" style="display:none;">✕</button>
+              </div>
+
+              <!-- Quick Paste / Drop Trigger -->
+              <div class="quick-drop-zone" id="quickDropZone" title="ลากลิงก์มาวางที่นี่ หรือพิมพ์ URL เพื่อเพิ่มด่วน">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                <span>โยน / วางลิงก์ด่วนที่นี่</span>
+              </div>
             </div>
 
-            <!-- Quick Paste / Drop Trigger -->
-            <div class="quick-drop-zone" id="quickDropZone" title="ลากลิงก์มาวางที่นี่ หรือพิมพ์ URL เพื่อเพิ่มด่วน">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-              </svg>
-              <span>โยน / วางลิงก์ด่วนที่นี่</span>
+            <!-- Category Filter Pills -->
+            <div class="category-pills" id="categoryFilterContainer">
+              <button class="filter-pill active" data-category="all">ทั้งหมด (<span id="countAll">0</span>)</button>
+              <button class="filter-pill" data-category="ops">มอนิเตอร์ & วางแผน</button>
+              <button class="filter-pill" data-category="picker">การหยิบ & ประสิทธิภาพ</button>
+              <button class="filter-pill" data-category="scanner">สแกนเนอร์ & Handheld</button>
+              <button class="filter-pill" data-category="damage">สินค้าเสียหาย (Damage)</button>
+              <button class="filter-pill" data-category="newstore">สาขาเปิดใหม่ (New Store)</button>
+              <button class="filter-pill" data-category="custom">ระบบที่เพิ่มเอง</button>
             </div>
           </div>
 
-          <!-- Category Filter Pills -->
-          <div class="category-pills" id="categoryFilterContainer">
-            <button class="filter-pill active" data-category="all">ทั้งหมด (<span id="countAll">0</span>)</button>
-            <button class="filter-pill" data-category="ops">มอนิเตอร์ & วางแผน</button>
-            <button class="filter-pill" data-category="picker">การหยิบ & ประสิทธิภาพ</button>
-            <button class="filter-pill" data-category="scanner">สแกนเนอร์ & Handheld</button>
-            <button class="filter-pill" data-category="damage">สินค้าเสียหาย (Damage)</button>
-            <button class="filter-pill" data-category="newstore">สาขาเปิดใหม่ (New Store)</button>
-            <button class="filter-pill" data-category="custom">ระบบที่เพิ่มเอง</button>
+          <!-- Systems Card Grid -->
+          <div class="systems-grid" id="systemsGrid">
+            <!-- Populated dynamically by app.js -->
+          </div>
+
+          <!-- Empty Filter State (if search yields 0 items) -->
+          <div class="no-results-state" id="noResultsState" style="display: none;">
+            <div class="no-results-icon">🔍</div>
+            <h3>ไม่พบระบบที่ตรงกับคำค้นหา</h3>
+            <p>ลองเปลี่ยนคำค้นหา หรือกดปุ่ม "เพิ่มลิงก์ระบบใหม่" เพื่อสร้างการ์ดระบบนี้</p>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============================================================
+           TAB 3: WAREHOUSE (คลังสินค้า & ปฏิบัติการ)
+           ============================================================ -->
+      <div id="tabContent-warehouse" class="tab-pane">
+        <div class="workspace-header">
+          <div class="workspace-header-inner">
+            <div>
+              <p class="workspace-kicker">DC OPERATIONS</p>
+              <h1 class="workspace-title">ข้อมูลคลังสินค้า & ปฏิบัติการ</h1>
+            </div>
           </div>
         </div>
 
-        <!-- Systems Card Grid -->
-        <div class="systems-grid" id="systemsGrid">
-          <!-- Populated dynamically by app.js -->
-        </div>
+        <section class="workspace">
+          <div class="warehouse-info-card">
+            <h3>🏢 ศูนย์กระจายสินค้า PTG วังน้อย (DC Wangnoi)</h3>
+            <p>ศูนย์รวมการกระจายสินค้าสำหรับสถานีบริการน้ำมัน PT, ร้านสะดวกซื้อ Max Mart, และร้านกาแฟพันธุ์ไทย ครอบคลุมการจัดส่งสินค้าทั่วประเทศ</p>
+            <div class="warehouse-stats-row">
+              <div class="wh-stat">
+                <strong>5/5</strong>
+                <span>ระบบปฏิบัติการหลัก</span>
+              </div>
+              <div class="wh-stat">
+                <strong>220+</strong>
+                <span>พนักงานประจำการ</span>
+              </div>
+              <div class="wh-stat">
+                <strong>24/7</strong>
+                <span>ระบบติดตามเรียลไทม์</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
-        <!-- Empty Filter State (if search yields 0 items) -->
-        <div class="no-results-state" id="noResultsState" style="display: none;">
-          <div class="no-results-icon">🔍</div>
-          <h3>ไม่พบระบบที่ตรงกับคำค้นหา</h3>
-          <p>ลองเปลี่ยนคำค้นหา หรือกดปุ่ม "เพิ่มลิงก์ระบบใหม่" เพื่อสร้างการ์ดระบบนี้</p>
-        </div>
-
-      </section>
     </main>
 
     <!-- Overlay for mobile navigation -->

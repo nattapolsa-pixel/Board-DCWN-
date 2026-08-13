@@ -916,6 +916,243 @@ body.is-portal #portalView {
   flex-direction: column;
 }
 
+/* Tab Panes */
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+  animation: tabFadeIn 0.2s ease forwards;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Home Welcome Card */
+.home-welcome-card {
+  background: linear-gradient(135deg, #054826 0%, #006f3a 50%, #009b4d 100%);
+  border-radius: var(--radius-xl);
+  padding: 40px 44px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  box-shadow: 0 16px 40px rgba(0, 70, 35, 0.22);
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-welcome-text {
+  max-width: 650px;
+  z-index: 1;
+}
+
+.home-welcome-tag {
+  display: inline-flex;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-full);
+  font-size: 11.5px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.3px;
+}
+
+.home-welcome-text h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+
+.home-welcome-text p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20px;
+}
+
+.btn-home-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 24px;
+  background: #ffffff;
+  color: var(--pt-green-deep);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-home-primary svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--pt-green-deep);
+}
+
+.btn-home-primary:hover {
+  background: #f0faf4;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.home-welcome-logo {
+  flex-shrink: 0;
+  width: 130px;
+  height: 130px;
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.home-welcome-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Home Highlights Grid */
+.home-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.highlight-card {
+  background: #ffffff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.highlight-card:hover {
+  border-color: #badccb;
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.highlight-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.highlight-icon.green       { background: #e8f7ee; }
+.highlight-icon.light-green { background: #f2f9ec; }
+.highlight-icon.purple      { background: #f3e8ff; }
+
+.highlight-body {
+  flex: 1;
+}
+
+.highlight-body h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.highlight-body p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.highlight-arrow {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-subtle);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.highlight-card:hover .highlight-arrow {
+  transform: translateX(4px);
+  color: var(--pt-green);
+}
+
+/* Warehouse Info Card */
+.warehouse-info-card {
+  background: #ffffff;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+.warehouse-info-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.warehouse-info-card p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.warehouse-stats-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.wh-stat {
+  flex: 1;
+  min-width: 140px;
+  background: #f7faf8;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wh-stat strong {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--pt-green-dark);
+}
+
+.wh-stat span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
 .workspace-header {
   background: var(--surface);
   border-bottom: 1px solid var(--line);
