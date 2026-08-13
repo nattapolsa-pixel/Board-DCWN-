@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PTG Distribution Center - DC Central Portal & Operations Board" />
+  <title>PTG Distribution Center - DC Central Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="is-login">
+
+  <!-- ============================================================
+       LOGIN VIEW (Animated Background + Login Card)
+       ============================================================ -->
+  <div id="loginView" class="login-view-wrap">
+    <!-- Animated Background Blobs -->
+    <div class="bg-blobs" aria-hidden="true">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Grid Pattern Overlay -->
+    <div class="grid-overlay" aria-hidden="true"></div>
+
+    <!-- Login Center Container -->
+    <main class="login-center">
+      <div class="login-card" id="loginCard">
+        <!-- Card Top Glow -->
+        <div class="card-glow" aria-hidden="true"></div>
+
+        <!-- Header / Logo Area -->
+        <header class="card-header">
+          <div class="logo-ring" id="logoRing">
+            <img src="PTGDCWN.png" alt="PTG Distribution Center Logo" class="card-logo" />
+          </div>
+          <div class="card-titles">
+            <h1 class="card-brand">PTG Distribution Center</h1>
+            <p class="card-sub">DC Central Portal</p>
+          </div>
+        </header>
+
+        <!-- Divider -->
+        <div class="pt-divider">
+          <span class="dot dot-green"></span>
+          <span class="dot-line"></span>
+          <span class="dot dot-lgreen"></span>
+          <span class="dot-line"></span>
+          <span class="dot dot-red"></span>
+        </div>
+
+        <!-- Welcome Text -->
+        <div class="welcome-area">
+          <p class="welcome-title">ยินดีต้อนรับ</p>
+          <p class="welcome-sub">กรุณาระบุรหัสพนักงานเพื่อเข้าสู่ระบบ</p>
+        </div>
+
+        <!-- Login Form -->
+        <form class="login-form" id="loginForm" autocomplete="off" novalidate>
+          <div class="field-group" id="fieldGroup">
+            <label for="empId" class="field-label">
+              <svg class="label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              รหัสพนักงาน
+            </label>
+            <div class="input-wrap" id="inputWrap">
+              <span class="input-prefix">EMP</span>
+              <input
+                type="text"
+                id="empId"
+                name="empId"
+                class="field-input"
+                placeholder="กรอกรหัสพนักงาน"
+                maxlength="20"
+                inputmode="text"
+                aria-required="true"
+                aria-describedby="empIdError"
+              />
+              <div class="input-focus-line"></div>
+            </div>
+            <p class="field-error" id="empIdError" role="alert" aria-live="polite"></p>
+          </div>
+
+          <button type="submit" class="login-btn" id="loginBtn">
+            <span class="btn-label">เข้าสู่ระบบ</span>
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+              <polyline points="10 17 15 12 10 7"/>
+              <line x1="15" y1="12" x2="3" y2="12"/>
+            </svg>
+            <div class="btn-ripple" id="btnRipple"></div>
+          </button>
+        </form>
+
+        <!-- Footer Info -->
+        <footer class="card-footer">
+          <div class="footer-dots">
+            <span class="dot dot-green"></span>
+            <span class="dot dot-lgreen"></span>
+            <span class="dot dot-red"></span>
+          </div>
+          <p class="footer-text">PT Energy Distribution</p>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================================
+       PORTAL VIEW (Main Workspace & Operations Board)
+       ============================================================ -->
+  <div id="portalView" class="app-shell portal-view">
+    <!-- Top Navigation Header -->
+    <header class="navbar" id="navbar">
+      <div class="nav-container">
+        <!-- Brand / Logo Area -->
+        <div class="nav-brand">
+          <div class="brand-logo-wrap">
+            <img src="PTGDCWN.png" alt="PTG Distribution Center Logo" class="brand-logo" />
+          </div>
+          <div class="brand-copy">
+            <strong>PTG Distribution Center</strong>
+            <span>DC Central Portal</span>
+          </div>
+        </div>
+
+        <!-- Desktop Menu Navigation -->
+        <nav class="nav-menu" id="navMenu">
+          <a href="#" class="nav-link active" data-tab="home">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            <span>หน้าแรก</span>
+          </a>
+          <a href="#" class="nav-link" data-tab="systems">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            <span>บอร์ดรวมระบบ DC</span>
+          </a>
+          <a href="#" class="nav-link" data-tab="warehouse">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+              <path d="m3.3 7 8.7 5 8.7-5"/>
+              <path d="M12 22V12"/>
+            </svg>
+            <span>คลังสินค้า & ปฏิบัติการ</span>
+          </a>
+          <a href="#" class="nav-link" data-tab="docs">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" x2="8" y1="13" y2="13"/>
+              <line x1="16" x2="8" y1="17" y2="17"/>
+              <line x1="10" x2="8" y1="9" y2="9"/>
+            </svg>
+            <span>เอกสาร & ISO</span>
+          </a>
+        </nav>
+
+        <!-- Right Side Actions / Status -->
+        <div class="nav-right">
+          <div class="theme-badge" title="PT Energy Theme">
+            <span class="theme-dot green"></span>
+            <span class="theme-dot light-green"></span>
+            <span class="theme-dot red"></span>
+            <span class="theme-text">PT Theme</span>
+          </div>
+
+          <div class="status-chip">
+            <span class="status-dot"></span>
+            <span>Portal Ready</span>
+          </div>
+
+          <!-- Employee Badge (Name & Role) -->
+          <div class="emp-badge" id="empBadge" title="รหัสพนักงาน">
+            <svg class="emp-badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <div id="empBadgeLabel">--</div>
+          </div>
+
+          <!-- Logout Button -->
+          <button class="logout-btn" id="logoutBtn" type="button" title="ออกจากระบบ" aria-label="ออกจากระบบ">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            <span class="logout-text">ออกจากระบบ</span>
+          </button>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="เปิด/ปิดเมนู" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#" class="mobile-nav-link active" data-tab="home">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>หน้าแรก</span>
+        </a>
+        <a href="#" class="mobile-nav-link" data-tab="systems">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          <span>บอร์ดรวมระบบ DC</span>
+        </a>
+        <a href="#" class="mobile-nav-link" data-tab="warehouse">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+            <path d="m3.3 7 8.7 5 8.7-5"/>
+            <path d="M12 22V12"/>
+          </svg>
+          <span>คลังสินค้า & ปฏิบัติการ</span>
+        </a>
+        <a href="#" class="mobile-nav-link" data-tab="docs">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" x2="8" y1="13" y2="13"/>
+            <line x1="16" x2="8" y1="17" y2="17"/>
+            <line x1="10" x2="8" y1="9" y2="9"/>
+          </svg>
+          <span>เอกสาร & ISO</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="main-content">
+      <!-- Sub-header bar / Kicker -->
+      <div class="workspace-header">
+        <div class="workspace-header-inner">
+          <div>
+            <p class="workspace-kicker">DC CENTRAL PORTAL</p>
+            <h1 class="workspace-title">ศูนย์รวมระบบและแดชบอร์ดปฏิบัติการ</h1>
+          </div>
+          <div class="workspace-actions">
+            <button class="btn-primary-action" id="openAddModalBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <span>เพิ่มลิงก์ระบบใหม่</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workspace Body: Systems Board -->
+      <section class="workspace" id="workspace">
+        
+        <!-- Board Filter & Fast Drop Bar -->
+        <div class="board-controls-wrap">
+          <!-- Search & Filter Row -->
+          <div class="search-filter-row">
+            <div class="search-box">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input type="text" id="boardSearchInput" placeholder="ค้นหาชื่อระบบ, หมวดหมู่, หรือการใช้งาน..." autocomplete="off" />
+              <button id="clearSearchBtn" class="clear-search-btn" title="ล้างการค้นหา" style="display:none;">✕</button>
+            </div>
+
+            <!-- Quick Paste / Drop Trigger -->
+            <div class="quick-drop-zone" id="quickDropZone" title="ลากลิงก์มาวางที่นี่ หรือพิมพ์ URL เพื่อเพิ่มด่วน">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              <span>โยน / วางลิงก์ด่วนที่นี่</span>
+            </div>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div class="category-pills" id="categoryFilterContainer">
+            <button class="filter-pill active" data-category="all">ทั้งหมด (<span id="countAll">0</span>)</button>
+            <button class="filter-pill" data-category="ops">มอนิเตอร์ & วางแผน</button>
+            <button class="filter-pill" data-category="picker">การหยิบ & ประสิทธิภาพ</button>
+            <button class="filter-pill" data-category="scanner">สแกนเนอร์ & Handheld</button>
+            <button class="filter-pill" data-category="damage">สินค้าเสียหาย (Damage)</button>
+            <button class="filter-pill" data-category="newstore">สาขาเปิดใหม่ (New Store)</button>
+            <button class="filter-pill" data-category="custom">ระบบที่เพิ่มเอง</button>
+          </div>
+        </div>
+
+        <!-- Systems Card Grid -->
+        <div class="systems-grid" id="systemsGrid">
+          <!-- Populated dynamically by app.js -->
+        </div>
+
+        <!-- Empty Filter State (if search yields 0 items) -->
+        <div class="no-results-state" id="noResultsState" style="display: none;">
+          <div class="no-results-icon">🔍</div>
+          <h3>ไม่พบระบบที่ตรงกับคำค้นหา</h3>
+          <p>ลองเปลี่ยนคำค้นหา หรือกดปุ่ม "เพิ่มลิงก์ระบบใหม่" เพื่อสร้างการ์ดระบบนี้</p>
+        </div>
+
+      </section>
+    </main>
+
+    <!-- Overlay for mobile navigation -->
+    <div class="nav-overlay" id="navOverlay"></div>
+  </div>
+
+  <!-- ============================================================
+       ADD SYSTEM / CUSTOM LINK MODAL
+       ============================================================ -->
+  <div class="system-modal-overlay" id="addSystemModalOverlay" role="dialog" aria-modal="true" aria-labelledby="addSystemModalTitle">
+    <div class="system-modal" id="addSystemModal">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="modal-title" id="addSystemModalTitle">เพิ่มระบบ / ลิงก์เข้าบอร์ด</h2>
+            <p class="modal-sub">เพิ่มเว็บหรือแดชบอร์ดเพื่อให้เข้าใช้งานได้สะดวกรวดเร็ว</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeAddModalBtn" type="button" aria-label="ปิด">✕</button>
+      </div>
+
+      <form id="addSystemForm" class="system-modal-form" autocomplete="off">
+        <div class="form-group">
+          <label for="sysUrl">ลิงก์ URL เว็บไซต์ / แดชบอร์ด <span class="req">*</span></label>
+          <div class="form-input-wrap">
+            <input type="url" id="sysUrl" placeholder="https://example.com/dashboard" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sysName">ชื่อระบบ / ชื่อเว็บ <span class="req">*</span></label>
+          <div class="form-input-wrap">
+            <input type="text" id="sysName" placeholder="เช่น ระบบจัดการ Wave 2026" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sysCategory">หมวดหมู่</label>
+            <select id="sysCategory" class="form-select">
+              <option value="ops">มอนิเตอร์ & วางแผน</option>
+              <option value="picker">การหยิบ & ประสิทธิภาพ</option>
+              <option value="scanner">สแกนเนอร์ & Handheld</option>
+              <option value="damage">สินค้าเสียหาย (Damage)</option>
+              <option value="newstore">สาขาเปิดใหม่ (New Store)</option>
+              <option value="custom" selected>อื่นๆ / เพิ่มเอง</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="sysTheme">ธีมสีการ์ด</label>
+            <select id="sysTheme" class="form-select">
+              <option value="green" selected>เขียว PT (Green)</option>
+              <option value="light-green">เขียวอ่อน (Light Green)</option>
+              <option value="red">แดง PT (Red)</option>
+              <option value="blue">น้ำเงินฟ้า (Blue)</option>
+              <option value="purple">ม่วงทันสมัย (Purple)</option>
+              <option value="amber">ส้มอำพัน (Amber)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sysDesc">คำอธิบายการใช้งาน (เข้าใจง่าย สั้นๆ) <span class="req">*</span></label>
+          <textarea id="sysDesc" rows="3" placeholder="อธิบายหน้าที่และการใช้งานของเว็บนี้สั้นๆ เช่น ใช้สำหรับ..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="sysBadge">ป้ายกำกับย่อ (Badge Tag)</label>
+          <input type="text" id="sysBadge" placeholder="เช่น Live Web App / BigQuery" />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="cancelAddModalBtn">ยกเลิก</button>
+          <button type="submit" class="btn-primary" id="saveSystemBtn">บันทึกลงบอร์ด</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ACCESS DENIED POPUP MODAL
+       ============================================================ -->
+  <div class="access-modal-overlay" id="accessModalOverlay" role="dialog" aria-modal="true" aria-labelledby="accessModalTitle">
+    <div class="access-modal" id="accessModal">
+      <!-- Shield Icon with animations -->
+      <div class="access-modal-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <!-- Title -->
+      <h2 class="access-modal-title" id="accessModalTitle">ไม่มีสิทธิ์เข้าใช้งาน</h2>
+      <p class="access-modal-sub">Access Denied</p>
+      <!-- Message Body -->
+      <div class="access-modal-body">
+        <p>รหัสพนักงาน <strong id="deniedEmpId"></strong> ไม่มีในระบบ</p>
+        <p class="access-modal-hint">หากคิดว่าเป็นข้อผิดพลาด กรุณาติดต่อ HR หรือผู้ดูแลระบบ</p>
+      </div>
+      <!-- Close Action -->
+      <button class="access-modal-btn" id="accessModalClose" type="button">
+        <span>รับทราบ</span>
+      </button>
+      <!-- Decorative bottom strip -->
+      <div class="access-modal-bar"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOAST NOTIFICATION
+       ============================================================ -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <span class="toast-icon">✓</span>
+    <span class="toast-msg" id="toastMsg"></span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
