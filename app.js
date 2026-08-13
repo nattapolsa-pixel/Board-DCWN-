@@ -1,10 +1,9 @@
 /* ============================================================
-   PTG DISTRIBUTION CENTER - UNIFIED APPLICATION SCRIPT
+   PTG DISTRIBUTION CENTER - UNIFIED APPLICATION SCRIPT (V2.0)
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
   // ─── Employee Database (from บันทึกเวลาทำงาน sheet) ────────
-  // Format: { "รหัสพนักงาน": { name: "ชื่อ-นามสกุล", role: "หน้าที่รับผิดชอบ" } }
   const EMPLOYEES = {
     "10090620": { name: "นางสาวณัฐชนก พองผลา",       role: "Safety" },
     "171080":   { name: "น.ส.จิราวรรณ ทิพย์แสง",      role: "Team lead" },
@@ -307,6 +306,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const empBadgeLabel     = document.getElementById("empBadgeLabel");
   const logoutBtn         = document.getElementById("logoutBtn");
 
+  // Clock & Status Elements
+  const navLiveTime       = document.getElementById("navLiveTime");
+  const homeShiftStatus   = document.getElementById("homeShiftStatus");
+
   // Board Elements
   const systemsGrid       = document.getElementById("systemsGrid");
   const boardSearchInput  = document.getElementById("boardSearchInput");
@@ -314,6 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const quickDropZone     = document.getElementById("quickDropZone");
   const categoryPills     = document.querySelectorAll(".filter-pill");
   const countAllEl        = document.getElementById("countAll");
+  const countFavEl        = document.getElementById("countFav");
   const noResultsState    = document.getElementById("noResultsState");
 
   // Modal Elements
@@ -329,17 +333,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const sysDescInput      = document.getElementById("sysDesc");
   const sysBadgeInput     = document.getElementById("sysBadge");
 
+  // AI Assistant Elements
+  const aiChatForm        = document.getElementById("aiChatForm");
+  const aiChatInput       = document.getElementById("aiChatInput");
+  const aiChatMessages    = document.getElementById("aiChatMessages");
+  const aiChips           = document.querySelectorAll(".ai-chip");
+
   // ─── State ─────────────────────────────────────────────────
   let activeCategory = "all";
   let searchQuery = "";
 
-  // ─── Systems Data Management (Local Storage) ───────────────
+  // ─── Favorites & Custom Systems Storage ────────────────────
+  function getFavorites() {
+    try {
+      const stored = localStorage.getItem("ptg_dc_favorites");
+      return stored ? JSON.parse(stored) : ["dc-ops-monitor", "pick-productivity"];
+    } catch (e) {
+      return ["dc-ops-monitor", "pick-productivity"];
+    }
+  }
+
+  function saveFavorites(favs) {
+    try {
+      localStorage.setItem("ptg_dc_favorites", JSON.stringify(favs));
+    } catch (e) {}
+  }
+
+  function toggleFavorite(systemId) {
+    let favs = getFavorites();
+    if (favs.includes(systemId)) {
+      favs = favs.filter(id => id !== systemId);
+      showToast("นำออกจากรายการติดดาวแล้ว");
+    } else {
+      favs.push(systemId);
+      showToast("ติดดาวระบบเรียบร้อย ⭐");
+    }
+    saveFavorites(favs);
+    renderSystems();
+  }
+
   function getCustomSystems() {
     try {
       const stored = localStorage.getItem("ptg_dc_custom_systems");
       return stored ? JSON.parse(stored) : [];
     } catch (e) {
-      console.error("Error reading custom systems from localStorage", e);
       return [];
     }
   }
@@ -347,9 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function saveCustomSystems(systems) {
     try {
       localStorage.setItem("ptg_dc_custom_systems", JSON.stringify(systems));
-    } catch (e) {
-      console.error("Error saving custom systems to localStorage", e);
-    }
+    } catch (e) {}
   }
 
   function getAllSystems() {
@@ -362,12 +397,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!systemsGrid) return;
 
     const allSystems = getAllSystems();
+    const favs = getFavorites();
+
     if (countAllEl) countAllEl.textContent = allSystems.length;
+    if (countFavEl) countFavEl.textContent = favs.length;
 
     // Filter systems
     const filtered = allSystems.filter(sys => {
       // Category match
-      const matchCat = (activeCategory === "all") || (sys.category === activeCategory);
+      let matchCat = true;
+      if (activeCategory === "favorites") {
+        matchCat = favs.includes(sys.id);
+      } else if (activeCategory !== "all") {
+        matchCat = (sys.category === activeCategory);
+      }
+
       // Search match
       const q = searchQuery.toLowerCase().trim();
       const matchQuery = !q ||
@@ -380,6 +424,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return matchCat && matchQuery;
     });
 
+    // Sort: Favorites first if in 'all' view
+    if (activeCategory === "all" && !searchQuery) {
+      filtered.sort((a, b) => {
+        const aFav = favs.includes(a.id);
+        const bFav = favs.includes(b.id);
+        if (aFav && !bFav) return -1;
+        if (!aFav && bFav) return 1;
+        return 0;
+      });
+    }
+
     if (filtered.length === 0) {
       systemsGrid.innerHTML = "";
       if (noResultsState) noResultsState.style.display = "block";
@@ -388,49 +443,78 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (noResultsState) noResultsState.style.display = "none";
 
-    systemsGrid.innerHTML = filtered.map(sys => `
-      <div class="system-card card-theme-${sys.theme || 'green'}" data-id="${sys.id}">
-        <div>
-          <div class="system-card-header">
-            <div class="system-icon-wrap">${sys.icon || '🔗'}</div>
-            <div class="system-badges-wrap">
-              <span class="system-category-tag">${sys.categoryName || 'ทั่วไป'}</span>
-              ${sys.badge ? `<span class="system-badge-tag">${sys.badge}</span>` : ''}
+    systemsGrid.innerHTML = filtered.map(sys => {
+      const isFav = favs.includes(sys.id);
+      return `
+        <div class="system-card card-theme-${sys.theme || 'green'}" data-id="${sys.id}">
+          <div>
+            <div class="system-card-header">
+              <div class="system-icon-wrap">${sys.icon || '🔗'}</div>
+              <div class="system-badges-wrap">
+                <span class="system-category-tag">${sys.categoryName || 'ทั่วไป'}</span>
+                ${sys.badge ? `<span class="system-badge-tag">${sys.badge}</span>` : ''}
+              </div>
+            </div>
+
+            <div class="system-card-body">
+              <div class="system-title-row">
+                <h3 class="system-title">${sys.name}</h3>
+                <button class="fav-btn ${isFav ? 'is-fav' : ''}" data-fav-id="${sys.id}" title="${isFav ? 'ยกเลิกติดดาว' : 'ติดดาวระบบนี้'}">
+                  ${isFav ? '★' : '☆'}
+                </button>
+              </div>
+              <p class="system-desc">${sys.desc}</p>
+              <div class="system-url-box">
+                <span class="system-url-text" title="${sys.url}">${sys.url}</span>
+                <button class="copy-url-btn" data-copy-url="${sys.url}" title="คัดลอกลิงก์">คัดลอก</button>
+              </div>
             </div>
           </div>
 
-          <div class="system-card-body">
-            <h3 class="system-title">${sys.name}</h3>
-            <p class="system-desc">${sys.desc}</p>
-            <div class="system-url-box" title="${sys.url}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          <div class="system-card-footer">
+            <a href="${sys.url}" target="_blank" rel="noopener noreferrer" class="launch-btn" title="เปิดใช้งาน ${sys.name}">
+              <span>เปิดใช้งานระบบ</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
               </svg>
-              <span class="system-url-text">${sys.url}</span>
-            </div>
+            </a>
+            ${sys.isCustom ? `
+              <button class="card-remove-btn" data-delete-id="${sys.id}" title="ลบระบบนี้ออกจากบอร์ด">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+              </button>
+            ` : ''}
           </div>
         </div>
+      `;
+    }).join("");
 
-        <div class="system-card-footer">
-          <a href="${sys.url}" target="_blank" rel="noopener noreferrer" class="launch-btn" title="เปิดใช้งาน ${sys.name}">
-            <span>เปิดใช้งานระบบ</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="7" y1="17" x2="17" y2="7"/>
-              <polyline points="7 7 17 7 17 17"/>
-            </svg>
-          </a>
-          ${sys.isCustom ? `
-            <button class="card-remove-btn" data-delete-id="${sys.id}" title="ลบระบบนี้ออกจากบอร์ด">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
-                <polyline points="3 6 5 6 21 6"/>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-              </svg>
-            </button>
-          ` : ''}
-        </div>
-      </div>
-    `).join("");
+    // Attach favorite button listeners
+    document.querySelectorAll(".fav-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = btn.getAttribute("data-fav-id");
+        if (id) toggleFavorite(id);
+      });
+    });
+
+    // Attach copy url listeners
+    document.querySelectorAll(".copy-url-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const url = btn.getAttribute("data-copy-url");
+        if (url) {
+          navigator.clipboard.writeText(url).then(() => {
+            showToast("คัดลอกลิงก์เรียบร้อย 📋");
+          }).catch(() => {
+            showToast("คัดลอกลิงก์เรียบร้อย 📋");
+          });
+        }
+      });
+    });
 
     // Attach delete listeners for custom cards
     document.querySelectorAll(".card-remove-btn").forEach(btn => {
@@ -446,6 +530,32 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
+
+  // ─── Live Clock & Shift Determination ───────────────────────
+  function updateLiveClock() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const timeStr = `${String(hours).padStart(2, "0")}:${minutes}:${seconds}`;
+
+    if (navLiveTime) navLiveTime.textContent = timeStr;
+
+    // Determine DC Shift
+    let shiftName = "Day Shift (กะ D 08:00 - 17:00)";
+    if (hours >= 17 || hours < 1) {
+      shiftName = "Evening Shift (กะ B 17:00 - 01:00)";
+    } else if (hours >= 1 && hours < 8) {
+      shiftName = "Night Shift (กะ C 01:00 - 08:00)";
+    }
+
+    if (homeShiftStatus) {
+      homeShiftStatus.textContent = `กะการทำงานปัจจุบัน: ${shiftName}`;
+    }
+  }
+
+  setInterval(updateLiveClock, 1000);
+  updateLiveClock();
 
   // ─── Search & Category Filters ─────────────────────────────
   boardSearchInput?.addEventListener("input", (e) => {
@@ -480,15 +590,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (addSystemForm) addSystemForm.reset();
     if (prefilledUrl && sysUrlInput) {
       sysUrlInput.value = prefilledUrl;
-      // Auto deduce system name from URL domain
       try {
         const parsed = new URL(prefilledUrl);
-        if (sysNameInput) {
-          sysNameInput.value = `ระบบ (${parsed.hostname})`;
-        }
-      } catch (e) {
-        // Not a valid URL yet
-      }
+        if (sysNameInput) sysNameInput.value = `ระบบ (${parsed.hostname})`;
+      } catch (e) {}
     }
     addModalOverlay?.classList.add("show");
     setTimeout(() => {
@@ -519,7 +624,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Drag and Drop URL onto quick drop zone
   quickDropZone?.addEventListener("dragover", (e) => {
     e.preventDefault();
     quickDropZone.classList.add("drag-active");
@@ -538,7 +642,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Add System Form Submit
   addSystemForm?.addEventListener("submit", (e) => {
     e.preventDefault();
     const url = sysUrlInput?.value.trim();
@@ -576,6 +679,59 @@ document.addEventListener("DOMContentLoaded", () => {
     showToast(`เพิ่มระบบ "${name}" เรียบร้อยแล้ว 🎉`);
   });
 
+  // ─── AI Operations Assistant Bot ───────────────────────────
+  function appendAiMessage(role, text) {
+    if (!aiChatMessages) return;
+    const msgDiv = document.createElement("div");
+    msgDiv.className = `ai-msg ${role}`;
+    msgDiv.innerHTML = `<div class="msg-bubble">${text}</div>`;
+    aiChatMessages.appendChild(msgDiv);
+    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+  }
+
+  function handleAiQuery(query) {
+    const q = query.toLowerCase();
+    appendAiMessage("user", query);
+
+    let reply = "ขออภัยครับ ยังไม่พบข้อมูลสำหรับคำถามนี้ กรุณาติดต่อ Team Lead หรือหัวหน้ากะเพื่อตรวจสอบเพิ่มเติมครับ";
+
+    if (q.includes("พันธุ์ไทย") || q.includes("กาแฟ") || q.includes("ไซรัป")) {
+      reply = "📍 <strong>โซนสินค้าพันธุ์ไทย:</strong><br>• <strong>โซน AG - AH:</strong> เมล็ดกาแฟ, ชา, ผงเครื่องดื่ม, แก้ว & หลอดพันธุ์ไทย<br>• <strong>โซน AI - AK:</strong> ไซรัป, นมข้น, ซอส, อุปกรณ์ร้านพันธุ์ไทย (ห้องควบคุมอุณหภูมิ)<br>• <strong>โซน BI - BK:</strong> กล่องเบเกอรี่, ถุงกระดาษ และบรรจุภัณฑ์";
+    } else if (q.includes("เสียหาย") || q.includes("ชำรุด") || q.includes("damage")) {
+      reply = "⚠️ <strong>ขั้นตอนการบันทึกสินค้าเสียหาย (Damage 2026):</strong><br>1. สแกนบาร์โค้ดสินค้าที่เสียหาย<br>2. ถ่ายภาพความเสียหายเพื่อเป็นหลักฐาน<br>3. ระบุประเภทความเสียหาย (แตกหัก / บุบ / ฉีกขาด / หมดอายุ)<br>4. บันทึกเข้าระบบ Damage 2026 เพื่อรอฝ่าย QC และจัดซื้อตัดจ่าย";
+    } else if (q.includes("uph") || q.includes("ความเร็ว") || q.includes("คำนวณ")) {
+      reply = "⚡ <strong>สูตรการคำนวณ Picker Productivity (UPH):</strong><br><code>UPH = (จำนวนชิ้นที่หยิบได้ทั้งหมด) ÷ (เวลาทำงานจริงเป็นชั่วโมง)</code><br>เป้าหมายมาตรฐานของ DC อยู่ที่ <strong>180 - 220 UPH</strong> (ขึ้นอยู่กับโซนและขนาดสินค้า)";
+    } else if (q.includes("wave") || q.includes("monitor") || q.includes("ops")) {
+      reply = "📊 <strong>ระบบ DC Ops Monitor V2:</strong><br>ใช้สำหรับติดตามและปล่อยรอบงาน Wave Plan แบบเรียลไทม์ โดยระบบจะเชื่อมต่อตรงกับ BigQuery เพื่อแสดงสถานะ Pending, In-Progress, QC และ Completed ตลอด 24 ชม.";
+    } else if (q.includes("สาขาใหม่") || q.includes("new store")) {
+      reply = "🏬 <strong>ระบบ DC New Store:</strong><br>ใช้จัดการแผนเปิดสาขาใหม่ เช็คสถานะการเตรียมของ 4 ขั้นตอน: <strong>Alloc → Pick → QC → Ship</strong> พร้อมระบบแจ้งเตือนทางอีเมลอัตโนมัติ";
+    } else if (q.includes("สแกน") || q.includes("lpn") || q.includes("scanner")) {
+      reply = "📱 <strong>ระบบ Pro LPN Scanner:</strong><br>รองรับเครื่องยิงบาร์โค้ด Handheld และมือถือ Android ใช้สแกนกล่อง Tote, ยิงยืนยัน Wave, แยกสีสาขา และอัปเดตข้อมูลขึ้นระบบคลังแบบเรียลไทม์";
+    } else if (q.includes("ติดต่อ") || q.includes("เบอร์") || q.includes("หัวหน้า")) {
+      reply = "📞 <strong>ผู้รับผิดชอบและทีมบริหาร DC:</strong><br>• คุณณัฐพงศ์ ปฏิทัศน์ (Head of DC)<br>• คุณคำรณ เฟื่องดี (Team Lead Inbound/Outbound)<br>• คุณเด่นดนัย ดิถีกุล (Team Lead Wave)<br>• คุณอมรรัตน์ จินตุลา (Team Lead Support)";
+    }
+
+    setTimeout(() => {
+      appendAiMessage("bot", reply);
+    }, 450);
+  }
+
+  aiChatForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const query = aiChatInput?.value.trim();
+    if (query) {
+      handleAiQuery(query);
+      aiChatInput.value = "";
+    }
+  });
+
+  aiChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      const promptText = chip.getAttribute("data-prompt") || chip.textContent;
+      handleAiQuery(promptText);
+    });
+  });
+
   // ─── UI Helper Functions ───────────────────────────────────
   function showToast(msg) {
     if (!toast || !toastMsg) return;
@@ -605,7 +761,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loginBtn.classList.toggle("loading", isLoading);
   }
 
-  // ─── Access Denied Modal Functions ─────────────────────────
   function showAccessDenied(empId) {
     if (deniedEmpIdEl) deniedEmpIdEl.textContent = empId || "—";
     accessOverlay?.classList.add("show");
@@ -646,7 +801,12 @@ document.addEventListener("DOMContentLoaded", () => {
         : `รหัสพนักงาน: ${empId}`;
     }
 
-    // Render board
+    const homeWelcomeTitle = document.getElementById("homeWelcomeTitle");
+    if (homeWelcomeTitle && empName) {
+      homeWelcomeTitle.textContent = `ยินดีต้อนรับ, คุณ${empName}`;
+    }
+
+    setActiveTab("home");
     renderSystems();
   }
 
@@ -684,13 +844,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const rawVal = empInput ? empInput.value.trim() : "";
     const upperVal = rawVal.toUpperCase();
 
-    // 1. Check empty
     if (!rawVal) {
       showError("กรุณากรอกรหัสพนักงาน");
       return;
     }
 
-    // 2. Lookup employee in database
     const emp = EMPLOYEES[rawVal] || EMPLOYEES[upperVal];
 
     if (!emp) {
@@ -698,7 +856,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 3. Authenticated
     setLoginLoading(true);
 
     setTimeout(() => {
@@ -727,12 +884,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 300);
   });
 
-  // ─── Mobile Navigation Toggle ───────────────────────────────
+  // ─── Active Tab Switching ───────────────────────────────────
   const menuToggle     = document.getElementById("menuToggle");
   const mobileMenu     = document.getElementById("mobileMenu");
   const navOverlay     = document.getElementById("navOverlay");
   const navLinks       = document.querySelectorAll(".nav-link");
   const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+  const tabPanes       = document.querySelectorAll(".tab-pane");
 
   function toggleMobileNav(forceState) {
     const isOpen = typeof forceState === "boolean"
@@ -747,10 +905,22 @@ document.addEventListener("DOMContentLoaded", () => {
   menuToggle?.addEventListener("click", () => toggleMobileNav());
   navOverlay?.addEventListener("click", () => toggleMobileNav(false));
 
-  // ─── Active Tab Switching ───────────────────────────────────
   function setActiveTab(tabId) {
+    if (!tabId) return;
+
     navLinks.forEach((l) => l.classList.toggle("active", l.getAttribute("data-tab") === tabId));
     mobileNavLinks.forEach((l) => l.classList.toggle("active", l.getAttribute("data-tab") === tabId));
+
+    tabPanes.forEach((pane) => {
+      const isTarget = pane.id === `tabContent-${tabId}`;
+      pane.classList.toggle("active", isTarget);
+    });
+
+    if (tabId === "systems") {
+      renderSystems();
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   navLinks.forEach((link) => {
@@ -770,6 +940,14 @@ document.addEventListener("DOMContentLoaded", () => {
         toggleMobileNav(false);
       }
     });
+  });
+
+  document.getElementById("goToSystemsTabBtn")?.addEventListener("click", () => {
+    setActiveTab("systems");
+  });
+
+  document.getElementById("goToWarehouseTabBtn")?.addEventListener("click", () => {
+    setActiveTab("warehouse");
   });
 
   window.addEventListener("resize", () => {
