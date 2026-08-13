@@ -7,8 +7,8 @@
   <title>PTG Distribution Center - DC Central Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2.2" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=3.0" />
 </head>
 <body class="is-login">
 
@@ -35,7 +35,7 @@
         <!-- Header / Logo Area -->
         <header class="card-header">
           <div class="logo-ring" id="logoRing">
-            <img src="PTGDCWN.png" alt="PTG Distribution Center Logo" class="card-logo" style="max-width: 58px; max-height: 58px;" />
+            <img src="PTGDCWN.png" alt="PTG Distribution Center Logo" class="card-logo" />
           </div>
           <div class="card-titles">
             <h1 class="card-brand">PTG Distribution Center</h1>
@@ -55,7 +55,7 @@
         <!-- Welcome Text -->
         <div class="welcome-area">
           <p class="welcome-title">ยินดีต้อนรับ</p>
-          <p class="welcome-sub">กรุณาระบุรหัสพนักงานเพื่อเข้าสู่ระบบศูนย์กลาง DC</p>
+          <p class="welcome-sub">กรุณาระบุรหัสพนักงานเพื่อเข้าสู่ระบบ</p>
         </div>
 
         <!-- Login Form -->
@@ -75,7 +75,7 @@
                 id="empId"
                 name="empId"
                 class="field-input"
-                placeholder="กรอกรหัสพนักงาน เช่น 10094096"
+                placeholder="กรอกรหัสพนักงาน"
                 maxlength="20"
                 inputmode="text"
                 aria-required="true"
@@ -104,7 +104,7 @@
             <span class="dot dot-lgreen"></span>
             <span class="dot dot-red"></span>
           </div>
-          <p class="footer-text">PT Energy Distribution Center</p>
+          <p class="footer-text">PT Energy Distribution</p>
         </footer>
       </div>
     </main>
@@ -120,7 +120,7 @@
         <!-- Brand / Logo Area -->
         <div class="nav-brand">
           <div class="brand-logo-wrap">
-            <img src="PTGDCWN.png" alt="PTG Distribution Center Logo" class="brand-logo" style="max-width: 44px; max-height: 44px;" />
+            <img src="PTGDCWN.png" alt="PTG Distribution Center Logo" class="brand-logo" />
           </div>
           <div class="brand-copy">
             <strong>PTG Distribution Center</strong>
@@ -152,44 +152,22 @@
               <path d="m3.3 7 8.7 5 8.7-5"/>
               <path d="M12 22V12"/>
             </svg>
-            <span>คลังสินค้า & โซน</span>
-          </a>
-          <a href="#" class="nav-link" data-tab="docs">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" x2="8" y1="13" y2="13"/>
-              <line x1="16" x2="8" y1="17" y2="17"/>
-              <line x1="10" x2="8" y1="9" y2="9"/>
-            </svg>
-            <span>คู่มือ & SOP</span>
-          </a>
-          <a href="#" class="nav-link" data-tab="ai-assistant">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v4"/>
-              <path d="M12 18v4"/>
-              <path d="m4.93 4.93 2.83 2.83"/>
-              <path d="m16.24 16.24 2.83 2.83"/>
-              <path d="M2 12h4"/>
-              <path d="M18 12h4"/>
-              <path d="m4.93 19.07 2.83-2.83"/>
-              <path d="m16.24 7.76 2.83-2.83"/>
-            </svg>
-            <span>AI ผู้ช่วย DC</span>
+            <span>คลังสินค้า & ปฏิบัติการ</span>
           </a>
         </nav>
 
         <!-- Right Side Actions / Status -->
         <div class="nav-right">
-          <!-- Live Time / Shift Display -->
-          <div class="nav-clock-chip" id="navClockChip">
-            <span class="clock-icon">🕒</span>
-            <span id="navLiveTime">--:--:--</span>
+          <div class="theme-badge" title="PT Energy Theme">
+            <span class="theme-dot green"></span>
+            <span class="theme-dot light-green"></span>
+            <span class="theme-dot red"></span>
+            <span class="theme-text">PT Theme</span>
           </div>
 
-          <div class="status-chip" title="ระบบเชื่อมต่อพร้อมใช้งาน">
+          <div class="status-chip">
             <span class="status-dot"></span>
-            <span>Online</span>
+            <span>Portal Ready</span>
           </div>
 
           <!-- Employee Badge (Name & Role) -->
@@ -242,510 +220,83 @@
             <path d="m3.3 7 8.7 5 8.7-5"/>
             <path d="M12 22V12"/>
           </svg>
-          <span>คลังสินค้า & โซน</span>
-        </a>
-        <a href="#" class="mobile-nav-link" data-tab="docs">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" x2="8" y1="13" y2="13"/>
-            <line x1="16" x2="8" y1="17" y2="17"/>
-            <line x1="10" x2="8" y1="9" y2="9"/>
-          </svg>
-          <span>คู่มือ & SOP</span>
-        </a>
-        <a href="#" class="mobile-nav-link" data-tab="ai-assistant">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2v4"/>
-            <path d="M12 18v4"/>
-            <path d="m4.93 4.93 2.83 2.83"/>
-            <path d="m16.24 16.24 2.83 2.83"/>
-            <path d="M2 12h4"/>
-            <path d="M18 12h4"/>
-            <path d="m4.93 19.07 2.83-2.83"/>
-            <path d="m16.24 7.76 2.83-2.83"/>
-          </svg>
-          <span>AI ผู้ช่วย DC</span>
+          <span>คลังสินค้า & ปฏิบัติการ</span>
         </a>
       </div>
     </header>
 
-    <!-- Main Workspace Area -->
+    <!-- Main Workspace -->
     <main class="main-content">
+      <!-- Sub-header bar / Kicker -->
+      <div class="workspace-header">
+        <div class="workspace-header-inner">
+          <div>
+            <p class="workspace-kicker">DC CENTRAL PORTAL</p>
+            <h1 class="workspace-title">ศูนย์รวมระบบและแดชบอร์ดปฏิบัติการ</h1>
+          </div>
+          <div class="workspace-actions">
+            <button class="btn-primary-action" id="openAddModalBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              <span>เพิ่มลิงก์ระบบใหม่</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <!-- ============================================================
-           TAB 1: HOME (หน้าแรก - ภาพรวม & ยินดีต้อนรับ)
-           ============================================================ -->
-      <div id="tabContent-home" class="tab-pane active">
-        <div class="workspace-header">
-          <div class="workspace-header-inner">
-            <div>
-              <p class="workspace-kicker">PT ENERGY · DC CENTRAL PORTAL</p>
-              <h1 class="workspace-title" id="homeWelcomeTitle">ยินดีต้อนรับสู่ DC Central Portal</h1>
+      <!-- Workspace Body: Systems Board -->
+      <section class="workspace" id="workspace">
+        
+        <!-- Board Filter & Fast Drop Bar -->
+        <div class="board-controls-wrap">
+          <!-- Search & Filter Row -->
+          <div class="search-filter-row">
+            <div class="search-box">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input type="text" id="boardSearchInput" placeholder="ค้นหาชื่อระบบ, หมวดหมู่, หรือการใช้งาน..." autocomplete="off" />
+              <button id="clearSearchBtn" class="clear-search-btn" title="ล้างการค้นหา" style="display:none;">✕</button>
             </div>
-            <div class="workspace-actions">
-              <span class="live-pulse-badge">
-                <span class="pulse-dot"></span>
-                <span id="homeShiftStatus">กะการทำงานปัจจุบัน: Day Shift (กะ D)</span>
-              </span>
+
+            <!-- Quick Paste / Drop Trigger -->
+            <div class="quick-drop-zone" id="quickDropZone" title="ลากลิงก์มาวางที่นี่ หรือพิมพ์ URL เพื่อเพิ่มด่วน">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              <span>โยน / วางลิงก์ด่วนที่นี่</span>
             </div>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div class="category-pills" id="categoryFilterContainer">
+            <button class="filter-pill active" data-category="all">ทั้งหมด (<span id="countAll">0</span>)</button>
+            <button class="filter-pill" data-category="ops">มอนิเตอร์ & วางแผน</button>
+            <button class="filter-pill" data-category="picker">การหยิบ & ประสิทธิภาพ</button>
+            <button class="filter-pill" data-category="scanner">สแกนเนอร์ & Handheld</button>
+            <button class="filter-pill" data-category="damage">สินค้าเสียหาย (Damage)</button>
+            <button class="filter-pill" data-category="newstore">สาขาเปิดใหม่ (New Store)</button>
+            <button class="filter-pill" data-category="custom">ระบบที่เพิ่มเอง</button>
           </div>
         </div>
 
-        <section class="workspace">
-          <!-- Hero Banner with Quick Navigation -->
-          <div class="portal-hero-banner">
-            <div class="hero-content">
-              <div class="hero-tag">🌟 ระบบศูนย์กลางคลังสินค้า PTG DC Wangnoi</div>
-              <h2 class="hero-heading">PTG Distribution Center Portal</h2>
-              <p class="hero-text">ระบบศูนย์กลางเชื่อมโยงแอปพลิเคชันและแดชบอร์ดปฏิบัติการทั้งหมด ช่วยให้ทีมงานติดตาม Wave, วางแผนการหยิบสินค้า, สแกนสินค้า, แจ้งสินค้าเสียหาย และติดตามสาขาใหม่ได้สะดวก รวดเร็ว และแม่นยำ</p>
-              <div class="hero-actions">
-                <button class="hero-btn-primary" id="goToSystemsTabBtn" type="button">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"/>
-                    <rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/>
-                    <rect x="3" y="14" width="7" height="7"/>
-                  </svg>
-                  <span>เข้าสู่ บอร์ดรวมระบบ DC</span>
-                </button>
-                <button class="hero-btn-secondary" id="goToWarehouseTabBtn" type="button">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
-                  </svg>
-                  <span>ดูแผนผังโซน & SOP</span>
-                </button>
-              </div>
-            </div>
-            <div class="hero-logo-side">
-              <div class="hero-logo-ring">
-                <img src="PTGDCWN.png" alt="PTG Logo" class="hero-logo-img" style="max-width: 100px; max-height: 100px; object-fit: contain;" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Stats / Core Systems Highlights -->
-          <div class="section-title-wrap">
-            <h3 class="section-title">⚡ ระบบหลักที่พร้อมใช้งาน</h3>
-            <span class="section-sub">คลิกที่การ์ดเพื่อเปิดใช้งานระบบทันที</span>
-          </div>
-
-          <div class="home-stats-grid">
-            <a href="https://dc-ops-monitor-v2.onrender.com/" target="_blank" rel="noopener noreferrer" class="stat-card" title="เปิด DC Ops Monitor">
-              <div class="stat-icon green">📊</div>
-              <div class="stat-info">
-                <span class="stat-label">มอนิเตอร์ & วางแผน Wave</span>
-                <strong class="stat-value">DC Ops Monitor V2</strong>
-                <span class="stat-sub">ติดตามสถานะ Wave รายวัน</span>
-              </div>
-              <span class="stat-arrow">↗</span>
-            </a>
-
-            <a href="https://nattapolsa-pixel.github.io/Productivity-Picker/" target="_blank" rel="noopener noreferrer" class="stat-card" title="เปิด Picker Productivity">
-              <div class="stat-icon light-green">⚡</div>
-              <div class="stat-info">
-                <span class="stat-label">ประสิทธิภาพการหยิบ</span>
-                <strong class="stat-value">Picker Productivity V2</strong>
-                <span class="stat-sub">สถิติความเร็ว UPH รายคน/โซน</span>
-              </div>
-              <span class="stat-arrow">↗</span>
-            </a>
-
-            <a href="https://pro-warehouse.github.io/pro-scanner/" target="_blank" rel="noopener noreferrer" class="stat-card" title="เปิด Pro LPN Scanner">
-              <div class="stat-icon purple">📱</div>
-              <div class="stat-info">
-                <span class="stat-label">สแกนเนอร์ & Handheld</span>
-                <strong class="stat-value">Pro LPN Scanner</strong>
-                <span class="stat-sub">ยิง Wave ปิดกล่อง แยกสี/สาขา</span>
-              </div>
-              <span class="stat-arrow">↗</span>
-            </a>
-
-            <a href="https://nattapolsa-pixel.github.io/Damage/" target="_blank" rel="noopener noreferrer" class="stat-card" title="เปิด Damage 2026">
-              <div class="stat-icon red">⚠️</div>
-              <div class="stat-info">
-                <span class="stat-label">ระบบแจ้งของเสีย</span>
-                <strong class="stat-value">Damage 2026 Form</strong>
-                <span class="stat-sub">บันทึกสินค้าชำรุด แนบรูปถ่าย</span>
-              </div>
-              <span class="stat-arrow">↗</span>
-            </a>
-
-            <a href="https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec" target="_blank" rel="noopener noreferrer" class="stat-card" title="เปิด DC New Store">
-              <div class="stat-icon blue">🏬</div>
-              <div class="stat-info">
-                <span class="stat-label">สาขาเปิดใหม่</span>
-                <strong class="stat-value">DC New Store System</strong>
-                <span class="stat-sub">เช็คสถานะ Alloc/Pick/QC/Ship</span>
-              </div>
-              <span class="stat-arrow">↗</span>
-            </a>
-          </div>
-
-          <!-- Operations Workflow Flowchart -->
-          <div class="workflow-overview-card">
-            <div class="workflow-card-header">
-              <div>
-                <h3 class="workflow-title">🔄 ขั้นตอนการไหลของงานคลังสินค้า (DC Operational Flow)</h3>
-                <p class="workflow-sub">ลำดับขั้นตอนการปฏิบัติงานมาตรฐานตั้งแต่การรับสินค้าจนถึงการส่งมอบ</p>
-              </div>
-            </div>
-            <div class="flow-steps-grid">
-              <div class="flow-step">
-                <div class="flow-num">01</div>
-                <div class="flow-step-body">
-                  <h4>รับสินค้าเข้า (Inbound)</h4>
-                  <p>ตรวจรับสินค้า, เช็ค PO/ASN, รับสินค้าขึ้นระบบ WMS</p>
-                </div>
-              </div>
-              <div class="flow-step-arrow">→</div>
-              <div class="flow-step">
-                <div class="flow-num">02</div>
-                <div class="flow-step-body">
-                  <h4>จัดเก็บ (Put-away)</h4>
-                  <p>นำสินค้าขึ้น Shelf ตาม Zone & Location ที่กำหนด</p>
-                </div>
-              </div>
-              <div class="flow-step-arrow">→</div>
-              <div class="flow-step">
-                <div class="flow-num">03</div>
-                <div class="flow-step-body">
-                  <h4>วางแผน Wave (Wave Plan)</h4>
-                  <p>จัดสรร Order, กระจายงานหยิบ, กำหนดรอบการจัดส่ง</p>
-                </div>
-              </div>
-              <div class="flow-step-arrow">→</div>
-              <div class="flow-step">
-                <div class="flow-num">04</div>
-                <div class="flow-step-body">
-                  <h4>หยิบสินค้า (Picking)</h4>
-                  <p>สแกน LPN/Tote, หยิบตามรายการ, วัดผล Productivity UPH</p>
-                </div>
-              </div>
-              <div class="flow-step-arrow">→</div>
-              <div class="flow-step">
-                <div class="flow-num">05</div>
-                <div class="flow-step-body">
-                  <h4>ตรวจสอบ (QC & Pack)</h4>
-                  <p>ตรวจนับความถูกต้อง, ปิดกล่อง, คัดแยกตามสีสาขา</p>
-                </div>
-              </div>
-              <div class="flow-step-arrow">→</div>
-              <div class="flow-step">
-                <div class="flow-num">06</div>
-                <div class="flow-step-body">
-                  <h4>กระจายสินค้า (Dispatch)</h4>
-                  <p>ขึ้นรถขนส่งตามคิวส่งมอบถึงสาขาทั่วประเทศ</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- ============================================================
-           TAB 2: SYSTEMS BOARD (บอร์ดรวมระบบ DC)
-           ============================================================ -->
-      <div id="tabContent-systems" class="tab-pane">
-        <!-- Sub-header bar / Kicker -->
-        <div class="workspace-header">
-          <div class="workspace-header-inner">
-            <div>
-              <p class="workspace-kicker">DC CENTRAL PORTAL</p>
-              <h1 class="workspace-title">ศูนย์รวมระบบและแดชบอร์ดปฏิบัติการ</h1>
-            </div>
-            <div class="workspace-actions">
-              <button class="btn-primary-action" id="openAddModalBtn" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="12" y1="5" x2="12" y2="19"/>
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-                <span>เพิ่มลิงก์ระบบใหม่</span>
-              </button>
-            </div>
-          </div>
+        <!-- Systems Card Grid -->
+        <div class="systems-grid" id="systemsGrid">
+          <!-- Populated dynamically by app.js -->
         </div>
 
-        <!-- Workspace Body: Systems Board -->
-        <section class="workspace">
-          <!-- Board Filter & Fast Drop Bar -->
-          <div class="board-controls-wrap">
-            <!-- Search & Filter Row -->
-            <div class="search-filter-row">
-              <div class="search-box">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"/>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-                <input type="text" id="boardSearchInput" placeholder="ค้นหาชื่อระบบ, หมวดหมู่, หรือการใช้งาน..." autocomplete="off" />
-                <button id="clearSearchBtn" class="clear-search-btn" title="ล้างการค้นหา" style="display:none;">✕</button>
-              </div>
-
-              <!-- Quick Paste / Drop Trigger -->
-              <div class="quick-drop-zone" id="quickDropZone" title="ลากลิงก์มาวางที่นี่ หรือพิมพ์ URL เพื่อเพิ่มด่วน">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                </svg>
-                <span>โยน / วางลิงก์ด่วนที่นี่</span>
-              </div>
-            </div>
-
-            <!-- Category Filter Pills -->
-            <div class="category-pills" id="categoryFilterContainer">
-              <button class="filter-pill active" data-category="all">ทั้งหมด (<span id="countAll">0</span>)</button>
-              <button class="filter-pill" data-category="favorites">⭐ ติดดาวไว้ (<span id="countFav">0</span>)</button>
-              <button class="filter-pill" data-category="ops">มอนิเตอร์ & วางแผน</button>
-              <button class="filter-pill" data-category="picker">การหยิบ & ประสิทธิภาพ</button>
-              <button class="filter-pill" data-category="scanner">สแกนเนอร์ & Handheld</button>
-              <button class="filter-pill" data-category="damage">สินค้าเสียหาย (Damage)</button>
-              <button class="filter-pill" data-category="newstore">สาขาเปิดใหม่ (New Store)</button>
-              <button class="filter-pill" data-category="custom">ระบบที่เพิ่มเอง</button>
-            </div>
-          </div>
-
-          <!-- Systems Card Grid -->
-          <div class="systems-grid" id="systemsGrid">
-            <!-- Populated dynamically by app.js -->
-          </div>
-
-          <!-- Empty Filter State (if search yields 0 items) -->
-          <div class="no-results-state" id="noResultsState" style="display: none;">
-            <div class="no-results-icon">🔍</div>
-            <h3>ไม่พบระบบที่ตรงกับคำค้นหา</h3>
-            <p>ลองเปลี่ยนคำค้นหา หรือกดปุ่ม "เพิ่มลิงก์ระบบใหม่" เพื่อสร้างการ์ดระบบนี้</p>
-          </div>
-        </section>
-      </div>
-
-      <!-- ============================================================
-           TAB 3: WAREHOUSE (คลังสินค้า & โซน)
-           ============================================================ -->
-      <div id="tabContent-warehouse" class="tab-pane">
-        <div class="workspace-header">
-          <div class="workspace-header-inner">
-            <div>
-              <p class="workspace-kicker">DC WAREHOUSE OPERATIONS</p>
-              <h1 class="workspace-title">แผนผังโซน & การปฏิบัติงานคลังสินค้า</h1>
-            </div>
-            <div class="workspace-actions">
-              <span class="quick-badge">DC Wangnoi Master Layout</span>
-            </div>
-          </div>
+        <!-- Empty Filter State (if search yields 0 items) -->
+        <div class="no-results-state" id="noResultsState" style="display: none;">
+          <div class="no-results-icon">🔍</div>
+          <h3>ไม่พบระบบที่ตรงกับคำค้นหา</h3>
+          <p>ลองเปลี่ยนคำค้นหา หรือกดปุ่ม "เพิ่มลิงก์ระบบใหม่" เพื่อสร้างการ์ดระบบนี้</p>
         </div>
 
-        <section class="workspace">
-          <!-- Zone Grid Directory -->
-          <div class="section-title-wrap">
-            <h3 class="section-title">📍 แผนผังโซนจัดเก็บสินค้า (Warehouse Zones)</h3>
-            <span class="section-sub">รายชื่อโซนจัดเก็บสินค้าและประเภทสินค้าที่ประจำการ</span>
-          </div>
-
-          <div class="zones-card-grid">
-            <div class="zone-card">
-              <div class="zone-badge mart">Mart</div>
-              <h4>โซน AA - Mart (Beverage / Dry)</h4>
-              <p>เครื่องดื่ม, ขนมขบเคี้ยว, สินค้าอุปโภคบริโภคทั่วไป</p>
-              <span class="zone-meta">ความจุ: ชั้นวาง Selective Rack · Ground Level</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge mart">Mart</div>
-              <h4>โซน AL - BL (Mart General)</h4>
-              <p>สินค้าทั่วไป, ของใช้ในครัวเรือน, สินค้าโปรโมชั่น</p>
-              <span class="zone-meta">ความจุ: Multi-tier Picking Shelves</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge mart">Mart</div>
-              <h4>โซน AN - BN (Mart Food)</h4>
-              <p>อาหารแห้ง, วัตถุดิบสำเร็จรูป, เครื่องปรุงรส</p>
-              <span class="zone-meta">ความจุ: Medium Density Rack</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge mart">Mart</div>
-              <h4>โซน CA - CE (Mart Fast-Moving)</h4>
-              <p>สินค้าขายดี หมุนเวียนไว, สินค้าแพ็คกล่อง</p>
-              <span class="zone-meta">ความจุ: Flow Rack & Floor Location</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge mart">Mart</div>
-              <h4>โซน EA - FA (Mart High Density)</h4>
-              <p>สินค้าบุหรี่, สินค้ามูลค่าสูง (High Value), ของใช้พิเศษ</p>
-              <span class="zone-meta">ความจุ: Controlled Security Area</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge punthai">พันธุ์ไทย</div>
-              <h4>โซน AG - AH (Punthai Raw Material)</h4>
-              <p>เมล็ดกาแฟ, ชา, ผงเครื่องดื่ม, แก้ว & หลอดพันธุ์ไทย</p>
-              <span class="zone-meta">ความจุ: Pallet Rack · Clean Zone</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge punthai">พันธุ์ไทย</div>
-              <h4>โซน AI - AK (Punthai Syrup & Supply)</h4>
-              <p>ไซรัป, นมข้น, ซอส, บรรจุภัณฑ์ และอุปกรณ์ร้านพันธุ์ไทย</p>
-              <span class="zone-meta">ความจุ: Picking Area · Temperature Controlled</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge punthai">พันธุ์ไทย</div>
-              <h4>โซน BI - BK (Punthai Packaging)</h4>
-              <p>กล่องเบเกอรี่, ถุงกระดาษ, สื่อส่งเสริมการขาย, Uniform</p>
-              <span class="zone-meta">ความจุ: Bulk Storage Rack</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge staging">Outbound</div>
-              <h4>โซน Pre-Load & Staging (BE)</h4>
-              <p>โซนพักสินค้ารอขึ้นรถ (Pick to Sort), แยกตาม Route รถ</p>
-              <span class="zone-meta">ความจุ: 24 Loading Docks</span>
-            </div>
-
-            <div class="zone-card">
-              <div class="zone-badge rt">RT</div>
-              <h4>โซน RT & สินค้ารับคืน (Return Area)</h4>
-              <p>ตรวจสอบสินค้าคืนจากสาขา, สินค้าชำรุดเสียหายรอตัดจ่าย</p>
-              <span class="zone-meta">ความจุ: Quarantine & Return Staging</span>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- ============================================================
-           TAB 4: DOCS & SOP (คู่มือ & SOP)
-           ============================================================ -->
-      <div id="tabContent-docs" class="tab-pane">
-        <div class="workspace-header">
-          <div class="workspace-header-inner">
-            <div>
-              <p class="workspace-kicker">STANDARDS & DOCUMENTATION</p>
-              <h1 class="workspace-title">คู่มือปฏิบัติงาน & มาตรฐาน ISO</h1>
-            </div>
-            <div class="workspace-actions">
-              <span class="quick-badge">ISO 9001 · Safety Standards</span>
-            </div>
-          </div>
-        </div>
-
-        <section class="workspace">
-          <div class="docs-grid">
-            <div class="doc-card">
-              <div class="doc-icon">📄</div>
-              <div class="doc-body">
-                <span class="doc-tag">SOP-OPS-01</span>
-                <h4>คู่มือขั้นตอนการจัดเตรียม Wave (Wave Planning SOP)</h4>
-                <p>ขั้นตอนการปล่อย Wave, การตรวจสอบค้างส่ง และการเฉลี่ยงานหยิบสินค้าให้ทีม Picker</p>
-                <div class="doc-footer">
-                  <span>เวอร์ชัน 2.4 · อัปเดต ส.ค. 2026</span>
-                  <a href="#" class="doc-link-btn" onclick="alert('เปิดเอกสาร SOP-OPS-01 เรียบร้อย'); return false;">ดูเอกสาร</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="doc-card">
-              <div class="doc-icon">📦</div>
-              <div class="doc-body">
-                <span class="doc-tag">SOP-PICK-02</span>
-                <h4>มาตรฐานการหยิบและตรวจนับสินค้า (Picking Standard)</h4>
-                <p>แนวทางการหยิบสินค้าถูกต้อง 100%, การใช้เครื่องสแกนเนอร์ Handheld และการคำนวณ UPH</p>
-                <div class="doc-footer">
-                  <span>เวอร์ชัน 3.1 · อัปเดต ส.ค. 2026</span>
-                  <a href="#" class="doc-link-btn" onclick="alert('เปิดเอกสาร SOP-PICK-02 เรียบร้อย'); return false;">ดูเอกสาร</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="doc-card">
-              <div class="doc-icon">⚠️</div>
-              <div class="doc-body">
-                <span class="doc-tag">SOP-DMG-03</span>
-                <h4>คู่มือจัดการสินค้าชำรุดเสียหาย (Damage Goods Protocol)</h4>
-                <p>ขั้นตอนการคัดแยกสินค้าเสียหาย, การถ่ายภาพหลักฐาน, การบันทึกลงระบบ และการส่งทำลาย</p>
-                <div class="doc-footer">
-                  <span>เวอร์ชัน 1.8 · อัปเดต ก.ค. 2026</span>
-                  <a href="#" class="doc-link-btn" onclick="alert('เปิดเอกสาร SOP-DMG-03 เรียบร้อย'); return false;">ดูเอกสาร</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="doc-card">
-              <div class="doc-icon">🦺</div>
-              <div class="doc-body">
-                <span class="doc-tag">SAFETY-01</span>
-                <h4>คู่มือความปลอดภัยในคลังสินค้า & การขับขี่ Forklift</h4>
-                <p>กฎความปลอดภัย จป., การใช้อุปกรณ์ PPE, เส้นทางคนเดิน และข้อบังคับการขับขี่รถยก</p>
-                <div class="doc-footer">
-                  <span>มาตรฐาน ISO 45001 · 2026</span>
-                  <a href="#" class="doc-link-btn" onclick="alert('เปิดเอกสาร SAFETY-01 เรียบร้อย'); return false;">ดูเอกสาร</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- ============================================================
-           TAB 5: AI ASSISTANT (AI ผู้ช่วย DC)
-           ============================================================ -->
-      <div id="tabContent-ai-assistant" class="tab-pane">
-        <div class="workspace-header">
-          <div class="workspace-header-inner">
-            <div>
-              <p class="workspace-kicker">INTELLIGENT ASSISTANT</p>
-              <h1 class="workspace-title">AI ผู้ช่วยปฏิบัติการคลังสินค้า (DC Assistant)</h1>
-            </div>
-            <div class="workspace-actions">
-              <span class="quick-badge">PTG AI Operations Bot</span>
-            </div>
-          </div>
-        </div>
-
-        <section class="workspace">
-          <div class="ai-chat-container">
-            <div class="ai-chat-header">
-              <div class="ai-avatar">🤖</div>
-              <div>
-                <h4>DC Intelligent Operations Assistant</h4>
-                <p>พร้อมช่วยตอบคำถามเรื่อง SOP, ตรวจสอบโซนสินค้า, แนะนำแนวทางการทำงาน และการใช้งานระบบ</p>
-              </div>
-            </div>
-
-            <!-- Chat Message Thread -->
-            <div class="ai-chat-messages" id="aiChatMessages">
-              <div class="ai-msg bot">
-                <div class="msg-bubble">
-                  สวัสดีครับ! ผมคือ <strong>AI ผู้ช่วยปฏิบัติการ PTG DC</strong> คุณสามารถสอบถามข้อมูลระบบ, ตำแหน่งโซนสินค้า, ขั้นตอนสินค้าชำรุด หรือสูตรการคำนวณ UPH ได้เลยครับ 👋
-                </div>
-              </div>
-            </div>
-
-            <!-- Quick Suggestion Chips -->
-            <div class="ai-chips-wrap">
-              <button class="ai-chip" data-prompt="ค้นหาโซนสินค้าพันธุ์ไทย (กาแฟ, ไซรัป)">☕ โซนพันธุ์ไทยอยู่ไหน?</button>
-              <button class="ai-chip" data-prompt="ขั้นตอนการบันทึกสินค้าชำรุดเสียหายทำอย่างไร?">⚠️ วิธีแจ้งสินค้าเสียหาย</button>
-              <button class="ai-chip" data-prompt="วิธีคำนวณความเร็วการหยิบสินค้า (UPH)">⚡ วิธีคำนวณ UPH</button>
-              <button class="ai-chip" data-prompt="ระบบ DC Ops Monitor V2 ใช้ทำอะไร?">📊 ระบบ Wave Monitor</button>
-            </div>
-
-            <!-- Chat Input Bar -->
-            <form class="ai-chat-input-form" id="aiChatForm" autocomplete="off">
-              <input type="text" id="aiChatInput" placeholder="พิมพ์คำถามของคุณที่นี่..." required />
-              <button type="submit" class="ai-send-btn">
-                <span>ส่งคำถาม</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="22" y1="2" x2="11" y2="13"/>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                </svg>
-              </button>
-            </form>
-          </div>
-        </section>
-      </div>
-
+      </section>
     </main>
 
     <!-- Overlay for mobile navigation -->
@@ -870,6 +421,6 @@
     <span class="toast-msg" id="toastMsg"></span>
   </div>
 
-  <script src="app.js?v=2.2"></script>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>
