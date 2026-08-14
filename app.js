@@ -513,8 +513,28 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderSystems() {
     if (!systemsGrid) return;
 
-    const allSystems = getAllSystems();
+    const rawSystems = getAllSystems();
     const favs = getFavorites();
+
+    // 1. Identify categories that already have active (non-coming-soon) systems
+    const activeCategories = new Set();
+    rawSystems.forEach(sys => {
+      if (!sys.isComingSoon) {
+        const cats = Array.isArray(sys.categories) ? sys.categories : (sys.category ? [sys.category] : []);
+        cats.forEach(c => activeCategories.add(c));
+      }
+    });
+
+    // 2. Hide Coming Soon placeholders if the category already has active work
+    const allSystems = rawSystems.filter(sys => {
+      if (sys.isComingSoon) {
+        const cats = Array.isArray(sys.categories) ? sys.categories : (sys.category ? [sys.category] : []);
+        const hasRealSystem = cats.some(c => activeCategories.has(c));
+        if (hasRealSystem) return false;
+      }
+      return true;
+    });
+
     updatePillCounters(allSystems);
 
     // Filter systems
