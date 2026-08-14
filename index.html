@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=17.0" />
+  <link rel="stylesheet" href="style.css?v=18.0" />
 </head>
 <body class="is-login">
 
@@ -268,7 +268,7 @@
                     <span class="announce-board-icon">📢</span>
                     <div>
                       <div class="announce-board-title">บอร์ดประชาสัมพันธ์ DC</div>
-                      <div class="announce-board-sub">ข่าวสาร ประกาศ และแจ้งเตือนสำหรับทีม DC</div>
+                      <div class="announce-board-sub">ข่าวสาร ประกาศ และแจ้งเตือนจากอีเมล/ฝ่ายต่างๆ</div>
                     </div>
                   </div>
                   <button class="announce-post-btn" id="openAnnounceModalBtn" type="button">
@@ -276,10 +276,34 @@
                     <span>โพสต์ประกาศใหม่</span>
                   </button>
                 </div>
+
+                <!-- Announcement Month Filter & Speed Bar -->
+                <div class="announce-filter-bar">
+                  <div class="announce-month-pills" id="announceMonthPills">
+                    <button class="announce-month-btn active" data-month-filter="current" id="btnFilterCurrentMonth" type="button">
+                      <span class="pulse-dot"></span>
+                      <span id="currentMonthFilterLabel">📅 เดือนปัจจุบัน</span>
+                      <span class="announce-count-badge" id="currentMonthCount">0</span>
+                    </button>
+                    <button class="announce-month-btn" data-month-filter="prev" id="btnFilterPrevMonth" type="button">
+                      <span id="prevMonthFilterLabel">📁 เดือนก่อนหน้า</span>
+                      <span class="announce-count-badge" id="prevMonthCount">0</span>
+                    </button>
+                    <button class="announce-month-btn" data-month-filter="all" id="btnFilterAllMonths" type="button">
+                      <span>🗂️ ทั้งหมด</span>
+                      <span class="announce-count-badge" id="allMonthsCount">0</span>
+                    </button>
+                  </div>
+                  <div class="announce-speed-badge" title="กรองเฉพาะเดือนปัจจุบันเพื่อโหลดไว ประหยัดแรม ไม่หน่วง">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <span>กรองเดือนปัจจุบัน (โหลดไว/ประหยัดแรม)</span>
+                  </div>
+                </div>
+
                 <div class="announce-feed" id="announceFeed"></div>
                 <div class="announce-empty" id="announceEmpty" style="display:none;">
                   <div class="announce-empty-icon">📭</div>
-                  <div class="announce-empty-text">ยังไม่มีประกาศในขณะนี้</div>
+                  <div class="announce-empty-text" id="announceEmptyText">ยังไม่มีประกาศในขณะนี้</div>
                   <div class="announce-empty-sub">กดปุ่ม "โพสต์ประกาศใหม่" เพื่อเริ่มต้น</div>
                 </div>
               </div>
@@ -361,28 +385,54 @@
           <form id="announceForm" class="system-modal-form" autocomplete="off">
             <input type="hidden" id="announceEditId" value="">
 
-            <div class="form-group">
-              <label for="announceType">ประเภทประกาศ <span class="req">*</span></label>
-              <select class="form-select" id="announceType" required style="width: 100%; border: 1.5px solid var(--line); border-radius: 11px; padding: 10px 14px; font-size: 14px; background: #fbfdfc; color: var(--text); font-weight: 600; cursor: pointer;">
-                <option value="general">📋 ข่าวสารทั่วไป</option>
-                <option value="urgent">🚨 ด่วนที่สุด / แจ้งเตือนสำคัญ</option>
-                <option value="event">🎉 กิจกรรม / ข่าวประชาสัมพันธ์</option>
-                <option value="maintenance">🔧 แจ้งซ่อมบำรุง / ปิดปรับปรุงระบบ</option>
-                <option value="holiday">🏖️ วันหยุด / สวัสดิการพนักงาน</option>
-              </select>
+            <!-- Email Paste Helper / Quick Importer -->
+            <div class="announce-email-helper-wrap">
+              <button type="button" class="btn-email-helper-toggle" id="toggleEmailHelperBtn">
+                <span class="btn-email-helper-icon">📩</span>
+                <span>วางข้อความจาก Email (ระบบช่วยกรอกข้อมูลอัตโนมัติ)</span>
+                <svg class="email-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="announce-email-paste-box" id="emailPasteBox" style="display:none;">
+                <p class="email-helper-sub">คัดลอกข้อความจากอีเมล Outlook / Gmail (รวมถึง Subject, From, Body) แล้ววางลงที่นี่:</p>
+                <textarea id="rawEmailPasteInput" rows="3" placeholder="ตัวอย่าง:&#10;From: hr.dc@pt.co.th&#10;Subject: กิจกรรมตรวจสุขภาพประจำปี 2569&#10;เรียน พนักงานทุกท่าน..."></textarea>
+                <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+                  <button type="button" class="btn-secondary" id="clearEmailHelperBtn" style="height:32px; padding:0 12px; font-size:12px;">ล้าง</button>
+                  <button type="button" class="btn-primary-action" id="applyEmailHelperBtn" style="height:32px; padding:0 14px; font-size:12px;">✨ ดึงข้อมูลลงฟอร์ม</button>
+                </div>
+              </div>
             </div>
 
-            <div class="form-group">
-              <label for="announceTitle">หัวข้อประกาศ <span class="req">*</span></label>
-              <div class="form-input-wrap">
-                <input type="text" id="announceTitle" placeholder="เช่น แจ้งปิดปรับปรุงระบบชั่วคราว..." maxlength="100" required>
+            <div class="form-row">
+              <div class="form-group" style="flex:1.2;">
+                <label for="announceType">ประเภทประกาศ <span class="req">*</span></label>
+                <select class="form-select" id="announceType" required style="width: 100%; border: 1.5px solid var(--line); border-radius: 11px; padding: 10px 14px; font-size: 13.5px; background: #fbfdfc; color: var(--text); font-weight: 600; cursor: pointer;">
+                  <option value="general">📋 ข่าวสารทั่วไป</option>
+                  <option value="urgent">🚨 ด่วนที่สุด / แจ้งเตือนสำคัญ</option>
+                  <option value="event">🎉 กิจกรรม / ข่าวประชาสัมพันธ์</option>
+                  <option value="maintenance">🔧 แจ้งซ่อมบำรุง / ปิดปรับปรุงระบบ</option>
+                  <option value="holiday">🏖️ วันหยุด / สวัสดิการพนักงาน</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="flex:0.8;">
+                <label for="announceDate">วันที่ประกาศ <span class="req">*</span></label>
+                <div class="form-input-wrap">
+                  <input type="date" id="announceDate" required style="width:100%; border:1.5px solid var(--line); border-radius:11px; padding:9px 12px; font-size:13px; font-family:inherit;">
+                </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="announceContent">รายละเอียดประกาศ <span class="req">*</span></label>
-              <textarea id="announceContent" rows="4" placeholder="กรอกรายละเอียดข่าวสาร..." maxlength="500" required style="width: 100%; border: 1.5px solid var(--line); border-radius: 11px; padding: 10px 14px; font-size: 14px; background: #fbfdfc; resize: vertical; font-family: inherit;"></textarea>
-              <div id="announceCharCount" style="font-size: 11.5px; color: var(--text-subtle); text-align: right; margin-top: 2px;">0 / 500 ตัวอักษร</div>
+              <label for="announceTitle">หัวข้อประกาศ (Subject) <span class="req">*</span></label>
+              <div class="form-input-wrap">
+                <input type="text" id="announceTitle" placeholder="เช่น [HR Broadcast] แจ้งกิจกรรมตรวจสุขภาพประจำปี..." maxlength="120" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="announceContent">รายละเอียดประกาศ (Content) <span class="req">*</span></label>
+              <textarea id="announceContent" rows="4" placeholder="กรอกรายละเอียดข่าวสาร หรือเนื้อหาจากอีเมล..." maxlength="600" required style="width: 100%; border: 1.5px solid var(--line); border-radius: 11px; padding: 10px 14px; font-size: 14px; background: #fbfdfc; resize: vertical; font-family: inherit;"></textarea>
+              <div id="announceCharCount" style="font-size: 11.5px; color: var(--text-subtle); text-align: right; margin-top: 2px;">0 / 600 ตัวอักษร</div>
             </div>
 
             <!-- Image Upload / Attachment -->
@@ -420,9 +470,9 @@
 
             <div class="form-row">
               <div class="form-group" style="margin-bottom:0;">
-                <label for="announceAuthor">ผู้ประกาศ / ตำแหน่ง</label>
+                <label for="announceAuthor">ผู้ประกาศ / อีเมล / ฝ่ายที่ออกประกาศ</label>
                 <div class="form-input-wrap">
-                  <input type="text" id="announceAuthor" placeholder="เช่น Admin DC / ฝ่ายปฏิบัติการ" maxlength="60">
+                  <input type="text" id="announceAuthor" placeholder="เช่น HR Operations (hr.dc@pt.co.th)" maxlength="80">
                 </div>
               </div>
               <div class="form-group" style="margin-bottom:0; display:flex; justify-content:flex-end; align-items:flex-end;">
@@ -700,7 +750,7 @@
     <span class="toast-msg" id="toastMsg"></span>
   </div>
 
-  <script src="app.js?v=17.0"></script>
+  <script src="app.js?v=18.0"></script>
 </body>
 </html>
 

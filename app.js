@@ -1210,9 +1210,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 })();
 
-/* ─── ANNOUNCEMENT BOARD ENGINE ────────────────────────────────── */
+/* ─── ANNOUNCEMENT BOARD ENGINE (Email News & Month Filter) ───────── */
 (function() {
-  const STORAGE_KEY = "ptg_dc_announcements";
+  const STORAGE_KEY = "ptg_dc_announcements_v2";
   const TYPE_CONFIG = {
     general:     { label: "📋 ข่าวสารทั่วไป",               icon: "📋" },
     urgent:      { label: "🚨 ด่วนที่สุด / แจ้งเตือนสำคัญ",    icon: "🚨" },
@@ -1221,63 +1221,88 @@ document.addEventListener("DOMContentLoaded", () => {
     holiday:     { label: "🏖️ วันหยุด / สวัสดิการพนักงาน",   icon: "🏖️" }
   };
 
-  const BANNER_WELCOME = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='g1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23006837'/><stop offset='50%' stop-color='%23009245'/><stop offset='100%' stop-color='%2322c55e'/></linearGradient></defs><rect width='800' height='320' fill='url(%23g1)' rx='16'/><circle cx='720' cy='70' r='120' fill='rgba(255,255,255,0.08)'/><circle cx='80' cy='280' r='140' fill='rgba(255,255,255,0.06)'/><text x='50' y='80' font-family='sans-serif' font-size='26' font-weight='800' fill='%23ffffff'>PTG DISTRIBUTION CENTER</text><text x='50' y='130' font-family='sans-serif' font-size='19' font-weight='700' fill='%23fde047'>ศูนย์กระจายสินค้า PTG วังน้อย · DC Central Portal</text><text x='50' y='180' font-family='sans-serif' font-size='14' fill='%23e8f5ec'>ศูนย์รวมแดชบอร์ดและระบบปฏิบัติการคลังสินค้าทั้งหมด</text><rect x='50' y='220' width='220' height='44' rx='22' fill='%23ffffff'/><text x='160' y='248' font-family='sans-serif' font-size='14' font-weight='800' fill='%23006837' text-anchor='middle'>🚀 ยินดีต้อนรับสู่ระบบ DC</text><text x='740' y='270' font-family='sans-serif' font-size='55' text-anchor='end'>🏢📦🚛</text></svg>";
+  const TH_MONTHS_SHORT = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 
-  const BANNER_SAFETY = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='g2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23991b1b'/><stop offset='50%' stop-color='%23dc2626'/><stop offset='100%' stop-color='%23ea580c'/></linearGradient></defs><rect width='800' height='320' fill='url(%23g2)' rx='16'/><circle cx='700' cy='170' r='150' fill='rgba(255,255,255,0.08)'/><text x='50' y='75' font-family='sans-serif' font-size='26' font-weight='800' fill='%23ffffff'>⚠️ SAFETY FIRST : ปลอดภัยไว้ก่อน</text><text x='50' y='120' font-family='sans-serif' font-size='17' font-weight='700' fill='%23fef08a'>มาตรการความปลอดภัยและตรวจเช็คอุปกรณ์ก่อนเริ่มงาน</text><text x='50' y='165' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>1. สวมใส่อุปกรณ์ PPE ครบชุด (หมวก, เสื้อสะท้อนแสง, รองเท้าเซฟตี้)</text><text x='50' y='195' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>2. ตรวจเช็คสภาพรถโฟล์กลิฟต์และแฮนด์ลิฟต์ทุกครั้งก่อนปฏิบัติงาน</text><text x='50' y='225' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>3. ขับขี่ด้วยความเร็วไม่เกิน 10 กม./ชม. ในพื้นที่คลังสินค้า</text><rect x='50' y='250' width='210' height='40' rx='20' fill='%23ffffff'/><text x='155' y='275' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23b91c1c' text-anchor='middle'>🛡️ ปฏิบัติตามอย่างเคร่งครัด</text><text x='740' y='200' font-family='sans-serif' font-size='55' text-anchor='end'>🦺⛑️⚠️</text></svg>";
+  // High Quality SVG Banners for DC Email Broadcasts
+  const BANNER_HR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='gHR' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23006837'/><stop offset='50%' stop-color='%230284c7'/><stop offset='100%' stop-color='%230ea5e9'/></linearGradient></defs><rect width='800' height='320' fill='url(%23gHR)' rx='16'/><circle cx='720' cy='60' r='130' fill='rgba(255,255,255,0.08)'/><circle cx='100' cy='280' r='140' fill='rgba(255,255,255,0.06)'/><text x='50' y='75' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>PTG HEALTH &amp; WELLNESS 2569</text><text x='50' y='125' font-family='sans-serif' font-size='20' font-weight='700' fill='%23fef08a'>ตรวจสุขภาพประจำปี พนักงาน DC วังน้อย</text><text x='50' y='170' font-family='sans-serif' font-size='14' fill='%23e0f2fe'>🗓️ 25 - 27 สิงหาคม 2569 | ณ ห้องพยาบาล อาคารปฏิบัติการ 1</text><text x='50' y='200' font-family='sans-serif' font-size='13' fill='%23f0fdf4'>📌 งดน้ำและอาหารหลัง 20:00 น. ก่อนวันตรวจ และนำบัตรพนักงานมาด้วย</text><rect x='50' y='235' width='230' height='42' rx='21' fill='%23ffffff'/><text x='165' y='262' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23006837' text-anchor='middle'>🩺 ฝ่ายทรัพยากรบุคคล (HR)</text><text x='740' y='265' font-family='sans-serif' font-size='60' text-anchor='end'>🏥🩺💚</text></svg>";
 
-  const DEFAULT_ANNOUNCEMENTS = [
+  const BANNER_IT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='gIT' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23312e81'/><stop offset='50%' stop-color='%234338ca'/><stop offset='100%' stop-color='%236366f1'/></linearGradient></defs><rect width='800' height='320' fill='url(%23gIT)' rx='16'/><circle cx='680' cy='180' r='140' fill='rgba(255,255,255,0.08)'/><text x='50' y='75' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>🔧 IT &amp; WMS SYSTEM MAINTENANCE</text><text x='50' y='125' font-family='sans-serif' font-size='19' font-weight='700' fill='%23a5f3fc'>ปรับปรุงเซิร์ฟเวอร์ WMS &amp; Wi-Fi โซน Picking คลังวังน้อย</text><text x='50' y='170' font-family='sans-serif' font-size='14' fill='%23e0e7ff'>🗓️ วันอาทิตย์ที่ 23 สิงหาคม 2569 เวลา 01:00 - 04:00 น.</text><text x='50' y='200' font-family='sans-serif' font-size='13' fill='%23c7d2fe'>⚡ เพื่อเพิ่มความเร็วในการยิงสแกนบาร์โค้ด Handheld และความเสถียรของระบบ</text><rect x='50' y='235' width='230' height='42' rx='21' fill='%23ffffff'/><text x='165' y='262' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23312e81' text-anchor='middle'>💻 IT Operations Team</text><text x='740' y='265' font-family='sans-serif' font-size='60' text-anchor='end'>🖥️📡⚡</text></svg>";
+
+  const BANNER_SAFETY = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='gSafe' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23991b1b'/><stop offset='50%' stop-color='%23dc2626'/><stop offset='100%' stop-color='%23ea580c'/></linearGradient></defs><rect width='800' height='320' fill='url(%23gSafe)' rx='16'/><circle cx='700' cy='170' r='150' fill='rgba(255,255,255,0.08)'/><text x='50' y='75' font-family='sans-serif' font-size='25' font-weight='800' fill='%23ffffff'>⚠️ SAFETY FIRST : ปลอดภัยไว้ก่อน</text><text x='50' y='120' font-family='sans-serif' font-size='17' font-weight='700' fill='%23fef08a'>มาตรการความปลอดภัยและตรวจเช็คอุปกรณ์ก่อนเริ่มงาน</text><text x='50' y='165' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>1. สวมใส่อุปกรณ์ PPE ครบชุด (หมวก, เสื้อสะท้อนแสง, รองเท้าเซฟตี้)</text><text x='50' y='195' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>2. ตรวจเช็คสภาพรถโฟล์กลิฟต์และแฮนด์ลิฟต์ทุกครั้งก่อนปฏิบัติงาน</text><text x='50' y='225' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>3. ขับขี่ด้วยความเร็วไม่เกิน 10 กม./ชม. ในพื้นที่คลังสินค้า</text><rect x='50' y='250' width='210' height='40' rx='20' fill='%23ffffff'/><text x='155' y='275' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23b91c1c' text-anchor='middle'>🛡️ จป. ปฏิบัติการ DC</text><text x='740' y='200' font-family='sans-serif' font-size='55' text-anchor='end'>🦺⛑️⚠️</text></svg>";
+
+  const BANNER_OPS = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='gOps' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23064e3b'/><stop offset='50%' stop-color='%23059669'/><stop offset='100%' stop-color='%2310b981'/></linearGradient></defs><rect width='800' height='320' fill='url(%23gOps)' rx='16'/><circle cx='690' cy='120' r='120' fill='rgba(255,255,255,0.08)'/><text x='50' y='75' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>📊 DC OPERATIONS PERFORMANCE</text><text x='50' y='125' font-family='sans-serif' font-size='19' font-weight='700' fill='%23fde047'>สรุปยอดจ่ายสินค้า Wave Max Mart &amp; พันธุ์ไทย สัปดาห์ที่ 2</text><text x='50' y='170' font-family='sans-serif' font-size='14' fill='%23ecfdf5'>🚚 อัตราจัดส่งตรงเวลา (On-Time Delivery): 99.2%</text><text x='50' y='200' font-family='sans-serif' font-size='13' fill='%23d1fae5'>👏 ขอขอบคุณทีมงาน Picker, Checker, Driver ทุกท่านที่ร่วมมือกันอย่างยอดเยี่ยม</text><rect x='50' y='235' width='230' height='42' rx='21' fill='%23ffffff'/><text x='165' y='262' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23064e3b' text-anchor='middle'>⚡ ฝ่ายปฏิบัติการ DC วังน้อย</text><text x='740' y='265' font-family='sans-serif' font-size='60' text-anchor='end'>📦🚛🏆</text></svg>";
+
+  // Default Email Announcements (Seeded in August 2026 + 1 Historical Item in July 2026)
+  const DEFAULT_EMAIL_ANNOUNCEMENTS = [
     {
-      id: "ann-init-1",
-      title: "ยินดีต้อนรับสู่ DC Central Portal (ศูนย์กลางระบบคลังสินค้า PTG วังน้อย)",
-      content: "ศูนย์กลางรวบรวมระบบปฏิบัติการ แดชบอร์ดมอนิเตอร์ Wave, Picker UPH, Scanner Handheld และบอร์ดติดตามงาน DC ทั้งหมดไว้ในที่เดียว เพื่อการทำงานที่สะดวก รวดเร็ว และมีประสิทธิภาพสูงสุด",
-      author: "Admin DC",
-      type: "general",
-      pinned: true,
-      image: BANNER_WELCOME,
-      createdAt: Date.now() - 3600000 * 2
-    },
-    {
-      id: "ann-init-2",
-      title: "ประกาศรอบเวลาการทำงานและกะงาน DC วังน้อย",
-      content: "ขอให้พนักงานทุกท่านตรวจสอบรอบเวลาการเข้างานและกะการปฏิบัติงานตามตารางอย่างเคร่งครัด หากมีข้อสอบถามสามารถติดต่อหัวหน้างานประจำโซนได้ทันที",
-      author: "ฝ่ายปฏิบัติการ DC",
+      id: "ann-email-1",
+      title: "[HR Broadcast] แจ้งกิจกรรมตรวจสุขภาพประจำปี 2569 และสิทธิประโยชน์พนักงาน DC วังน้อย",
+      content: "เรียน พนักงานประจำศูนย์กระจายสินค้าวังน้อยทุกท่าน\nฝ่ายทรัพยากรบุคคลขอแจ้งกำหนดการตรวจสุขภาพประจำปี 2569 ระหว่างวันที่ 25-27 สิงหาคม 2569 ณ ห้องพยาบาล อาคารปฏิบัติการ 1 โดยขอให้พนักงานแต่ละกะลงทะเบียนล่วงหน้าตามรอบเวลาที่หัวหน้างานกำหนด\n\n📌 สิ่งที่ต้องเตรียมมา: บัตรพนักงาน และงดน้ำ/อาหารหลัง 20:00 น. ก่อนวันตรวจ",
+      author: "HR Operations (hr.dc@pt.co.th)",
       type: "event",
-      pinned: false,
-      image: "",
-      createdAt: Date.now() - 3600000 * 5
+      pinned: true,
+      image: BANNER_HR,
+      createdAt: new Date("2026-08-14T09:00:00").getTime()
     },
     {
-      id: "ann-init-3",
-      title: "มาตรการความปลอดภัยและตรวจเช็คอุปกรณ์ก่อนเริ่มงาน",
-      content: "สวมใส่อุปกรณ์ PPE ครบถ้วน (หมวก, เสื้อสะท้อนแสง, รองเท้าเซฟตี้) และตรวจเช็คสภาพรถโฟล์กลิฟต์/แฮนด์ลิฟต์ทุกครั้งก่อนเริ่มปฏิบัติหน้าที่",
-      author: "จป. ปฏิบัติการ",
+      id: "ann-email-2",
+      title: "[IT Alert] แจ้งปิดปรับปรุงระบบเซิร์ฟเวอร์ WMS และเครือข่าย Wi-Fi คลังวังน้อย วันอาทิตย์ที่ 23 ส.ค. 69",
+      content: "เรียน ทีมงาน DC และผู้ใช้งานระบบทุกท่าน\nฝ่าย IT จะดำเนินการอัปเกรดฐานข้อมูลระบบ WMS และอุปกรณ์กระจายสัญญาณ Wi-Fi โซน Picking ในวันอาทิตย์ที่ 23 สิงหาคม 2569 เวลา 01:00 - 04:00 น. เพื่อเพิ่มความเร็วในการยิงบาร์โค้ด Handheld ขออภัยในความไม่สะดวกมา ณ ที่นี้",
+      author: "IT Support DC (it.dc@pt.co.th)",
+      type: "maintenance",
+      pinned: true,
+      image: BANNER_IT,
+      createdAt: new Date("2026-08-13T14:30:00").getTime()
+    },
+    {
+      id: "ann-email-3",
+      title: "[Safety Notice] มาตรการความปลอดภัยและตรวจสอบการสวมใส่อุปกรณ์ PPE ประจำเดือนสิงหาคม",
+      content: "ประกาศจาก จป. ประจำคลังสินค้าวังน้อย\nขอเน้นย้ำพนักงานขับรถโฟล์กลิฟต์และผู้ปฏิบัติงานในโซนคลังสินค้าทุกท่าน สวมหมวกนิรภัย เสื้อสะท้อนแสง และรองเท้าเซฟตี้ตลอดเวลาที่อยู่ในพื้นที่ปฏิบัติงาน และจำกัดความเร็วรถยกไม่เกิน 10 กม./ชม. อย่างเคร่งครัด",
+      author: "Safety Officer DC (safety.dc@pt.co.th)",
       type: "urgent",
       pinned: false,
       image: BANNER_SAFETY,
-      createdAt: Date.now() - 3600000 * 12
+      createdAt: new Date("2026-08-12T10:15:00").getTime()
+    },
+    {
+      id: "ann-email-4",
+      title: "[Operation Brief] สรุปยอดจ่ายสินค้า Wave สินค้า Max Mart & กาแฟพันธุ์ไทย สัปดาห์ที่ 2",
+      content: "เรียน ทีมงานคลังสินค้าและจัดส่งทุกท่าน\nสรุปประสิทธิภาพการจ่ายสินค้า Wave สัปดาห์ที่ 2 บรรลุเป้าหมาย On-Time Delivery 99.2% โดยไม่มีสินค้าค้างตกหล่น ขอขอบคุณทีมงาน Picker, Checker, และทีมรถขนส่งทุกท่านที่ร่วมมือกันอย่างยอดเยี่ยม",
+      author: "DC Operations Team (ops.dc@pt.co.th)",
+      type: "general",
+      pinned: false,
+      image: BANNER_OPS,
+      createdAt: new Date("2026-08-10T16:45:00").getTime()
+    },
+    {
+      id: "ann-email-past-1",
+      title: "[HR Notice] สรุปผลการฝึกอบรมการใช้งานระบบ Handheld สแกนเนอร์ ประจำเดือนกรกฎาคม 2569",
+      content: "ฝ่ายทรัพยากรบุคคลและฝ่ายพัฒนาบุคลากร ขอสรุปผลการอบรมการใช้งานเครื่องยิงสแกนเนอร์ Handheld รุ่นใหม่ให้แก่ทีมคลังสินค้าครบถ้วน 100% เรียบร้อยแล้ว",
+      author: "HR Training (hr.dc@pt.co.th)",
+      type: "general",
+      pinned: false,
+      image: "",
+      createdAt: new Date("2026-07-28T11:00:00").getTime()
     }
   ];
+
+  let currentMonthFilter = "current"; // "current" | "prev" | "all"
 
   function getAnnouncements() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
-        return DEFAULT_ANNOUNCEMENTS;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_EMAIL_ANNOUNCEMENTS));
+        return DEFAULT_EMAIL_ANNOUNCEMENTS;
       }
       const parsed = JSON.parse(stored);
       if (!Array.isArray(parsed) || parsed.length === 0) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
-        return DEFAULT_ANNOUNCEMENTS;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_EMAIL_ANNOUNCEMENTS));
+        return DEFAULT_EMAIL_ANNOUNCEMENTS;
       }
-      // If default items have empty image, update them with default banners
-      parsed.forEach(item => {
-        if (item.id === "ann-init-1" && !item.image) item.image = BANNER_WELCOME;
-        if (item.id === "ann-init-3" && !item.image) item.image = BANNER_SAFETY;
-      });
       return parsed;
     } catch(e) {
-      return DEFAULT_ANNOUNCEMENTS;
+      return DEFAULT_EMAIL_ANNOUNCEMENTS;
     }
   }
 
@@ -1288,10 +1313,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function formatDateTime(ts) {
     const d = new Date(ts);
-    const months = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
     const h = String(d.getHours()).padStart(2,"0");
     const m = String(d.getMinutes()).padStart(2,"0");
-    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()+543}, ${h}:${m} น.`;
+    return `${d.getDate()} ${TH_MONTHS_SHORT[d.getMonth()]} ${d.getFullYear()+543}, ${h}:${m} น.`;
+  }
+
+  function formatDateInput(ts) {
+    const d = new Date(ts || Date.now());
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
   }
 
   function openLightbox(src, caption = "") {
@@ -1308,13 +1340,90 @@ document.addEventListener("DOMContentLoaded", () => {
     overlay?.classList.remove("show");
   }
 
+  function updateMonthFilterButtons() {
+    const now = new Date();
+    const curYear = now.getFullYear();
+    const curMonth = now.getMonth();
+    const curThMonth = TH_MONTHS_SHORT[curMonth];
+    const curThYear = (curYear + 543) % 100;
+
+    let prevMonth = curMonth - 1;
+    let prevYear = curYear;
+    if (prevMonth < 0) {
+      prevMonth = 11;
+      prevYear--;
+    }
+    const prevThMonth = TH_MONTHS_SHORT[prevMonth];
+    const prevThYear = (prevYear + 543) % 100;
+
+    const curLabel = document.getElementById("currentMonthFilterLabel");
+    const prevLabel = document.getElementById("prevMonthFilterLabel");
+    if (curLabel) curLabel.textContent = `📅 เดือนปัจจุบัน (${curThMonth} ${curThYear})`;
+    if (prevLabel) prevLabel.textContent = `📁 ${prevThMonth} ${prevThYear}`;
+
+    const allList = getAnnouncements();
+    const curCount = allList.filter(x => {
+      const d = new Date(x.createdAt);
+      return d.getFullYear() === curYear && d.getMonth() === curMonth;
+    }).length;
+
+    const prevCount = allList.filter(x => {
+      const d = new Date(x.createdAt);
+      return d.getFullYear() === prevYear && d.getMonth() === prevMonth;
+    }).length;
+
+    const curBadge = document.getElementById("currentMonthCount");
+    const prevBadge = document.getElementById("prevMonthCount");
+    const allBadge = document.getElementById("allMonthsCount");
+    if (curBadge) curBadge.textContent = curCount;
+    if (prevBadge) prevBadge.textContent = prevCount;
+    if (allBadge) allBadge.textContent = allList.length;
+
+    // Update active button state
+    document.querySelectorAll("[data-month-filter]").forEach(btn => {
+      btn.classList.toggle("active", btn.getAttribute("data-month-filter") === currentMonthFilter);
+    });
+  }
+
   function renderAnnouncements() {
     const feed = document.getElementById("announceFeed");
     const empty = document.getElementById("announceEmpty");
+    const emptyText = document.getElementById("announceEmptyText");
     if (!feed) return;
 
-    let list = getAnnouncements();
-    // Pinned first, then by date desc
+    updateMonthFilterButtons();
+
+    const now = new Date();
+    const curYear = now.getFullYear();
+    const curMonth = now.getMonth();
+    let prevMonth = curMonth - 1;
+    let prevYear = curYear;
+    if (prevMonth < 0) {
+      prevMonth = 11;
+      prevYear--;
+    }
+
+    let allList = getAnnouncements();
+
+    // Filter by selected month to keep DOM lightweight and super fast
+    let list = allList;
+    if (currentMonthFilter === "current") {
+      list = allList.filter(x => {
+        const d = new Date(x.createdAt);
+        return d.getFullYear() === curYear && d.getMonth() === curMonth;
+      });
+      if (emptyText) emptyText.textContent = `ไม่มีประกาศในเดือนปัจจุบัน (${TH_MONTHS_SHORT[curMonth]} ${curYear+543})`;
+    } else if (currentMonthFilter === "prev") {
+      list = allList.filter(x => {
+        const d = new Date(x.createdAt);
+        return d.getFullYear() === prevYear && d.getMonth() === prevMonth;
+      });
+      if (emptyText) emptyText.textContent = `ไม่มีประกาศในเดือน ${TH_MONTHS_SHORT[prevMonth]} ${prevYear+543}`;
+    } else {
+      if (emptyText) emptyText.textContent = "ยังไม่มีประกาศในขณะนี้";
+    }
+
+    // Sort: Pinned first, then newest date desc
     list = list.sort((a,b) => {
       if (a.pinned && !b.pinned) return -1;
       if (!a.pinned && b.pinned) return 1;
@@ -1448,6 +1557,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const authorInput = document.getElementById("announceAuthor");
     const pinCb = document.getElementById("announcePin");
     const typeSelect = document.getElementById("announceType");
+    const dateInput = document.getElementById("announceDate");
+    const emailHelperBox = document.getElementById("emailPasteBox");
+    const rawEmailInput = document.getElementById("rawEmailPasteInput");
+
+    if (emailHelperBox) emailHelperBox.style.display = "none";
+    if (rawEmailInput) rawEmailInput.value = "";
 
     if (editId) {
       const list = getAnnouncements();
@@ -1461,6 +1576,7 @@ document.addEventListener("DOMContentLoaded", () => {
       authorInput.value = item.author || "";
       pinCb.checked = !!item.pinned;
       if (typeSelect) typeSelect.value = item.type || "general";
+      if (dateInput) dateInput.value = formatDateInput(item.createdAt);
       
       if (item.image) {
         setPreviewImage(item.image);
@@ -1469,11 +1585,12 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       updateCharCount();
     } else {
-      titleEl.textContent = "โพสต์ประกาศใหม่";
+      titleEl.textContent = "โพสต์ประกาศใหม่ (หรือวางจาก Email)";
       submitLabel.textContent = "โพสต์ประกาศ";
       editIdEl.value = "";
       document.getElementById("announceForm")?.reset();
       if (typeSelect) typeSelect.value = "general";
+      if (dateInput) dateInput.value = formatDateInput(Date.now());
       clearPreviewImage();
       updateCharCount();
     }
@@ -1498,11 +1615,93 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateCharCount() {
     const content = document.getElementById("announceContent");
     const hint = document.getElementById("announceCharCount");
-    if (content && hint) hint.textContent = `${content.value.length} / 500 ตัวอักษร`;
+    if (content && hint) hint.textContent = `${content.value.length} / 600 ตัวอักษร`;
+  }
+
+  // Parse Raw Email Text & Auto Populate Form
+  function parseEmailText(raw) {
+    if (!raw || !raw.trim()) return;
+
+    let subject = "";
+    let from = "";
+    let body = [];
+    const lines = raw.split(/\r?\n/);
+
+    let isHeader = true;
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line && isHeader) {
+        // First empty line separates header from body
+        isHeader = false;
+        continue;
+      }
+
+      if (isHeader) {
+        if (/^(Subject|หัวข้อ|เรื่อง):\s*(.+)$/i.test(line)) {
+          subject = line.replace(/^(Subject|หัวข้อ|เรื่อง):\s*/i, "").trim();
+        } else if (/^(From|ผู้ส่ง|จาก):\s*(.+)$/i.test(line)) {
+          from = line.replace(/^(From|ผู้ส่ง|จาก):\s*/i, "").trim();
+        } else {
+          // If not standard header, add to body
+          body.push(lines[i]);
+          isHeader = false;
+        }
+      } else {
+        body.push(lines[i]);
+      }
+    }
+
+    const content = body.join("\n").trim() || raw.trim();
+
+    const titleInput = document.getElementById("announceTitle");
+    const authorInput = document.getElementById("announceAuthor");
+    const contentInput = document.getElementById("announceContent");
+    const typeSelect = document.getElementById("announceType");
+
+    if (subject && titleInput) titleInput.value = subject;
+    else if (!titleInput.value && content) {
+      // First line of content as title
+      const firstLine = lines.find(l => l.trim().length > 0) || "";
+      if (firstLine.length < 80) titleInput.value = firstLine;
+    }
+
+    if (from && authorInput) authorInput.value = from;
+    if (content && contentInput) contentInput.value = content;
+
+    // Smart category detect
+    const fullText = (subject + " " + content).toLowerCase();
+    if (typeSelect) {
+      if (/ซ่อม|ปรับปรุง|ดับไฟ|wms|wifi|network|server|บำรุง/i.test(fullText)) {
+        typeSelect.value = "maintenance";
+      } else if (/ด่วน|ฉุกเฉิน|เตือน|safety|จป|อุบัติเหตุ|ppe|ความปลอดภัย/i.test(fullText)) {
+        typeSelect.value = "urgent";
+      } else if (/กิจกรรม|ตรวจสุขภาพ|สวัสดิการ|อบรม|รางวัล|party|สัมมนา/i.test(fullText)) {
+        typeSelect.value = "event";
+      } else if (/วันหยุด|สงกรานต์|ปีใหม่|พักผ่อน|ลา/i.test(fullText)) {
+        typeSelect.value = "holiday";
+      } else {
+        typeSelect.value = "general";
+      }
+    }
+
+    updateCharCount();
+
+    // Show toast
+    if (typeof showToast === "function") {
+      showToast("✨ ดึงข้อมูลจากอีเมลลงฟอร์มเรียบร้อยแล้ว");
+    }
   }
 
   function initAnnounceBoard() {
     renderAnnouncements();
+
+    // Month filter pills
+    document.querySelectorAll("[data-month-filter]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentMonthFilter = btn.getAttribute("data-month-filter");
+        renderAnnouncements();
+      });
+    });
 
     // Open modal
     document.getElementById("openAnnounceModalBtn")?.addEventListener("click", () => openModal(null));
@@ -1518,6 +1717,30 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("closeLightboxBtn")?.addEventListener("click", closeLightbox);
     document.getElementById("imageLightboxOverlay")?.addEventListener("click", e => {
       if (e.target.id === "imageLightboxOverlay") closeLightbox();
+    });
+
+    // Email Helper Toggle
+    const toggleEmailBtn = document.getElementById("toggleEmailHelperBtn");
+    const emailPasteBox = document.getElementById("emailPasteBox");
+    const emailHelperWrap = document.querySelector(".announce-email-helper-wrap");
+    toggleEmailBtn?.addEventListener("click", () => {
+      if (!emailPasteBox) return;
+      const isOpen = emailPasteBox.style.display !== "none";
+      emailPasteBox.style.display = isOpen ? "none" : "block";
+      emailHelperWrap?.classList.toggle("open", !isOpen);
+      if (!isOpen) {
+        document.getElementById("rawEmailPasteInput")?.focus();
+      }
+    });
+
+    document.getElementById("applyEmailHelperBtn")?.addEventListener("click", () => {
+      const raw = document.getElementById("rawEmailPasteInput")?.value;
+      parseEmailText(raw);
+    });
+
+    document.getElementById("clearEmailHelperBtn")?.addEventListener("click", () => {
+      const input = document.getElementById("rawEmailPasteInput");
+      if (input) input.value = "";
     });
 
     // Image Upload triggers
@@ -1584,20 +1807,30 @@ document.addEventListener("DOMContentLoaded", () => {
       const author = document.getElementById("announceAuthor")?.value.trim();
       const pinned = document.getElementById("announcePin")?.checked;
       const type = document.getElementById("announceType")?.value || "general";
+      const dateVal = document.getElementById("announceDate")?.value;
       const image = document.getElementById("announceImageData")?.value || "";
       const editId = document.getElementById("announceEditId")?.value;
 
       if (!title || !content) return;
 
+      let postDate = Date.now();
+      if (dateVal) {
+        const parsedD = new Date(dateVal + "T" + new Date().toTimeString().slice(0,8));
+        if (!isNaN(parsedD.getTime())) postDate = parsedD.getTime();
+      }
+
       let list = getAnnouncements();
       if (editId) {
-        list = list.map(x => x.id === editId ? { ...x, title, content, author, pinned, type, image, updatedAt: Date.now() } : x);
+        list = list.map(x => x.id === editId ? { ...x, title, content, author, pinned, type, image, createdAt: postDate, updatedAt: Date.now() } : x);
       } else {
-        list.unshift({ id: "ann-" + Date.now(), title, content, author, pinned, type, image, createdAt: Date.now() });
+        list.unshift({ id: "ann-" + Date.now(), title, content, author, pinned, type, image, createdAt: postDate });
       }
       saveAnnouncements(list);
       renderAnnouncements();
       closeModal();
+      if (typeof showToast === "function") {
+        showToast(editId ? "บันทึกการแก้ไขเรียบร้อยแล้ว" : "โพสต์ประกาศเรียบร้อยแล้ว");
+      }
     });
   }
 
@@ -1612,3 +1845,4 @@ document.addEventListener("DOMContentLoaded", () => {
   boardObserver.observe(document.body, { childList: true, subtree: true, attributeFilter: ["class", "style"] });
   if (document.getElementById("announceFeed")) initAnnounceBoard();
 })();
+
