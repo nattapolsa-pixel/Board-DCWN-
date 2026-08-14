@@ -228,26 +228,28 @@ document.addEventListener("DOMContentLoaded", () => {
     "MPPTG0555": { name: "นายศรัญญู อดกลั้น",         role: "RT" },
   };
 
-  // ─── Core DC Portal Systems (Categorized by Position / Department) ───
+  // ─── Core DC Portal Systems (Exact User Mappings) ─────────────
   const DEFAULT_SYSTEMS = [
-    // ⚡ OPERATION
+    // 1. DC Ops Monitor V2 (Operation, Transport)
     {
       id: "dc-ops-monitor",
       name: "DC Ops Monitor V2 (DC Project Dashboard)",
       url: "https://dc-ops-monitor-v2.onrender.com/",
-      category: "operation",
-      categoryName: "Operation",
+      categories: ["operation", "transport"],
+      categoryName: "Operation · Transport",
       theme: "green",
       icon: "📊",
       badge: "Live Monitor · BigQuery",
       desc: "ระบบมอนิเตอร์และวางแผน Wave งานคลังสินค้า ติดตามสถานะ Wave / Order และดูความคืบหน้าการทำงานรายวันแบบเรียลไทม์",
       isCustom: false
     },
+
+    // 2. Pick Productivity V2 (Operation)
     {
       id: "pick-productivity",
       name: "Picker Productivity Dashboard V2",
       url: "https://nattapolsa-pixel.github.io/Productivity-Picker/",
-      category: "operation",
+      categories: ["operation"],
       categoryName: "Operation",
       theme: "light-green",
       icon: "⚡",
@@ -255,49 +257,69 @@ document.addEventListener("DOMContentLoaded", () => {
       desc: "แดชบอร์ดวัดประสิทธิภาพการหยิบสินค้าของพนักงาน (Picker) วิเคราะห์ความเร็ว UPH, สถิติรายบุคคล รายกะ และรายโซนในคลัง",
       isCustom: false
     },
+
+    // 3. Pick to Sort Dashboard (Operation)
     {
-      id: "put-away-system",
-      name: "Put-away & Storage Master (Put-away 2026)",
-      url: "https://pro-warehouse.github.io/pro-scanner/",
-      category: "operation",
+      id: "pick-to-sort",
+      name: "Pick to Sort Dashboard (Performance)",
+      url: "https://nattapolsa-pixel.github.io/Pick-to-Sort/",
+      categories: ["operation"],
       categoryName: "Operation",
       theme: "green",
-      icon: "📥",
-      badge: "Location & Shelf Sync",
-      desc: "ระบบจัดเก็บและจัดการตำแหน่ง Shelf สินค้า (Put-away) นำสินค้าเข้าตาม Zone และ Location ในคลังสินค้าอย่างถูกต้อง แม่นยำ",
-      isCustom: false
-    },
-    {
-      id: "zone-time-monitor",
-      name: "Warehouse Monitor Time by Zone",
-      url: "https://dc-ops-monitor-v2.onrender.com/",
-      category: "operation",
-      categoryName: "Operation",
-      theme: "blue",
-      icon: "⏱️",
-      badge: "Zone SLA · Cycle Time",
-      desc: "ระบบติดตามระยะเวลาการปฏิบัติงานแยกตามโซนคลังสินค้า (AA, AL, AN, CA, EA, AG, AI) ควบคุม SLA และรอบส่งมอบ",
-      isCustom: false
-    },
-    {
-      id: "dc-new-store-ops",
-      name: "DC New Store System (Operation & Prep)",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
-      category: "operation",
-      categoryName: "Operation",
-      theme: "blue",
-      icon: "🏬",
-      badge: "New Store · Alloc/Pick/QC",
-      desc: "ระบบบริหารจัดการเตรียมสินค้าสาขาเปิดใหม่ (New Store) วางแผน จัดสรร (Alloc), จัดหยิบ (Pick), ตรวจสอบ (QC) และเตรียมส่งมอบ",
+      icon: "🔀",
+      badge: "Pick to Sort · Station Live",
+      desc: "แดชบอร์ดติดตามประสิทธิภาพการคัดแยกและจัดกลุ่มสินค้า (Pick to Sort) ตรวจสอบความเร็วการกระจายสินค้าเข้า Station",
       isCustom: false
     },
 
-    // 📦 INVENTORY
+    // 4. Pro Scanner (Operation, Transport)
+    {
+      id: "pro-lpn-scanner",
+      name: "Pro LPN Scanner (Warehouse Handheld)",
+      url: "https://pro-warehouse.github.io/pro-scanner/",
+      categories: ["operation", "transport"],
+      categoryName: "Operation · Transport",
+      theme: "purple",
+      icon: "📱",
+      badge: "Handheld & LPN · FastAPI",
+      desc: "ระบบสแกนบาร์โค้ด LPN และ Tote บนมือถือหรือเครื่องยิง Handheld สำหรับตรวจนับสินค้า ยิง Wave ปิดกล่อง แยกสายรถจัดส่ง อัปเดตคลังทันที",
+      isCustom: false
+    },
+
+    // 5. Damage 2026 (Damage)
+    {
+      id: "damage-system",
+      name: "Damage 2026 Form & Dashboard",
+      url: "https://nattapolsa-pixel.github.io/Damage/",
+      categories: ["damage"],
+      categoryName: "Damage",
+      theme: "red",
+      icon: "⚠️",
+      badge: "Google Sheet · Photo Upload",
+      desc: "ระบบบันทึกและรายงานสินค้าชำรุดเสียหาย สแกนบาร์โค้ด ถ่ายรูปหลักฐาน ระบุประเภทความเสียหาย และสรุป Dashboard วิเคราะห์สินค้าชำรุด",
+      isCustom: false
+    },
+
+    // 6. DC New Store System (Operation, Transport)
+    {
+      id: "dc-new-store",
+      name: "DC New Store System (Operation & Transport)",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      categories: ["operation", "transport"],
+      categoryName: "Operation · Transport",
+      theme: "blue",
+      icon: "🏬",
+      badge: "New Store · Prep & Dispatch",
+      desc: "ระบบบริหารจัดการและวางแผนการเตรียมสินค้า (Alloc/Pick/QC) รวมถึงสายรถจัดส่งสำหรับสาขาเปิดใหม่ (New Store)",
+      isCustom: false
+    },
+
+    // 📦 INVENTORY (Coming Soon)
     {
       id: "inventory-coming-soon",
       name: "ระบบคลังสินค้า & สต็อก (Inventory System)",
       url: "#",
-      category: "inventory",
+      categories: ["inventory"],
       categoryName: "Inventory",
       theme: "green",
       icon: "📦",
@@ -307,12 +329,12 @@ document.addEventListener("DOMContentLoaded", () => {
       isCustom: false
     },
 
-    // 🦺 SAFETY
+    // 🦺 SAFETY (Coming Soon)
     {
       id: "safety-coming-soon",
       name: "ระบบความปลอดภัย & จป. (Safety System)",
       url: "#",
-      category: "safety",
+      categories: ["safety"],
       categoryName: "Safety",
       theme: "amber",
       icon: "🦺",
@@ -322,83 +344,33 @@ document.addEventListener("DOMContentLoaded", () => {
       isCustom: false
     },
 
-    // 🚚 TRANSPORT
+    // 👥 HR (Coming Soon)
     {
-      id: "pro-lpn-scanner",
-      name: "Pro LPN Scanner (Warehouse Handheld)",
-      url: "https://pro-warehouse.github.io/pro-scanner/",
-      category: "transport",
-      categoryName: "Transport",
-      theme: "purple",
-      icon: "📱",
-      badge: "Handheld & Dispatch · FastAPI",
-      desc: "ระบบสแกนบาร์โค้ด LPN และ Tote บนมือถือหรือเครื่องยิง Handheld สำหรับตรวจนับสินค้า ยิง Wave ปิดกล่อง แยกสี/สายรถจัดส่ง อัปเดตคลังทันที",
-      isCustom: false
-    },
-    {
-      id: "dc-new-store-transport",
-      name: "DC New Store Dispatch & Delivery (Transport)",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
-      category: "transport",
-      categoryName: "Transport",
-      theme: "blue",
-      icon: "🚚",
-      badge: "New Store · Route & Ship",
-      desc: "ระบบวางแผนสายรถขนส่งและติดตามกำหนดการปล่อยรถส่งมอบสินค้าสำหรับสาขาเปิดใหม่ (New Store Delivery)",
-      isCustom: false
-    },
-    {
-      id: "transport-dispatch",
-      name: "Transport Route & Dispatch Monitor",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
-      category: "transport",
-      categoryName: "Transport",
-      theme: "blue",
-      icon: "🚚",
-      badge: "Route & Fleet Tracking",
-      desc: "ระบบติดตามสายรถจัดส่งสินค้าและกำหนดการปล่อยรถ (Dispatch) ไปยังสถานีบริการน้ำมัน PT, Max Mart, และร้านกาแฟพันธุ์ไทย",
-      isCustom: false
-    },
-
-    // 👥 HR
-    {
-      id: "hr-attendance-portal",
-      name: "HR Attendance & Shift Portal",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
-      category: "hr",
+      id: "hr-coming-soon",
+      name: "ระบบทรัพยากรบุคคล & เวลาทำงาน (HR System)",
+      url: "#",
+      categories: ["hr"],
       categoryName: "HR",
       theme: "purple",
       icon: "👥",
-      badge: "Time Attendance · 220+ Emps",
-      desc: "ระบบบันทึกเวลาทำงาน จัดตารางกะรายวัน ตรวจสอบชั่วโมง OT และข้อมูลพนักงานศูนย์กระจายสินค้า PTG วังน้อย",
+      badge: "Coming Soon ⏳",
+      desc: "ระบบบริหารจัดการข้อมูลพนักงาน บันทึกเวลา และสถิติกะงาน (HR) อยู่ระหว่างการพัฒนาระบบ เร็วๆ นี้...",
+      isComingSoon: true,
       isCustom: false
     },
 
-    // ⚠️ DAMAGE
+    // 💬 CUSTOMER SERVICE (Coming Soon)
     {
-      id: "damage-system",
-      name: "Damage 2026 Form & Dashboard",
-      url: "https://nattapolsa-pixel.github.io/Damage/",
-      category: "damage",
-      categoryName: "Damage",
-      theme: "red",
-      icon: "⚠️",
-      badge: "Google Sheet · Photo Upload",
-      desc: "ระบบบันทึกและรายงานสินค้าชำรุดเสียหาย สแกนบาร์โค้ด ถ่ายรูปหลักฐาน ระบุประเภทความเสียหาย และสรุป Dashboard วิเคราะห์สินค้าชำรุด",
-      isCustom: false
-    },
-
-    // 💬 CUSTOMER SERVICE
-    {
-      id: "dc-new-store",
-      name: "DC New Store System (Customer Service)",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
-      category: "cs",
+      id: "cs-coming-soon",
+      name: "ระบบบริการลูกค้า (Customer Service System)",
+      url: "#",
+      categories: ["cs"],
       categoryName: "Customer Service",
       theme: "blue",
-      icon: "🏬",
-      badge: "Apps Script · Store Live",
-      desc: "ระบบบริหารจัดการและวางแผนการจัดส่งสินค้าสำหรับสาขาเปิดใหม่ (New Store) ติดตามสถานะเตรียมสินค้า (Alloc, Pick, QC, Ship) และรายงานสรุป",
+      icon: "💬",
+      badge: "Coming Soon ⏳",
+      desc: "ระบบประสานงานและบริการลูกค้า/สาขา (Customer Service) อยู่ระหว่างการพัฒนาระบบ เร็วๆ นี้...",
+      isComingSoon: true,
       isCustom: false
     }
   ];
@@ -507,9 +479,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     allSystems.forEach(sys => {
-      if (counts[sys.category] !== undefined) {
-        counts[sys.category]++;
-      }
+      const cats = Array.isArray(sys.categories) ? sys.categories : (sys.category ? [sys.category] : []);
+      cats.forEach(c => {
+        if (counts[c] !== undefined) counts[c]++;
+      });
       if (sys.isCustom) counts.custom++;
       if (favs.includes(sys.id)) counts.favorites++;
     });
@@ -548,6 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const filtered = allSystems.filter(sys => {
       // Category match
       let matchCat = false;
+      const cats = Array.isArray(sys.categories) ? sys.categories : (sys.category ? [sys.category] : []);
       if (activeCategory === "all") {
         matchCat = true;
       } else if (activeCategory === "favorites") {
@@ -555,7 +529,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (activeCategory === "custom") {
         matchCat = !!sys.isCustom;
       } else {
-        matchCat = (sys.category === activeCategory);
+        matchCat = cats.includes(activeCategory);
       }
 
       // Search match
@@ -580,6 +554,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     systemsGrid.innerHTML = filtered.map(sys => {
       const isFav = favs.includes(sys.id);
+      const primaryCat = (Array.isArray(sys.categories) ? sys.categories[0] : sys.category) || 'custom';
       return `
       <div class="system-card card-theme-${sys.theme || 'green'}" data-id="${sys.id}">
         <div>
@@ -592,7 +567,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </svg>
               </button>
               <div class="system-badges-wrap">
-                <span class="system-category-tag cat-${sys.category || 'custom'}">${sys.categoryName || 'ทั่วไป'}</span>
+                <span class="system-category-tag cat-${primaryCat}">${sys.categoryName || 'ทั่วไป'}</span>
                 ${sys.badge ? `<span class="system-badge-tag">${sys.badge}</span>` : ''}
               </div>
             </div>
@@ -781,6 +756,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name: name,
       url: url,
       category: cat,
+      categories: [cat],
       categoryName: catName,
       theme: theme,
       icon: "🌐",
