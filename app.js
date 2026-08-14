@@ -1692,8 +1692,140 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const GAS_EMAIL_URL = "https://script.google.com/macros/s/AKfycbwIsLyPnb4J9uEmf7H-ZwfLtmrBTbvfSUxRT5QJK3tR6qi9QOSaifqtDPZV5P_z9KVIJA/exec";
+
+  function normalizeEmailItem(raw) {
+    if (!raw) return null;
+    const id = raw.id || raw.messageId || "email-" + (raw.timestamp || Date.now()) + "-" + Math.random().toString(36).substr(2, 5);
+    const title = raw.subject || raw.title || raw.header || "ข่าวสารประชาสัมพันธ์ DC";
+    const content = raw.body || raw.content || raw.snippet || raw.plainBody || raw.message || "";
+    const author = raw.from || raw.sender || raw.author || "Email Broadcast";
+
+    let createdAt = Date.now();
+    if (raw.date || raw.timestamp || raw.createdAt || raw.time) {
+      const d = new Date(raw.date || raw.timestamp || raw.createdAt || raw.time);
+      if (!isNaN(d.getTime())) createdAt = d.getTime();
+    }
+
+    let type = raw.type || raw.category;
+    if (!TYPE_CONFIG[type]) {
+      const txt = (title + " " + content).toLowerCase();
+      if (/ซ่อม|ปรับปรุง|ดับไฟ|wms|wifi|network|server|บำรุง/i.test(txt)) type = "maintenance";
+      else if (/ด่วน|ฉุกเฉิน|เตือน|safety|จป|อุบัติเหตุ|ppe|ความปลอดภัย/i.test(txt)) type = "urgent";
+      else if (/กิจกรรม|ตรวจสุขภาพ|สวัสดิการ|อบรม|รางวัล|party|สัมมนา/i.test(txt)) type = "event";
+      else if (/วันหยุด|สงกรานต์|ปีใหม่|พักผ่อน|ลา/i.test(txt)) type = "holiday";
+      else type = "general";
+    }
+
+    let image = raw.image || raw.imageUrl || raw.attachment || "";
+    if (!image) {
+      if (type === "maintenance") image = BANNER_IT;
+      else if (type === "urgent") image = BANNER_SAFETY;
+      else if (type === "event") image = BANNER_HR;
+      else if (/ยอดจ่าย|uph|delivery|wave|ผลงาน/i.test(title)) image = BANNER_OPS;
+    }
+
+    const pinned = Boolean(raw.pinned || raw.isPinned || raw.isStar || raw.starred);
+
+    return { id, title, content, author, type, image, pinned, createdAt, isEmail: true };
+  }
+
+  async function syncAnnouncementsFromEmail(isManual = false) {
+    const syncBtn = document.getElementById("syncEmailBtn");
+    const syncStatus = document.getElementById("emailSyncStatus");
+
+    if (syncBtn) {
+      syncBtn.classList.add("loading");
+      syncBtn.disabled = true;
+    }
+    if (syncStatus) {
+      syncStatus.innerHTML = `<span class="sync-dot-live" style="background:#0284c7;"></span><span>กำลังซิงค์ข่าวจาก Email...</span>`;
+      syncStatus.className = "announce-board-sub is-syncing";
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 14000);
+
+      const res = await fetch(GAS_EMAIL_URL, {
+        method: "GET",
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) throw new Error("HTTP error " + res.status);
+      const data = await res.json();
+
+      let rawItems = [];
+      if (Array.isArray(data)) rawItems = data;
+      else if (data && Array.isArray(data.data)) rawItems = data.data;
+      else if (data && Array.isArray(data.emails)) rawItems = data.emails;
+      else if (data && Array.isArray(data.items)) rawItems = data.items;
+      else if (data && Array.isArray(data.announcements)) rawItems = data.announcements;
+      else if (data && typeof data === "object") {
+        // Find first array property
+        for (const k in data) {
+          if (Array.isArray(data[k])) {
+            rawItems = data[k];
+            break;
+          }
+        }
+      }
+
+      if (rawItems.length > 0) {
+        const normalizedItems = rawItems.map(normalizeEmailItem).filter(Boolean);
+        const existing = getAnnouncements();
+        const manualPosts = existing.filter(x => !x.isEmail);
+
+        const mergedMap = new Map();
+        manualPosts.forEach(item => mergedMap.set(item.id, item));
+        normalizedItems.forEach(item => mergedMap.set(item.id, item));
+
+        const mergedList = Array.from(mergedMap.values());
+        saveAnnouncements(mergedList);
+        renderAnnouncements();
+
+        const timeStr = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" });
+        if (syncStatus) {
+          syncStatus.innerHTML = `<span class="sync-dot-live"></span><span>ซิงค์ Email สำเร็จ (${timeStr} น. · ${normalizedItems.length} ข่าว)</span>`;
+          syncStatus.className = "announce-board-sub is-synced";
+        }
+        if (isManual && typeof showToast === "function") {
+          showToast(`✨ ซิงค์ข่าวจาก Email สำเร็จ (${normalizedItems.length} ข่าว)`);
+        }
+      } else {
+        if (syncStatus) {
+          syncStatus.innerHTML = `<span class="sync-dot-live"></span><span>เชื่อมต่อ Email แล้ว (ไม่มีอีเมลใหม่)</span>`;
+          syncStatus.className = "announce-board-sub is-synced";
+        }
+      }
+    } catch(err) {
+      console.warn("GAS Email Sync Note:", err);
+      if (syncStatus) {
+        syncStatus.innerHTML = `<span class="sync-dot-live" style="background:#9ca3af;"></span><span>ข้อมูล Email (แคชในระบบ)</span>`;
+        syncStatus.className = "announce-board-sub is-offline";
+      }
+      if (isManual && typeof showToast === "function") {
+        showToast("ℹ️ แสดงข้อมูลล่าสุดจากแคช");
+      }
+    } finally {
+      if (syncBtn) {
+        syncBtn.classList.remove("loading");
+        syncBtn.disabled = false;
+      }
+    }
+  }
+
   function initAnnounceBoard() {
     renderAnnouncements();
+
+    // Auto sync from Google Apps Script Email on load
+    syncAnnouncementsFromEmail(false);
+
+    // Manual sync button
+    document.getElementById("syncEmailBtn")?.addEventListener("click", () => {
+      syncAnnouncementsFromEmail(true);
+    });
 
     // Month filter pills
     document.querySelectorAll("[data-month-filter]").forEach(btn => {

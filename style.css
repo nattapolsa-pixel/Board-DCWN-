@@ -2869,3 +2869,81 @@ body.is-portal #portalView {
   border-color: var(--pt-green);
   box-shadow: 0 0 0 3px rgba(0, 146, 69, 0.15);
 }
+
+/* Live Email Sync Button & Indicator */
+.announce-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.announce-sync-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 14px;
+  background: #fff;
+  color: var(--pt-green-dark);
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 11px;
+  border: 1.5px solid var(--line);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.announce-sync-btn:hover {
+  background: #f0faf4;
+  border-color: var(--pt-green-mid);
+  color: var(--pt-green-deep);
+  transform: translateY(-1px);
+}
+
+.announce-sync-btn svg.sync-icon {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.3s ease;
+}
+
+.announce-sync-btn.loading svg.sync-icon {
+  animation: spinSync 0.9s linear infinite;
+}
+
+@keyframes spinSync {
+  100% { transform: rotate(360deg); }
+}
+
+.sync-dot-live {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.email-sync-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-subtle);
+  margin-top: 2px;
+}
+
+.email-sync-status.is-syncing {
+  color: #0284c7;
+}
+
+.email-sync-status.is-synced {
+  color: #059669;
+  font-weight: 600;
+}
+
+.email-sync-status.is-offline {
+  color: #6b7280;
+}

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=18.0" />
+  <link rel="stylesheet" href="style.css?v=19.0" />
 </head>
 <body class="is-login">
 
@@ -267,14 +267,23 @@
                   <div class="announce-board-title-row">
                     <span class="announce-board-icon">📢</span>
                     <div>
-                      <div class="announce-board-title">บอร์ดประชาสัมพันธ์ DC</div>
-                      <div class="announce-board-sub">ข่าวสาร ประกาศ และแจ้งเตือนจากอีเมล/ฝ่ายต่างๆ</div>
+                      <div class="announce-board-title">บอร์ดประชาสัมพันธ์ DC (Email Broadcasts)</div>
+                      <div class="announce-board-sub" id="emailSyncStatus">
+                        <span class="sync-dot-live"></span>
+                        <span>เชื่อมต่อ Google Apps Script Email แล้ว</span>
+                      </div>
                     </div>
                   </div>
-                  <button class="announce-post-btn" id="openAnnounceModalBtn" type="button">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    <span>โพสต์ประกาศใหม่</span>
-                  </button>
+                  <div class="announce-header-actions">
+                    <button class="announce-sync-btn" id="syncEmailBtn" type="button" title="ดึงข่าวสารล่าสุดจาก Email บริษัท">
+                      <svg class="sync-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                      <span>ซิงค์จาก Email</span>
+                    </button>
+                    <button class="announce-post-btn" id="openAnnounceModalBtn" type="button">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                      <span>โพสต์ประกาศใหม่</span>
+                    </button>
+                  </div>
                 </div>
 
                 <!-- Announcement Month Filter & Speed Bar -->
@@ -750,7 +759,7 @@
     <span class="toast-msg" id="toastMsg"></span>
   </div>
 
-  <script src="app.js?v=18.0"></script>
+  <script src="app.js?v=19.0"></script>
 </body>
 </html>
 
