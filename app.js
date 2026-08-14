@@ -256,18 +256,6 @@ document.addEventListener("DOMContentLoaded", () => {
       isCustom: false
     },
     {
-      id: "pro-lpn-scanner",
-      name: "Pro LPN Scanner (Warehouse Handheld)",
-      url: "https://pro-warehouse.github.io/pro-scanner/",
-      category: "operation",
-      categoryName: "Operation",
-      theme: "purple",
-      icon: "📱",
-      badge: "Handheld & Mobile · FastAPI",
-      desc: "ระบบสแกนบาร์โค้ด LPN และ Tote บนมือถือหรือเครื่องยิง Handheld สำหรับตรวจนับสินค้า ยิง Wave ปิดกล่อง แยกสี/สาขา อัปเดตคลังทันที",
-      isCustom: false
-    },
-    {
       id: "put-away-system",
       name: "Put-away & Storage Master (Put-away 2026)",
       url: "https://pro-warehouse.github.io/pro-scanner/",
@@ -333,6 +321,18 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     // 🚚 TRANSPORT
+    {
+      id: "pro-lpn-scanner",
+      name: "Pro LPN Scanner (Warehouse Handheld)",
+      url: "https://pro-warehouse.github.io/pro-scanner/",
+      category: "transport",
+      categoryName: "Transport",
+      theme: "purple",
+      icon: "📱",
+      badge: "Handheld & Dispatch · FastAPI",
+      desc: "ระบบสแกนบาร์โค้ด LPN และ Tote บนมือถือหรือเครื่องยิง Handheld สำหรับตรวจนับสินค้า ยิง Wave ปิดกล่อง แยกสี/สายรถจัดส่ง อัปเดตคลังทันที",
+      isCustom: false
+    },
     {
       id: "transport-dispatch",
       name: "Transport Route & Dispatch Monitor",
