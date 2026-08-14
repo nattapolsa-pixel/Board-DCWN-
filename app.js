@@ -1212,7 +1212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ─── ANNOUNCEMENT BOARD ENGINE (Email News & Month Filter) ───────── */
 (function() {
-  const STORAGE_KEY = "ptg_dc_announcements_v3";
+  const STORAGE_KEY = "ptg_dc_announcements_v4";
   const TYPE_CONFIG = {
     general:     { label: "📋 ข่าวสารทั่วไป",               icon: "📋" },
     urgent:      { label: "🚨 ด่วนที่สุด / แจ้งเตือนสำคัญ",    icon: "🚨" },
@@ -1223,26 +1223,233 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const TH_MONTHS_SHORT = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 
-  // High Quality SVG Posters & Banners for PT Happyworkplace & DC Broadcasts
-  const BANNER_EP41_SMOKING = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 620' width='800' height='620'><defs><linearGradient id='bgSmoke' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2314532d'/><stop offset='50%' stop-color='%23166534'/><stop offset='100%' stop-color='%2315803d'/></linearGradient><linearGradient id='redBadge' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23dc2626'/><stop offset='100%' stop-color='%23b91c1c'/></linearGradient><linearGradient id='blueBadge' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%230284c7'/><stop offset='100%' stop-color='%230369a1'/></linearGradient></defs><rect width='800' height='620' fill='url(%23bgSmoke)' rx='18'/><circle cx='730' cy='80' r='140' fill='rgba(255,255,255,0.06)'/><circle cx='80' cy='540' r='160' fill='rgba(255,255,255,0.05)'/><rect x='30' y='24' width='740' height='70' rx='14' fill='rgba(255,255,255,0.15)'/><text x='50' y='54' font-family='sans-serif' font-size='15' font-weight='700' fill='%23bbf7d0'>PT HAPPYWORKPLACE · PT HEALTH ME</text><text x='50' y='78' font-family='sans-serif' font-size='20' font-weight='800' fill='%23ffffff'>💚 มุม &quot;รัก&quot; สุขภาพ EP.41 · ประจำเดือนสิงหาคม 2569</text><rect x='670' y='38' width='80' height='40' rx='10' fill='%2322c55e'/><text x='710' y='64' font-family='sans-serif' font-size='16' font-weight='800' fill='%23ffffff' text-anchor='middle'>EP.41</text><rect x='30' y='110' width='355' height='390' rx='14' fill='%23ffffff'/><rect x='30' y='110' width='355' height='48' rx='14' fill='url(%23redBadge)'/><text x='207' y='142' font-family='sans-serif' font-size='16' font-weight='800' fill='%23ffffff' text-anchor='middle'>⚠️ ยิ่งสูบ ยิ่งพัง! 10 อันตรายจากนิโคติน</text><text x='48' y='180' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>1. ทำลายปอด หลอดลมอักเสบเรื้อรัง</text><text x='48' y='210' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>2. หัวใจเต้นเร็วผิดปกติ ความดันพุ่งสูง</text><text x='48' y='240' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>3. เกิดภาวะหลอดเลือดแดงแข็งตัว</text><text x='48' y='270' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>4. เพิ่มความเสี่ยงโรคหลอดเลือดสมอง</text><text x='48' y='300' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>5. ทำลายระบบประสาทส่วนกลาง</text><text x='48' y='330' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>6. ลดระดับออกซิเจนในกระแสเลือด</text><text x='48' y='360' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>7. กระตุ้นความเสี่ยงโรคเบาหวาน</text><text x='48' y='390' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>8. ระบบภูมิคุ้มกันร่างกายบกพร่อง</text><text x='48' y='420' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>9. เพิ่มความเสี่ยงโรคมะเร็งทุกชนิด</text><text x='48' y='450' font-family='sans-serif' font-size='13' font-weight='700' fill='%23991b1b'>10. มีสารเสพติดรุนแรง เลิกยาก</text><rect x='48' y='465' width='319' height='24' rx='6' fill='%23fee2e2'/><text x='207' y='482' font-family='sans-serif' font-size='11' font-weight='700' fill='%23b91c1c' text-anchor='middle'>🚫 ส่งผลกระทบทั้งผู้สูบและคนรอบข้าง</text><rect x='415' y='110' width='355' height='390' rx='14' fill='%23ffffff'/><rect x='415' y='110' width='355' height='48' rx='14' fill='url(%23blueBadge)'/><text x='592' y='142' font-family='sans-serif' font-size='16' font-weight='800' fill='%23ffffff' text-anchor='middle'>☠️ 5 สารพิษ อันตรายในบุหรี่ไฟฟ้า</text><text x='435' y='185' font-family='sans-serif' font-size='14' font-weight='800' fill='%230369a1'>1. นิโคติน (Nicotine)</text><text x='435' y='205' font-family='sans-serif' font-size='12' fill='%23475569'>สารเสพติดทำลายสมอง หัวใจ และระบบไหลเวียน</text><text x='435' y='245' font-family='sans-serif' font-size='14' font-weight='800' fill='%230369a1'>2. ฟอร์มาลดีไฮด์ (Formaldehyde)</text><text x='435' y='265' font-family='sans-serif' font-size='12' fill='%23475569'>สารก่อมะเร็งในระบบทางเดินหายใจ</text><text x='435' y='305' font-family='sans-serif' font-size='14' font-weight='800' fill='%230369a1'>3. โพรไพลีนไกลคอล (Propylene Glycol)</text><text x='435' y='325' font-family='sans-serif' font-size='12' fill='%23475569'>ระคายเคืองปอด ก่อโรคปอดอักเสบเฉียบพลัน</text><text x='435' y='365' font-family='sans-serif' font-size='14' font-weight='800' fill='%230369a1'>4. โลหะหนัก (Heavy Metals / Lead)</text><text x='435' y='385' font-family='sans-serif' font-size='12' fill='%23475569'>ตะกั่ว นิเกิล สะสมในตับและไต</text><text x='435' y='425' font-family='sans-serif' font-size='14' font-weight='800' fill='%230369a1'>5. สารหนู (Arsenic)</text><text x='435' y='445' font-family='sans-serif' font-size='12' fill='%23475569'>สารพิษทำลายเซลล์ เพิ่มความเสี่ยงมะเร็งปอด</text><rect x='30' y='520' width='740' height='75' rx='14' fill='%23ffffff'/><rect x='45' y='535' width='160' height='45' rx='22' fill='%23dc2626'/><text x='125' y='563' font-family='sans-serif' font-size='18' font-weight='800' fill='%23ffffff' text-anchor='middle'>📞 สายด่วน 1600</text><text x='225' y='552' font-family='sans-serif' font-size='14' font-weight='800' fill='%23006837'>สายด่วนเลิกบุหรี่ &quot;อย่าปล่อยให้ควันจาง ทำลายชีวิตคุณให้หายไป&quot;</text><text x='225' y='576' font-family='sans-serif' font-size='12' fill='%2364748b'>แนะนำ! ดาวน์โหลด Persona Health แอปพลิเคชันประเมินสุขภาพพนักงาน PTG</text></svg>";
+  function encodeSvg(svg) {
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg.trim());
+  }
 
-  const BANNER_PLEDGE_LENT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360' width='800' height='360'><defs><linearGradient id='gPledge' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23b45309'/><stop offset='50%' stop-color='%23d97706'/><stop offset='100%' stop-color='%23f59e0b'/></linearGradient></defs><rect width='800' height='360' fill='url(%23gPledge)' rx='16'/><circle cx='700' cy='90' r='140' fill='rgba(255,255,255,0.08)'/><text x='50' y='65' font-family='sans-serif' font-size='16' font-weight='700' fill='%23fef3c7'>PT HAPPYWORKPLACE · กิจกรรมเข้าพรรษา 2569</text><text x='50' y='110' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>💛 เข้าพรรษา 16 วันแล้ว เป็นยังไงกันบ้าง?</text><text x='50' y='155' font-family='sans-serif' font-size='18' font-weight='700' fill='%23fffbeb'>ขอเชิญเพื่อนๆ ชาว PTG ร่วมตั้งปณิธาน &quot;ชนะแล้ว ชนะใจ เลิกเหล้า หยุดบุหรี่&quot; ปี 4</text><text x='50' y='200' font-family='sans-serif' font-size='14' fill='%23fef9c3'>✨ สร้างสุขภาพที่ดีให้ตนเอง ประหยัดค่าใช้จ่าย และมอบของขวัญล้ำค่าแก่ครอบครัว</text><text x='50' y='230' font-family='sans-serif' font-size='14' fill='%23fef9c3'>🎁 ร่วมกิจกรรมรับของที่ระลึกพิเศษจากโครงการ Happy Workplace</text><rect x='50' y='265' width='260' height='46' rx='23' fill='%23ffffff'/><text x='180' y='294' font-family='sans-serif' font-size='14.5' font-weight='800' fill='%23b45309' text-anchor='middle'>✍️ ร่วมตั้งปณิธานคลิกที่นี่</text><text x='740' y='300' font-family='sans-serif' font-size='70' text-anchor='end'>🧘‍♂️💛🍺🚫</text></svg>";
+  // High Quality SVG Posters & Banners for PT Happyworkplace & DC Broadcasts (URL-Encoded for 100% browser compatibility)
+  const BANNER_EP41_SMOKING = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 620" width="800" height="620">
+    <defs>
+      <linearGradient id="bgSmoke" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#14532d"/>
+        <stop offset="50%" stop-color="#166534"/>
+        <stop offset="100%" stop-color="#15803d"/>
+      </linearGradient>
+      <linearGradient id="redBadge" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#dc2626"/>
+        <stop offset="100%" stop-color="#b91c1c"/>
+      </linearGradient>
+      <linearGradient id="blueBadge" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0284c7"/>
+        <stop offset="100%" stop-color="#0369a1"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="620" fill="url(#bgSmoke)" rx="18"/>
+    <circle cx="730" cy="80" r="140" fill="rgba(255,255,255,0.06)"/>
+    <circle cx="80" cy="540" r="160" fill="rgba(255,255,255,0.05)"/>
+    <rect x="30" y="24" width="740" height="70" rx="14" fill="rgba(255,255,255,0.15)"/>
+    <text x="50" y="54" font-family="Noto Sans Thai, sans-serif" font-size="15" font-weight="700" fill="#bbf7d0">PT HAPPYWORKPLACE · PT HEALTH ME</text>
+    <text x="50" y="78" font-family="Noto Sans Thai, sans-serif" font-size="20" font-weight="800" fill="#ffffff">💚 มุม "รัก" สุขภาพ EP.41 · ประจำเดือนสิงหาคม 2569</text>
+    <rect x="670" y="38" width="80" height="40" rx="10" fill="#22c55e"/>
+    <text x="710" y="64" font-family="Noto Sans Thai, sans-serif" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">EP.41</text>
+    <rect x="30" y="110" width="355" height="390" rx="14" fill="#ffffff"/>
+    <rect x="30" y="110" width="355" height="48" rx="14" fill="url(#redBadge)"/>
+    <text x="207" y="142" font-family="Noto Sans Thai, sans-serif" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">⚠️ ยิ่งสูบ ยิ่งพัง! 10 อันตรายจากนิโคติน</text>
+    <text x="48" y="180" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">1. ทำลายปอด หลอดลมอักเสบเรื้อรัง</text>
+    <text x="48" y="210" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">2. หัวใจเต้นเร็วผิดปกติ ความดันพุ่งสูง</text>
+    <text x="48" y="240" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">3. เกิดภาวะหลอดเลือดแดงแข็งตัว</text>
+    <text x="48" y="270" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">4. เพิ่มความเสี่ยงโรคหลอดเลือดสมอง</text>
+    <text x="48" y="300" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">5. ทำลายระบบประสาทส่วนกลาง</text>
+    <text x="48" y="330" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">6. ลดระดับออกซิเจนในกระแสเลือด</text>
+    <text x="48" y="360" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">7. กระตุ้นความเสี่ยงโรคเบาหวาน</text>
+    <text x="48" y="390" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">8. ระบบภูมิคุ้มกันร่างกายบกพร่อง</text>
+    <text x="48" y="420" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">9. เพิ่มความเสี่ยงโรคมะเร็งทุกชนิด</text>
+    <text x="48" y="450" font-family="Noto Sans Thai, sans-serif" font-size="13" font-weight="700" fill="#991b1b">10. มีสารเสพติดรุนแรง เลิกยาก</text>
+    <rect x="48" y="465" width="319" height="24" rx="6" fill="#fee2e2"/>
+    <text x="207" y="482" font-family="Noto Sans Thai, sans-serif" font-size="11" font-weight="700" fill="#b91c1c" text-anchor="middle">🚫 ส่งผลกระทบทั้งผู้สูบและคนรอบข้าง</text>
+    <rect x="415" y="110" width="355" height="390" rx="14" fill="#ffffff"/>
+    <rect x="415" y="110" width="355" height="48" rx="14" fill="url(#blueBadge)"/>
+    <text x="592" y="142" font-family="Noto Sans Thai, sans-serif" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle">☠️ 5 สารพิษ อันตรายในบุหรี่ไฟฟ้า</text>
+    <text x="435" y="185" font-family="Noto Sans Thai, sans-serif" font-size="14" font-weight="800" fill="#0369a1">1. นิโคติน (Nicotine)</text>
+    <text x="435" y="205" font-family="Noto Sans Thai, sans-serif" font-size="12" fill="#475569">สารเสพติดทำลายสมอง หัวใจ และระบบไหลเวียน</text>
+    <text x="435" y="245" font-family="Noto Sans Thai, sans-serif" font-size="14" font-weight="800" fill="#0369a1">2. ฟอร์มาลดีไฮด์ (Formaldehyde)</text>
+    <text x="435" y="265" font-family="Noto Sans Thai, sans-serif" font-size="12" fill="#475569">สารก่อมะเร็งในระบบทางเดินหายใจ</text>
+    <text x="435" y="305" font-family="Noto Sans Thai, sans-serif" font-size="14" font-weight="800" fill="#0369a1">3. โพรไพลีนไกลคอล (Propylene Glycol)</text>
+    <text x="435" y="325" font-family="Noto Sans Thai, sans-serif" font-size="12" fill="#475569">ระคายเคืองปอด ก่อโรคปอดอักเสบเฉียบพลัน</text>
+    <text x="435" y="365" font-family="Noto Sans Thai, sans-serif" font-size="14" font-weight="800" fill="#0369a1">4. โลหะหนัก (Heavy Metals / Lead)</text>
+    <text x="435" y="385" font-family="Noto Sans Thai, sans-serif" font-size="12" fill="#475569">ตะกั่ว นิเกิล สะสมในตับและไต</text>
+    <text x="435" y="425" font-family="Noto Sans Thai, sans-serif" font-size="14" font-weight="800" fill="#0369a1">5. สารหนู (Arsenic)</text>
+    <text x="435" y="445" font-family="Noto Sans Thai, sans-serif" font-size="12" fill="#475569">สารพิษทำลายเซลล์ เพิ่มความเสี่ยงมะเร็งปอด</text>
+    <rect x="30" y="520" width="740" height="75" rx="14" fill="#ffffff"/>
+    <rect x="45" y="535" width="160" height="45" rx="22" fill="#dc2626"/>
+    <text x="125" y="563" font-family="Noto Sans Thai, sans-serif" font-size="18" font-weight="800" fill="#ffffff" text-anchor="middle">📞 สายด่วน 1600</text>
+    <text x="225" y="552" font-family="Noto Sans Thai, sans-serif" font-size="14" font-weight="800" fill="#006837">สายด่วนเลิกบุหรี่ "อย่าปล่อยให้ควันจาง ทำลายชีวิตคุณให้หายไป"</text>
+    <text x="225" y="576" font-family="Noto Sans Thai, sans-serif" font-size="12" fill="#64748b">แนะนำ! ดาวน์โหลด Persona Health แอปพลิเคชันประเมินสุขภาพพนักงาน PTG</text>
+  </svg>`);
 
-  const BANNER_MOTHER_DAY_2026 = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360' width='800' height='360'><defs><linearGradient id='gMom' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%230284c7'/><stop offset='50%' stop-color='%230ea5e9'/><stop offset='100%' stop-color='%23ec4899'/></linearGradient></defs><rect width='800' height='360' fill='url(%23gMom)' rx='16'/><circle cx='710' cy='90' r='140' fill='rgba(255,255,255,0.08)'/><text x='50' y='65' font-family='sans-serif' font-size='16' font-weight='700' fill='%23e0f2fe'>PT HAPPYWORKPLACE · กิจกรรมวันแม่แห่งชาติ</text><text x='50' y='110' font-family='sans-serif' font-size='25' font-weight='800' fill='%23ffffff'>💙 PT MOTHER DAY 2026 💙</text><text x='50' y='155' font-family='sans-serif' font-size='18' font-weight='700' fill='%23fdf2f8'>กิจกรรมแบ่งปันช่วงเวลาดีๆ &quot;เพราะทุกเวลากับคุณแม่ คือความทรงจำล้ำค่า&quot;</text><text x='50' y='200' font-family='sans-serif' font-size='14' fill='%23f0fdf4'>📸 ส่งรูปภาพช่วงเวลาดีๆ คู่กับคุณแม่ พร้อมคำบรรยายสั้นๆ ลุ้นรับของรางวัลสุดพิเศษ</text><text x='50' y='230' font-family='sans-serif' font-size='14' fill='%23f0fdf4'>🗓️ ร่วมสนุกได้ตั้งแต่วันนี้ - 20 สิงหาคม 2569</text><rect x='50' y='265' width='250' height='46' rx='23' fill='%23ffffff'/><text x='175' y='294' font-family='sans-serif' font-size='14.5' font-weight='800' fill='%230284c7' text-anchor='middle'>🎁 ส่งรูปภาพลุ้นรับรางวัล</text><text x='740' y='300' font-family='sans-serif' font-size='70' text-anchor='end'>👩‍👧‍👦💙🌸</text></svg>";
+  const BANNER_PLEDGE_LENT = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+    <defs>
+      <linearGradient id="gPledge" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#b45309"/>
+        <stop offset="50%" stop-color="#d97706"/>
+        <stop offset="100%" stop-color="#f59e0b"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="360" fill="url(#gPledge)" rx="16"/>
+    <circle cx="700" cy="90" r="140" fill="rgba(255,255,255,0.08)"/>
+    <text x="50" y="65" font-family="Noto Sans Thai, sans-serif" font-size="16" font-weight="700" fill="#fef3c7">PT HAPPYWORKPLACE · กิจกรรมเข้าพรรษา 2569</text>
+    <text x="50" y="110" font-family="Noto Sans Thai, sans-serif" font-size="24" font-weight="800" fill="#ffffff">💛 เข้าพรรษา 16 วันแล้ว เป็นยังไงกันบ้าง?</text>
+    <text x="50" y="155" font-family="Noto Sans Thai, sans-serif" font-size="18" font-weight="700" fill="#fffbeb">ขอเชิญเพื่อนๆ ชาว PTG ร่วมตั้งปณิธาน "ชนะแล้ว ชนะใจ เลิกเหล้า หยุดบุหรี่" ปี 4</text>
+    <text x="50" y="200" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#fef9c3">✨ สร้างสุขภาพที่ดีให้ตนเอง ประหยัดค่าใช้จ่าย และมอบของขวัญล้ำค่าแก่ครอบครัว</text>
+    <text x="50" y="230" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#fef9c3">🎁 ร่วมกิจกรรมรับของที่ระลึกพิเศษจากโครงการ Happy Workplace</text>
+    <rect x="50" y="265" width="260" height="46" rx="23" fill="#ffffff"/>
+    <text x="180" y="294" font-family="Noto Sans Thai, sans-serif" font-size="14.5" font-weight="800" fill="#b45309" text-anchor="middle">✍️ ร่วมตั้งปณิธานคลิกที่นี่</text>
+    <text x="740" y="300" font-family="Noto Sans Thai, sans-serif" font-size="70" text-anchor="end">🧘‍♂️💛🍺🚫</text>
+  </svg>`);
 
-  const BANNER_WORKSHOP_HEALTHME = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360' width='800' height='360'><defs><linearGradient id='gWs' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23db2777'/><stop offset='50%' stop-color='%23e11d48'/><stop offset='100%' stop-color='%23f43f5e'/></linearGradient></defs><rect width='800' height='360' fill='url(%23gWs)' rx='16'/><circle cx='690' cy='100' r='130' fill='rgba(255,255,255,0.08)'/><text x='50' y='65' font-family='sans-serif' font-size='16' font-weight='700' fill='%23fce7f3'>PT HEALTH ME · WORKSHOP พิเศษ</text><text x='50' y='110' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>🥰💖 WORKSHOP &quot;สุขหมดสี่อก : มาลานารี&quot;</text><text x='50' y='155' font-family='sans-serif' font-size='18' font-weight='700' fill='%23fff1f2'>ชีวิตครอบครัวยุคใหม่ พร้อมใส่ใจสุขภาพคุณแม่และผู้หญิง</text><text x='50' y='200' font-family='sans-serif' font-size='14' fill='%23ffe4e6'>🏥 เรียนรู้การตรวจคัดกรองสุขภาพสตรี และการปรับสมดุลกาย-ใจ</text><text x='50' y='230' font-family='sans-serif' font-size='14' fill='%23ffe4e6'>📍 เข้าร่วมได้ทั้ง Onsite ณ อาคารปฏิบัติการ และ Online ผ่าน MS Teams</text><rect x='50' y='265' width='230' height='46' rx='23' fill='%23ffffff'/><text x='165' y='294' font-family='sans-serif' font-size='14.5' font-weight='800' fill='%23db2777' text-anchor='middle'>📝 ลงทะเบียนล่วงหน้า</text><text x='740' y='300' font-family='sans-serif' font-size='70' text-anchor='end'>🌸👩‍⚕️💖</text></svg>";
+  const BANNER_MOTHER_DAY_2026 = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+    <defs>
+      <linearGradient id="gMom" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0284c7"/>
+        <stop offset="50%" stop-color="#0ea5e9"/>
+        <stop offset="100%" stop-color="#ec4899"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="360" fill="url(#gMom)" rx="16"/>
+    <circle cx="710" cy="90" r="140" fill="rgba(255,255,255,0.08)"/>
+    <text x="50" y="65" font-family="Noto Sans Thai, sans-serif" font-size="16" font-weight="700" fill="#e0f2fe">PT HAPPYWORKPLACE · กิจกรรมวันแม่แห่งชาติ</text>
+    <text x="50" y="110" font-family="Noto Sans Thai, sans-serif" font-size="25" font-weight="800" fill="#ffffff">💙 PT MOTHER DAY 2026 💙</text>
+    <text x="50" y="155" font-family="Noto Sans Thai, sans-serif" font-size="18" font-weight="700" fill="#fdf2f8">กิจกรรมแบ่งปันช่วงเวลาดีๆ "เพราะทุกเวลากับคุณแม่ คือความทรงจำล้ำค่า"</text>
+    <text x="50" y="200" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#f0fdf4">📸 ส่งรูปภาพช่วงเวลาดีๆ คู่กับคุณแม่ พร้อมคำบรรยายสั้นๆ ลุ้นรับของรางวัลสุดพิเศษ</text>
+    <text x="50" y="230" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#f0fdf4">🗓️ ร่วมสนุกได้ตั้งแต่วันนี้ - 20 สิงหาคม 2569</text>
+    <rect x="50" y="265" width="250" height="46" rx="23" fill="#ffffff"/>
+    <text x="175" y="294" font-family="Noto Sans Thai, sans-serif" font-size="14.5" font-weight="800" fill="#0284c7" text-anchor="middle">🎁 ส่งรูปภาพลุ้นรับรางวัล</text>
+    <text x="740" y="300" font-family="Noto Sans Thai, sans-serif" font-size="70" text-anchor="end">👩‍👧‍👦💙🌸</text>
+  </svg>`);
 
-  const BANNER_ALCOHOL = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360' width='800' height='360'><defs><linearGradient id='gAlc' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%2378350f'/><stop offset='50%' stop-color='%239a3412'/><stop offset='100%' stop-color='%23c2410c'/></linearGradient></defs><rect width='800' height='360' fill='url(%23gAlc)' rx='16'/><text x='50' y='65' font-family='sans-serif' font-size='16' font-weight='700' fill='%23ffedd5'>PT HAPPYWORKPLACE · สุขภาพพนักงาน</text><text x='50' y='110' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>💚 มุม &quot;รัก&quot; สุขภาพ EP.38 : 🍺 โรคยอดฮิตจากฤทธิ์แอลกอฮอล์</text><text x='50' y='155' font-family='sans-serif' font-size='17' font-weight='700' fill='%23fed7aa'>หายนะที่ควรระวัง! ภัยเงียบทำร้ายตับ สมอง และหลอดเลือด</text><text x='50' y='200' font-family='sans-serif' font-size='14' fill='%23ffedd5'>1. ตับแข็งและไขมันพอกตับ  2. หลอดเลือดสมองตีบ  3. โรคกระเพาะอาหาร</text><text x='50' y='230' font-family='sans-serif' font-size='14' fill='%23ffedd5'>📲 ประเมินความเสี่ยงสุขภาพผ่าน Persona Health</text><rect x='50' y='265' width='230' height='46' rx='23' fill='%23ffffff'/><text x='165' y='294' font-family='sans-serif' font-size='14.5' font-weight='800' fill='%239a3412' text-anchor='middle'>🍺 เลิกเหล้าวันนี้ เพื่อตับที่ดี</text><text x='740' y='300' font-family='sans-serif' font-size='70' text-anchor='end'>⚠️🍺🚫</text></svg>";
+  const BANNER_WORKSHOP_HEALTHME = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+    <defs>
+      <linearGradient id="gWs" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#db2777"/>
+        <stop offset="50%" stop-color="#e11d48"/>
+        <stop offset="100%" stop-color="#f43f5e"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="360" fill="url(#gWs)" rx="16"/>
+    <circle cx="690" cy="100" r="130" fill="rgba(255,255,255,0.08)"/>
+    <text x="50" y="65" font-family="Noto Sans Thai, sans-serif" font-size="16" font-weight="700" fill="#fce7f3">PT HEALTH ME · WORKSHOP พิเศษ</text>
+    <text x="50" y="110" font-family="Noto Sans Thai, sans-serif" font-size="24" font-weight="800" fill="#ffffff">🥰💖 WORKSHOP "สุขหมดสี่อก : มาลานารี"</text>
+    <text x="50" y="155" font-family="Noto Sans Thai, sans-serif" font-size="18" font-weight="700" fill="#fff1f2">ชีวิตครอบครัวยุคใหม่ พร้อมใส่ใจสุขภาพคุณแม่และผู้หญิง</text>
+    <text x="50" y="200" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#ffe4e6">🏥 เรียนรู้การตรวจคัดกรองสุขภาพสตรี และการปรับสมดุลกาย-ใจ</text>
+    <text x="50" y="230" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#ffe4e6">📍 เข้าร่วมได้ทั้ง Onsite ณ อาคารปฏิบัติการ และ Online ผ่าน MS Teams</text>
+    <rect x="50" y="265" width="230" height="46" rx="23" fill="#ffffff"/>
+    <text x="165" y="294" font-family="Noto Sans Thai, sans-serif" font-size="14.5" font-weight="800" fill="#db2777" text-anchor="middle">📝 ลงทะเบียนล่วงหน้า</text>
+    <text x="740" y="300" font-family="Noto Sans Thai, sans-serif" font-size="70" text-anchor="end">🌸👩‍⚕️💖</text>
+  </svg>`);
 
-  const BANNER_EP40_MENTAL = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 360' width='800' height='360'><defs><linearGradient id='gMen' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%230f766e'/><stop offset='50%' stop-color='%230d9488'/><stop offset='100%' stop-color='%2314b8a6'/></linearGradient></defs><rect width='800' height='360' fill='url(%23gMen)' rx='16'/><text x='50' y='65' font-family='sans-serif' font-size='16' font-weight='700' fill='%23ccfbf1'>PT HAPPYWORKPLACE · สุขภาพใจ</text><text x='50' y='110' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>💚 มุม &quot;รัก&quot; สุขภาพ EP.40 : การดูแลกาย - ใจตนเอง ❤️</text><text x='50' y='155' font-family='sans-serif' font-size='17' font-weight='700' fill='%23e6fffa'>สำหรับบุคคลทั่วไปที่รับรู้เหตุการณ์รุนแรงและข่าวสารเครียด</text><text x='50' y='200' font-family='sans-serif' font-size='14' fill='%23ccfbf1'>1. จำกัดเวลาเสพข่าวสาร  2. ฝึกหายใจลึกๆ คลายกล้ามเนื้อ  3. พูดคุยกับเพื่อนร่วมงาน</text><text x='50' y='230' font-family='sans-serif' font-size='14' fill='%23ccfbf1'>เพราะสุขภาพกาย-ใจของพนักงานเป็นสิ่งสำคัญที่สุด</text><rect x='50' y='265' width='230' height='46' rx='23' fill='%23ffffff'/><text x='165' y='294' font-family='sans-serif' font-size='14.5' font-weight='800' fill='%230f766e' text-anchor='middle'>❤️ ดูแลใจไปด้วยกัน</text><text x='740' y='300' font-family='sans-serif' font-size='70' text-anchor='end'>🧘‍♀️💚✨</text></svg>";
+  const BANNER_ALCOHOL = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+    <defs>
+      <linearGradient id="gAlc" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#78350f"/>
+        <stop offset="50%" stop-color="#9a3412"/>
+        <stop offset="100%" stop-color="#c2410c"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="360" fill="url(#gAlc)" rx="16"/>
+    <text x="50" y="65" font-family="Noto Sans Thai, sans-serif" font-size="16" font-weight="700" fill="#ffedd5">PT HAPPYWORKPLACE · สุขภาพพนักงาน</text>
+    <text x="50" y="110" font-family="Noto Sans Thai, sans-serif" font-size="24" font-weight="800" fill="#ffffff">💚 มุม "รัก" สุขภาพ EP.38 : 🍺 โรคยอดฮิตจากฤทธิ์แอลกอฮอล์</text>
+    <text x="50" y="155" font-family="Noto Sans Thai, sans-serif" font-size="17" font-weight="700" fill="#fed7aa">หายนะที่ควรระวัง! ภัยเงียบทำร้ายตับ สมอง และหลอดเลือด</text>
+    <text x="50" y="200" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#ffedd5">1. ตับแข็งและไขมันพอกตับ  2. หลอดเลือดสมองตีบ  3. โรคกระเพาะอาหาร</text>
+    <text x="50" y="230" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#ffedd5">📲 ประเมินความเสี่ยงสุขภาพผ่าน Persona Health</text>
+    <rect x="50" y="265" width="230" height="46" rx="23" fill="#ffffff"/>
+    <text x="165" y="294" font-family="Noto Sans Thai, sans-serif" font-size="14.5" font-weight="800" fill="#9a3412" text-anchor="middle">🍺 เลิกเหล้าวันนี้ เพื่อตับที่ดี</text>
+    <text x="740" y="300" font-family="Noto Sans Thai, sans-serif" font-size="70" text-anchor="end">⚠️🍺🚫</text>
+  </svg>`);
 
-  const BANNER_IT = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='gIT' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23312e81'/><stop offset='50%' stop-color='%234338ca'/><stop offset='100%' stop-color='%236366f1'/></linearGradient></defs><rect width='800' height='320' fill='url(%23gIT)' rx='16'/><text x='50' y='75' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>🔧 IT &amp; WMS SYSTEM MAINTENANCE</text><text x='50' y='125' font-family='sans-serif' font-size='19' font-weight='700' fill='%23a5f3fc'>ปรับปรุงเซิร์ฟเวอร์ WMS &amp; Wi-Fi โซน Picking คลังวังน้อย</text><text x='50' y='170' font-family='sans-serif' font-size='14' fill='%23e0e7ff'>🗓️ วันอาทิตย์ที่ 23 สิงหาคม 2569 เวลา 01:00 - 04:00 น.</text><rect x='50' y='235' width='230' height='42' rx='21' fill='%23ffffff'/><text x='165' y='262' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23312e81' text-anchor='middle'>💻 IT Operations Team</text><text x='740' y='265' font-family='sans-serif' font-size='60' text-anchor='end'>🖥️📡⚡</text></svg>";
+  const BANNER_EP40_MENTAL = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+    <defs>
+      <linearGradient id="gMen" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0f766e"/>
+        <stop offset="50%" stop-color="#0d9488"/>
+        <stop offset="100%" stop-color="#14b8a6"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="360" fill="url(#gMen)" rx="16"/>
+    <text x="50" y="65" font-family="Noto Sans Thai, sans-serif" font-size="16" font-weight="700" fill="#ccfbf1">PT HAPPYWORKPLACE · สุขภาพใจ</text>
+    <text x="50" y="110" font-family="Noto Sans Thai, sans-serif" font-size="24" font-weight="800" fill="#ffffff">💚 มุม "รัก" สุขภาพ EP.40 : การดูแลกาย - ใจตนเอง ❤️</text>
+    <text x="50" y="155" font-family="Noto Sans Thai, sans-serif" font-size="17" font-weight="700" fill="#e6fffa">สำหรับบุคคลทั่วไปที่รับรู้เหตุการณ์รุนแรงและข่าวสารเครียด</text>
+    <text x="50" y="200" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#ccfbf1">1. จำกัดเวลาเสพข่าวสาร  2. ฝึกหายใจลึกๆ คลายกล้ามเนื้อ  3. พูดคุยกับเพื่อนร่วมงาน</text>
+    <text x="50" y="230" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#ccfbf1">เพราะสุขภาพกาย-ใจของพนักงานเป็นสิ่งสำคัญที่สุด</text>
+    <rect x="50" y="265" width="230" height="46" rx="23" fill="#ffffff"/>
+    <text x="165" y="294" font-family="Noto Sans Thai, sans-serif" font-size="14.5" font-weight="800" fill="#0f766e" text-anchor="middle">❤️ ดูแลใจไปด้วยกัน</text>
+    <text x="740" y="300" font-family="Noto Sans Thai, sans-serif" font-size="70" text-anchor="end">🧘‍♀️💚✨</text>
+  </svg>`);
 
-  const BANNER_SAFETY = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='gSafe' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23991b1b'/><stop offset='50%' stop-color='%23dc2626'/><stop offset='100%' stop-color='%23ea580c'/></linearGradient></defs><rect width='800' height='320' fill='url(%23gSafe)' rx='16'/><text x='50' y='75' font-family='sans-serif' font-size='25' font-weight='800' fill='%23ffffff'>⚠️ SAFETY FIRST : ปลอดภัยไว้ก่อน</text><text x='50' y='120' font-family='sans-serif' font-size='17' font-weight='700' fill='%23fef08a'>มาตรการความปลอดภัยและตรวจเช็คอุปกรณ์ก่อนเริ่มงาน</text><text x='50' y='165' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>1. สวมใส่อุปกรณ์ PPE ครบชุด  2. ขับขี่ไม่เกิน 10 กม./ชม.</text><rect x='50' y='250' width='210' height='40' rx='20' fill='%23ffffff'/><text x='155' y='275' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23b91c1c' text-anchor='middle'>🛡️ จป. ปฏิบัติการ DC</text><text x='740' y='200' font-family='sans-serif' font-size='55' text-anchor='end'>🦺⛑️⚠️</text></svg>";
+  const BANNER_IT = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+    <defs>
+      <linearGradient id="gIT" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#312e81"/>
+        <stop offset="50%" stop-color="#4338ca"/>
+        <stop offset="100%" stop-color="#6366f1"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="320" fill="url(#gIT)" rx="16"/>
+    <text x="50" y="75" font-family="Noto Sans Thai, sans-serif" font-size="24" font-weight="800" fill="#ffffff">🔧 IT &amp; WMS SYSTEM MAINTENANCE</text>
+    <text x="50" y="125" font-family="Noto Sans Thai, sans-serif" font-size="19" font-weight="700" fill="#a5f3fc">ปรับปรุงเซิร์ฟเวอร์ WMS &amp; Wi-Fi โซน Picking คลังวังน้อย</text>
+    <text x="50" y="170" font-family="Noto Sans Thai, sans-serif" font-size="14" fill="#e0e7ff">🗓️ วันอาทิตย์ที่ 23 สิงหาคม 2569 เวลา 01:00 - 04:00 น.</text>
+    <rect x="50" y="235" width="230" height="42" rx="21" fill="#ffffff"/>
+    <text x="165" y="262" font-family="Noto Sans Thai, sans-serif" font-size="13.5" font-weight="800" fill="#312e81" text-anchor="middle">💻 IT Operations Team</text>
+    <text x="740" y="265" font-family="Noto Sans Thai, sans-serif" font-size="60" text-anchor="end">🖥️📡⚡</text>
+  </svg>`);
 
-  const BANNER_HR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='gHR' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23006837'/><stop offset='50%' stop-color='%230284c7'/><stop offset='100%' stop-color='%230ea5e9'/></linearGradient></defs><rect width='800' height='320' fill='url(%23gHR)' rx='16'/><text x='50' y='75' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>PTG HEALTH &amp; WELLNESS 2569</text><text x='50' y='125' font-family='sans-serif' font-size='20' font-weight='700' fill='%23fef08a'>ตรวจสุขภาพประจำปี พนักงาน DC วังน้อย</text><rect x='50' y='235' width='230' height='42' rx='21' fill='%23ffffff'/><text x='165' y='262' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23006837' text-anchor='middle'>🩺 ฝ่ายทรัพยากรบุคคล (HR)</text><text x='740' y='265' font-family='sans-serif' font-size='60' text-anchor='end'>🏥🩺💚</text></svg>";
+  const BANNER_SAFETY = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+    <defs>
+      <linearGradient id="gSafe" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#991b1b"/>
+        <stop offset="50%" stop-color="#dc2626"/>
+        <stop offset="100%" stop-color="#ea580c"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="320" fill="url(#gSafe)" rx="16"/>
+    <text x="50" y="75" font-family="Noto Sans Thai, sans-serif" font-size="25" font-weight="800" fill="#ffffff">⚠️ SAFETY FIRST : ปลอดภัยไว้ก่อน</text>
+    <text x="50" y="120" font-family="Noto Sans Thai, sans-serif" font-size="17" font-weight="700" fill="#fef08a">มาตรการความปลอดภัยและตรวจเช็คอุปกรณ์ก่อนเริ่มงาน</text>
+    <text x="50" y="165" font-family="Noto Sans Thai, sans-serif" font-size="13.5" fill="#fef2f2">1. สวมใส่อุปกรณ์ PPE ครบชุด  2. ขับขี่ไม่เกิน 10 กม./ชม.</text>
+    <rect x="50" y="250" width="210" height="40" rx="20" fill="#ffffff"/>
+    <text x="155" y="275" font-family="Noto Sans Thai, sans-serif" font-size="13.5" font-weight="800" fill="#b91c1c" text-anchor="middle">🛡️ จป. ปฏิบัติการ DC</text>
+    <text x="740" y="200" font-family="Noto Sans Thai, sans-serif" font-size="55" text-anchor="end">🦺⛑️⚠️</text>
+  </svg>`);
 
-  const BANNER_OPS = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='gOps' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23064e3b'/><stop offset='50%' stop-color='%23059669'/><stop offset='100%' stop-color='%2310b981'/></linearGradient></defs><rect width='800' height='320' fill='url(%23gOps)' rx='16'/><text x='50' y='75' font-family='sans-serif' font-size='24' font-weight='800' fill='%23ffffff'>📊 DC OPERATIONS PERFORMANCE</text><text x='50' y='125' font-family='sans-serif' font-size='19' font-weight='700' fill='%23fde047'>สรุปยอดจ่ายสินค้า Wave Max Mart &amp; พันธุ์ไทย สัปดาห์ที่ 2</text><rect x='50' y='235' width='230' height='42' rx='21' fill='%23ffffff'/><text x='165' y='262' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23064e3b' text-anchor='middle'>⚡ ฝ่ายปฏิบัติการ DC วังน้อย</text><text x='740' y='265' font-family='sans-serif' font-size='60' text-anchor='end'>📦🚛🏆</text></svg>";
+  const BANNER_HR = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+    <defs>
+      <linearGradient id="gHR" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#006837"/>
+        <stop offset="50%" stop-color="#0284c7"/>
+        <stop offset="100%" stop-color="#0ea5e9"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="320" fill="url(#gHR)" rx="16"/>
+    <text x="50" y="75" font-family="Noto Sans Thai, sans-serif" font-size="24" font-weight="800" fill="#ffffff">PTG HEALTH &amp; WELLNESS 2569</text>
+    <text x="50" y="125" font-family="Noto Sans Thai, sans-serif" font-size="20" font-weight="700" fill="#fef08a">ตรวจสุขภาพประจำปี พนักงาน DC วังน้อย</text>
+    <rect x="50" y="235" width="230" height="42" rx="21" fill="#ffffff"/>
+    <text x="165" y="262" font-family="Noto Sans Thai, sans-serif" font-size="13.5" font-weight="800" fill="#006837" text-anchor="middle">🩺 ฝ่ายทรัพยากรบุคคล (HR)</text>
+    <text x="740" y="265" font-family="Noto Sans Thai, sans-serif" font-size="60" text-anchor="end">🏥🩺💚</text>
+  </svg>`);
+
+  const BANNER_OPS = encodeSvg(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+    <defs>
+      <linearGradient id="gOps" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#064e3b"/>
+        <stop offset="50%" stop-color="#059669"/>
+        <stop offset="100%" stop-color="#10b981"/>
+      </linearGradient>
+    </defs>
+    <rect width="800" height="320" fill="url(#gOps)" rx="16"/>
+    <text x="50" y="75" font-family="Noto Sans Thai, sans-serif" font-size="24" font-weight="800" fill="#ffffff">📊 DC OPERATIONS PERFORMANCE</text>
+    <text x="50" y="125" font-family="Noto Sans Thai, sans-serif" font-size="19" font-weight="700" fill="#fde047">สรุปยอดจ่ายสินค้า Wave Max Mart &amp; พันธุ์ไทย สัปดาห์ที่ 2</text>
+    <rect x="50" y="235" width="230" height="42" rx="21" fill="#ffffff"/>
+    <text x="165" y="262" font-family="Noto Sans Thai, sans-serif" font-size="13.5" font-weight="800" fill="#064e3b" text-anchor="middle">⚡ ฝ่ายปฏิบัติการ DC วังน้อย</text>
+    <text x="740" y="265" font-family="Noto Sans Thai, sans-serif" font-size="60" text-anchor="end">📦🚛🏆</text>
+  </svg>`);
 
   // Authentic Seed Announcements for August 2026 (matching user Gmail from PT Happyworkplace)
   const DEFAULT_EMAIL_ANNOUNCEMENTS = [
@@ -1320,16 +1527,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentMonthFilter = "current"; // "current" | "prev" | "all"
 
-
   function getAnnouncements() {
     try {
+      // Clear legacy storage keys
+      localStorage.removeItem("ptg_dc_announcements");
+      localStorage.removeItem("ptg_dc_announcements_v2");
+      localStorage.removeItem("ptg_dc_announcements_v3");
+
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_EMAIL_ANNOUNCEMENTS));
         return DEFAULT_EMAIL_ANNOUNCEMENTS;
       }
       const parsed = JSON.parse(stored);
-      if (!Array.isArray(parsed) || parsed.length === 0) {
+      if (!Array.isArray(parsed) || parsed.length === 0 || !parsed.some(x => x.id === "ann-happy-ep41")) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_EMAIL_ANNOUNCEMENTS));
         return DEFAULT_EMAIL_ANNOUNCEMENTS;
       }
