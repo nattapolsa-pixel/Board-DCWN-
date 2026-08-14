@@ -228,29 +228,30 @@ document.addEventListener("DOMContentLoaded", () => {
     "MPPTG0555": { name: "นายศรัญญู อดกลั้น",         role: "RT" },
   };
 
-  // ─── Core DC Portal Systems (All 7 Systems) ───────────────
+  // ─── Core DC Portal Systems (Categorized by Position / Department) ───
   const DEFAULT_SYSTEMS = [
+    // ⚡ OPERATION
     {
       id: "dc-ops-monitor",
       name: "DC Ops Monitor V2 (DC Project Dashboard)",
       url: "https://dc-ops-monitor-v2.onrender.com/",
-      category: "ops",
-      categoryName: "มอนิเตอร์ & วางแผน",
+      category: "operation",
+      categoryName: "Operation",
       theme: "green",
       icon: "📊",
-      badge: "Live Monitor · BigQuery Sync",
-      desc: "ระบบมอนิเตอร์และวางแผน Wave งานคลังสินค้า ติดตามสถานะงาน Wave / Order และดูความคืบหน้าการทำงานรายวันแบบเรียลไทม์",
+      badge: "Live Monitor · BigQuery",
+      desc: "ระบบมอนิเตอร์และวางแผน Wave งานคลังสินค้า ติดตามสถานะ Wave / Order และดูความคืบหน้าการทำงานรายวันแบบเรียลไทม์",
       isCustom: false
     },
     {
       id: "pick-productivity",
       name: "Picker Productivity Dashboard V2",
       url: "https://nattapolsa-pixel.github.io/Productivity-Picker/",
-      category: "picker",
-      categoryName: "การหยิบ & ประสิทธิภาพ",
+      category: "operation",
+      categoryName: "Operation",
       theme: "light-green",
       icon: "⚡",
-      badge: "GitHub Pages · BigQuery Live",
+      badge: "Picker UPH · Real-time",
       desc: "แดชบอร์ดวัดประสิทธิภาพการหยิบสินค้าของพนักงาน (Picker) วิเคราะห์ความเร็ว UPH, สถิติรายบุคคล รายกะ และรายโซนในคลัง",
       isCustom: false
     },
@@ -258,60 +259,108 @@ document.addEventListener("DOMContentLoaded", () => {
       id: "pro-lpn-scanner",
       name: "Pro LPN Scanner (Warehouse Handheld)",
       url: "https://pro-warehouse.github.io/pro-scanner/",
-      category: "scanner",
-      categoryName: "สแกนเนอร์ & Handheld",
+      category: "operation",
+      categoryName: "Operation",
       theme: "purple",
       icon: "📱",
-      badge: "Handheld & Mobile · FastAPI Sync",
+      badge: "Handheld & Mobile · FastAPI",
       desc: "ระบบสแกนบาร์โค้ด LPN และ Tote บนมือถือหรือเครื่องยิง Handheld สำหรับตรวจนับสินค้า ยิง Wave ปิดกล่อง แยกสี/สาขา อัปเดตคลังทันที",
       isCustom: false
     },
-    {
-      id: "damage-system",
-      name: "Damage 2026 Form & Dashboard",
-      url: "https://nattapolsa-pixel.github.io/Damage/",
-      category: "damage",
-      categoryName: "สินค้าเสียหาย (Damage)",
-      theme: "red",
-      icon: "⚠️",
-      badge: "Google Sheet Sync · Photo Upload",
-      desc: "ระบบบันทึกและรายงานสินค้าชำรุดเสียหาย สแกนบาร์โค้ด ถ่ายรูปหลักฐาน ระบุประเภทความเสียหาย และสรุป Dashboard วิเคราะห์สินค้าชำรุด",
-      isCustom: false
-    },
-    {
-      id: "dc-new-store",
-      name: "DC New Store System",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
-      category: "newstore",
-      categoryName: "สาขาเปิดใหม่ (New Store)",
-      theme: "blue",
-      icon: "🏬",
-      badge: "Apps Script Web App · Auto Alert",
-      desc: "ระบบบริหารจัดการและวางแผนการจัดส่งสินค้าสำหรับสาขาเปิดใหม่ (New Store) ติดตามสถานะเตรียมสินค้า (Alloc, Pick, QC, Ship) และสรุปรายงาน",
-      isCustom: false
-    },
+
+    // 📦 INVENTORY
     {
       id: "put-away-system",
       name: "Put-away & Storage Master (Put-away 2026)",
       url: "https://pro-warehouse.github.io/pro-scanner/",
-      category: "ops",
-      categoryName: "จัดเก็บ & Put-away",
-      theme: "light-green",
+      category: "inventory",
+      categoryName: "Inventory",
+      theme: "green",
       icon: "📥",
-      badge: "WMS Inbound · Storage Sync",
-      desc: "ระบบจัดเก็บและจัดการตำแหน่ง Shelf สินค้า (Put-away) นำสินค้าเข้าตาม Zone และ Location ในคลังสินค้าอย่างถูกต้อง",
+      badge: "Location & Shelf Sync",
+      desc: "ระบบจัดเก็บและจัดการตำแหน่ง Shelf สินค้า (Put-away) นำสินค้าเข้าตาม Zone และ Location ในคลังสินค้าอย่างถูกต้อง แม่นยำ",
       isCustom: false
     },
     {
       id: "zone-time-monitor",
       name: "Warehouse Monitor Time by Zone",
       url: "https://dc-ops-monitor-v2.onrender.com/",
-      category: "ops",
-      categoryName: "มอนิเตอร์เวลาตามโซน",
+      category: "inventory",
+      categoryName: "Inventory",
       theme: "blue",
       icon: "⏱️",
-      badge: "Time Tracking · Zone SLA",
+      badge: "Zone SLA · Cycle Time",
       desc: "ระบบติดตามระยะเวลาการปฏิบัติงานแยกตามโซนคลังสินค้า (AA, AL, AN, CA, EA, AG, AI) ควบคุม SLA และรอบส่งมอบ",
+      isCustom: false
+    },
+
+    // 🦺 SAFETY
+    {
+      id: "safety-checklist",
+      name: "Safety & PPE Daily Checklist 2026",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      category: "safety",
+      categoryName: "Safety",
+      theme: "amber",
+      icon: "🦺",
+      badge: "จป. Checklist · Forklift Safety",
+      desc: "ระบบตรวจสอบความปลอดภัยประจำวัน บันทึกการตรวจสภาพรถ Forklift, อุปกรณ์ PPE, และรายงานจุดเสี่ยงอุบัติเหตุในคลัง",
+      isCustom: false
+    },
+
+    // 🚚 TRANSPORT
+    {
+      id: "transport-dispatch",
+      name: "Transport Route & Dispatch Monitor",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      category: "transport",
+      categoryName: "Transport",
+      theme: "blue",
+      icon: "🚚",
+      badge: "Route & Fleet Tracking",
+      desc: "ระบบติดตามสายรถจัดส่งสินค้าและกำหนดการปล่อยรถ (Dispatch) ไปยังสถานีบริการน้ำมัน PT, Max Mart, และร้านกาแฟพันธุ์ไทย",
+      isCustom: false
+    },
+
+    // 👥 HR
+    {
+      id: "hr-attendance-portal",
+      name: "HR Attendance & Shift Portal",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      category: "hr",
+      categoryName: "HR",
+      theme: "purple",
+      icon: "👥",
+      badge: "Time Attendance · 220+ Emps",
+      desc: "ระบบบันทึกเวลาทำงาน จัดตารางกะรายวัน ตรวจสอบชั่วโมง OT และข้อมูลพนักงานศูนย์กระจายสินค้า PTG วังน้อย",
+      isCustom: false
+    },
+
+    // ⚠️ DAMAGE
+    {
+      id: "damage-system",
+      name: "Damage 2026 Form & Dashboard",
+      url: "https://nattapolsa-pixel.github.io/Damage/",
+      category: "damage",
+      categoryName: "Damage",
+      theme: "red",
+      icon: "⚠️",
+      badge: "Google Sheet · Photo Upload",
+      desc: "ระบบบันทึกและรายงานสินค้าชำรุดเสียหาย สแกนบาร์โค้ด ถ่ายรูปหลักฐาน ระบุประเภทความเสียหาย และสรุป Dashboard วิเคราะห์สินค้าชำรุด",
+      isCustom: false
+    },
+
+    // 💬 CUSTOMER SERVICE
+    {
+      id: "dc-new-store",
+      name: "DC New Store System (Customer Service)",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      category: "cs",
+      categoryName: "Customer Service",
+      theme: "blue",
+      icon: "🏬",
+      badge: "Apps Script · Store Live",
+      desc: "ระบบบริหารจัดการและวางแผนการจัดส่งสินค้าสำหรับสาขาเปิดใหม่ (New Store) ติดตามสถานะเตรียมสินค้า (Alloc, Pick, QC, Ship) และรายงานสรุป",
       isCustom: false
     }
   ];
@@ -376,9 +425,77 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function getFavorites() {
+    try {
+      const stored = localStorage.getItem("ptg_dc_favorites");
+      return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function toggleFavorite(id) {
+    let favs = getFavorites();
+    if (favs.includes(id)) {
+      favs = favs.filter(f => f !== id);
+    } else {
+      favs.push(id);
+    }
+    try {
+      localStorage.setItem("ptg_dc_favorites", JSON.stringify(favs));
+    } catch (e) {}
+    renderSystems();
+  }
+
   function getAllSystems() {
     const custom = getCustomSystems();
     return [...DEFAULT_SYSTEMS, ...custom];
+  }
+
+  // Update Dynamic Pill Counters
+  function updatePillCounters(allSystems) {
+    const favs = getFavorites();
+    const counts = {
+      all: allSystems.length,
+      inventory: 0,
+      operation: 0,
+      safety: 0,
+      transport: 0,
+      hr: 0,
+      damage: 0,
+      cs: 0,
+      favorites: 0,
+      custom: 0
+    };
+
+    allSystems.forEach(sys => {
+      if (counts[sys.category] !== undefined) {
+        counts[sys.category]++;
+      }
+      if (sys.isCustom) counts.custom++;
+      if (favs.includes(sys.id)) counts.favorites++;
+    });
+
+    categoryPills.forEach(pill => {
+      const cat = pill.getAttribute("data-category");
+      if (!cat) return;
+      const count = counts[cat] !== undefined ? counts[cat] : 0;
+      const labelMap = {
+        all: `ทั้งหมด (${count})`,
+        inventory: `📦 Inventory (${count})`,
+        operation: `⚡ Operation (${count})`,
+        safety: `🦺 Safety (${count})`,
+        transport: `🚚 Transport (${count})`,
+        hr: `👥 HR (${count})`,
+        damage: `⚠️ Damage (${count})`,
+        cs: `💬 Customer Service (${count})`,
+        favorites: `⭐ ติดดาว (${count})`,
+        custom: `➕ เพิ่มเอง (${count})`
+      };
+      if (labelMap[cat]) {
+        pill.textContent = labelMap[cat];
+      }
+    });
   }
 
   // ─── Render Systems Grid ───────────────────────────────────
@@ -386,18 +503,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!systemsGrid) return;
 
     const allSystems = getAllSystems();
-    if (countAllEl) countAllEl.textContent = allSystems.length;
+    const favs = getFavorites();
+    updatePillCounters(allSystems);
 
     // Filter systems
     const filtered = allSystems.filter(sys => {
       // Category match
-      const matchCat = (activeCategory === "all") || (sys.category === activeCategory);
+      let matchCat = false;
+      if (activeCategory === "all") {
+        matchCat = true;
+      } else if (activeCategory === "favorites") {
+        matchCat = favs.includes(sys.id);
+      } else if (activeCategory === "custom") {
+        matchCat = !!sys.isCustom;
+      } else {
+        matchCat = (sys.category === activeCategory);
+      }
+
       // Search match
       const q = searchQuery.toLowerCase().trim();
       const matchQuery = !q ||
         sys.name.toLowerCase().includes(q) ||
         sys.desc.toLowerCase().includes(q) ||
-        sys.categoryName.toLowerCase().includes(q) ||
+        (sys.categoryName && sys.categoryName.toLowerCase().includes(q)) ||
         sys.url.toLowerCase().includes(q) ||
         (sys.badge && sys.badge.toLowerCase().includes(q));
 
@@ -412,14 +540,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (noResultsState) noResultsState.style.display = "none";
 
-    systemsGrid.innerHTML = filtered.map(sys => `
+    systemsGrid.innerHTML = filtered.map(sys => {
+      const isFav = favs.includes(sys.id);
+      return `
       <div class="system-card card-theme-${sys.theme || 'green'}" data-id="${sys.id}">
         <div>
           <div class="system-card-header">
             <div class="system-icon-wrap">${sys.icon || '🔗'}</div>
-            <div class="system-badges-wrap">
-              <span class="system-category-tag">${sys.categoryName || 'ทั่วไป'}</span>
-              ${sys.badge ? `<span class="system-badge-tag">${sys.badge}</span>` : ''}
+            <div class="system-header-right">
+              <button class="star-btn ${isFav ? 'starred' : ''}" data-star-id="${sys.id}" title="${isFav ? 'ยกเลิกติดดาว' : 'ติดดาวระบบนี้'}">
+                <svg viewBox="0 0 24 24" fill="${isFav ? '#fbbf24' : 'none'}" stroke="${isFav ? '#f59e0b' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              </button>
+              <div class="system-badges-wrap">
+                <span class="system-category-tag cat-${sys.category || 'custom'}">${sys.categoryName || 'ทั่วไป'}</span>
+                ${sys.badge ? `<span class="system-badge-tag">${sys.badge}</span>` : ''}
+              </div>
             </div>
           </div>
 
@@ -454,7 +591,16 @@ document.addEventListener("DOMContentLoaded", () => {
           ` : ''}
         </div>
       </div>
-    `).join("");
+    `}).join("");
+
+    // Attach Star listeners
+    document.querySelectorAll(".star-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = btn.getAttribute("data-star-id");
+        if (id) toggleFavorite(id);
+      });
+    });
 
     // Attach delete listeners for custom cards
     document.querySelectorAll(".card-remove-btn").forEach(btn => {
@@ -568,7 +714,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = sysUrlInput?.value.trim();
     const name = sysNameInput?.value.trim();
     const cat = sysCategoryInput?.value || "custom";
-    const catName = sysCategoryInput?.options[sysCategoryInput.selectedIndex]?.text || "อื่นๆ";
+    const rawOptionText = sysCategoryInput?.options[sysCategoryInput.selectedIndex]?.text || "ทั่วไป";
+    // Clean label for badge
+    const catName = rawOptionText.replace(/^[\p{Emoji}\s]+/u, '').replace(/\s*\(.*\)$/, '').trim() || rawOptionText;
     const theme = sysThemeInput?.value || "green";
     const desc = sysDescInput?.value.trim();
     const badge = sysBadgeInput?.value.trim() || "Custom System";

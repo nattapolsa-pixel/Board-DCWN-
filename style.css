@@ -1409,6 +1409,48 @@ body.is-portal #portalView {
 .card-theme-purple .system-icon-wrap      { background: #f3e8ff; color: var(--accent-purple); }
 .card-theme-amber .system-icon-wrap       { background: #fef3c7; color: var(--accent-amber); }
 
+.system-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.star-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: #f4f6f5;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-subtle);
+  transition: all 0.18s ease;
+  padding: 0;
+}
+
+.star-btn svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.18s ease;
+}
+
+.star-btn:hover {
+  background: #fef3c7;
+  border-color: #fde68a;
+  color: #d97706;
+  transform: scale(1.08);
+}
+
+.star-btn.starred {
+  background: #fffbeb;
+  border-color: #fcd34d;
+  color: #f59e0b;
+}
+
 .system-badges-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -1423,6 +1465,57 @@ body.is-portal #portalView {
   border-radius: var(--radius-full);
   background: #eef3f0;
   color: var(--text-muted);
+  border: 1px solid transparent;
+  letter-spacing: 0.2px;
+}
+
+/* Department Badge Variants */
+.system-category-tag.cat-inventory {
+  background: #e6f4ea;
+  color: #137333;
+  border-color: #ceead6;
+}
+
+.system-category-tag.cat-operation {
+  background: #e8f7ee;
+  color: #045e2c;
+  border-color: #c0ebce;
+}
+
+.system-category-tag.cat-safety {
+  background: #fef3c7;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.system-category-tag.cat-transport {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+
+.system-category-tag.cat-hr {
+  background: #f3e8ff;
+  color: #7e22ce;
+  border-color: #e9d5ff;
+}
+
+.system-category-tag.cat-damage {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+.system-category-tag.cat-cs {
+  background: #e0e7ff;
+  color: #4338ca;
+  border-color: #c7d2fe;
+}
+
+.system-category-tag.cat-custom {
+  background: #f1f5f9;
+  color: #475569;
+  border-color: #e2e8f0;
 }
 
 .system-badge-tag {

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3.5" />
+  <link rel="stylesheet" href="style.css?v=5.0" />
 </head>
 <body class="is-login">
 
@@ -321,15 +321,18 @@
               </div>
             </div>
 
-            <!-- Category Filter Pills -->
+            <!-- Category Filter Pills (By Position / Department) -->
             <div class="category-pills" id="categoryFilterContainer">
               <button class="filter-pill active" data-category="all">ทั้งหมด (<span id="countAll">0</span>)</button>
-              <button class="filter-pill" data-category="ops">มอนิเตอร์ & วางแผน</button>
-              <button class="filter-pill" data-category="picker">การหยิบ & ประสิทธิภาพ</button>
-              <button class="filter-pill" data-category="scanner">สแกนเนอร์ & Handheld</button>
-              <button class="filter-pill" data-category="damage">สินค้าเสียหาย (Damage)</button>
-              <button class="filter-pill" data-category="newstore">สาขาเปิดใหม่ (New Store)</button>
-              <button class="filter-pill" data-category="custom">ระบบที่เพิ่มเอง</button>
+              <button class="filter-pill" data-category="inventory">📦 Inventory</button>
+              <button class="filter-pill" data-category="operation">⚡ Operation</button>
+              <button class="filter-pill" data-category="safety">🦺 Safety</button>
+              <button class="filter-pill" data-category="transport">🚚 Transport</button>
+              <button class="filter-pill" data-category="hr">👥 HR</button>
+              <button class="filter-pill" data-category="damage">⚠️ Damage</button>
+              <button class="filter-pill" data-category="cs">💬 Customer Service</button>
+              <button class="filter-pill" data-category="favorites">⭐ ติดดาวไว้</button>
+              <button class="filter-pill" data-category="custom">➕ ระบบที่เพิ่มเอง</button>
             </div>
           </div>
 
@@ -366,7 +369,7 @@
             <p>ศูนย์รวมการกระจายสินค้าสำหรับสถานีบริการน้ำมัน PT, ร้านสะดวกซื้อ Max Mart, และร้านกาแฟพันธุ์ไทย ครอบคลุมการจัดส่งสินค้าทั่วประเทศ</p>
             <div class="warehouse-stats-row">
               <div class="wh-stat">
-                <strong>5/5</strong>
+                <strong>7+</strong>
                 <span>ระบบปฏิบัติการหลัก</span>
               </div>
               <div class="wh-stat">
@@ -426,14 +429,16 @@
 
         <div class="form-row">
           <div class="form-group">
-            <label for="sysCategory">หมวดหมู่</label>
+            <label for="sysCategory">ตำแหน่ง / แผนกที่รับผิดชอบ</label>
             <select id="sysCategory" class="form-select">
-              <option value="ops">มอนิเตอร์ & วางแผน</option>
-              <option value="picker">การหยิบ & ประสิทธิภาพ</option>
-              <option value="scanner">สแกนเนอร์ & Handheld</option>
-              <option value="damage">สินค้าเสียหาย (Damage)</option>
-              <option value="newstore">สาขาเปิดใหม่ (New Store)</option>
-              <option value="custom" selected>อื่นๆ / เพิ่มเอง</option>
+              <option value="inventory">📦 Inventory (คลังสินค้า & สต็อก)</option>
+              <option value="operation" selected>⚡ Operation (ปฏิบัติการ & Wave & Picking)</option>
+              <option value="safety">🦺 Safety (ความปลอดภัย & จป.)</option>
+              <option value="transport">🚚 Transport (ขนส่ง & กระจายสินค้า)</option>
+              <option value="hr">👥 HR (ทรัพยากรบุคคล & เวลาทำงาน)</option>
+              <option value="damage">⚠️ Damage (สินค้าเสียหาย & ชำรุด)</option>
+              <option value="cs">💬 Customer Service (บริการลูกค้า & สาขาใหม่)</option>
+              <option value="custom">🌐 อื่นๆ / ทั่วไป</option>
             </select>
           </div>
 
@@ -506,6 +511,6 @@
     <span class="toast-msg" id="toastMsg"></span>
   </div>
 
-  <script src="app.js?v=3.5"></script>
+  <script src="app.js?v=5.0"></script>
 </body>
 </html>
