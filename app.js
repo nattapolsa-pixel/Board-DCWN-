@@ -1221,6 +1221,10 @@ document.addEventListener("DOMContentLoaded", () => {
     holiday:     { label: "🏖️ วันหยุด / สวัสดิการพนักงาน",   icon: "🏖️" }
   };
 
+  const BANNER_WELCOME = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='g1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23006837'/><stop offset='50%' stop-color='%23009245'/><stop offset='100%' stop-color='%2322c55e'/></linearGradient></defs><rect width='800' height='320' fill='url(%23g1)' rx='16'/><circle cx='720' cy='70' r='120' fill='rgba(255,255,255,0.08)'/><circle cx='80' cy='280' r='140' fill='rgba(255,255,255,0.06)'/><text x='50' y='80' font-family='sans-serif' font-size='26' font-weight='800' fill='%23ffffff'>PTG DISTRIBUTION CENTER</text><text x='50' y='130' font-family='sans-serif' font-size='19' font-weight='700' fill='%23fde047'>ศูนย์กระจายสินค้า PTG วังน้อย · DC Central Portal</text><text x='50' y='180' font-family='sans-serif' font-size='14' fill='%23e8f5ec'>ศูนย์รวมแดชบอร์ดและระบบปฏิบัติการคลังสินค้าทั้งหมด</text><rect x='50' y='220' width='220' height='44' rx='22' fill='%23ffffff'/><text x='160' y='248' font-family='sans-serif' font-size='14' font-weight='800' fill='%23006837' text-anchor='middle'>🚀 ยินดีต้อนรับสู่ระบบ DC</text><text x='740' y='270' font-family='sans-serif' font-size='55' text-anchor='end'>🏢📦🚛</text></svg>";
+
+  const BANNER_SAFETY = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 320' width='800' height='320'><defs><linearGradient id='g2' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23991b1b'/><stop offset='50%' stop-color='%23dc2626'/><stop offset='100%' stop-color='%23ea580c'/></linearGradient></defs><rect width='800' height='320' fill='url(%23g2)' rx='16'/><circle cx='700' cy='170' r='150' fill='rgba(255,255,255,0.08)'/><text x='50' y='75' font-family='sans-serif' font-size='26' font-weight='800' fill='%23ffffff'>⚠️ SAFETY FIRST : ปลอดภัยไว้ก่อน</text><text x='50' y='120' font-family='sans-serif' font-size='17' font-weight='700' fill='%23fef08a'>มาตรการความปลอดภัยและตรวจเช็คอุปกรณ์ก่อนเริ่มงาน</text><text x='50' y='165' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>1. สวมใส่อุปกรณ์ PPE ครบชุด (หมวก, เสื้อสะท้อนแสง, รองเท้าเซฟตี้)</text><text x='50' y='195' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>2. ตรวจเช็คสภาพรถโฟล์กลิฟต์และแฮนด์ลิฟต์ทุกครั้งก่อนปฏิบัติงาน</text><text x='50' y='225' font-family='sans-serif' font-size='13.5' fill='%23fef2f2'>3. ขับขี่ด้วยความเร็วไม่เกิน 10 กม./ชม. ในพื้นที่คลังสินค้า</text><rect x='50' y='250' width='210' height='40' rx='20' fill='%23ffffff'/><text x='155' y='275' font-family='sans-serif' font-size='13.5' font-weight='800' fill='%23b91c1c' text-anchor='middle'>🛡️ ปฏิบัติตามอย่างเคร่งครัด</text><text x='740' y='200' font-family='sans-serif' font-size='55' text-anchor='end'>🦺⛑️⚠️</text></svg>";
+
   const DEFAULT_ANNOUNCEMENTS = [
     {
       id: "ann-init-1",
@@ -1229,7 +1233,7 @@ document.addEventListener("DOMContentLoaded", () => {
       author: "Admin DC",
       type: "general",
       pinned: true,
-      image: "",
+      image: BANNER_WELCOME,
       createdAt: Date.now() - 3600000 * 2
     },
     {
@@ -1249,7 +1253,7 @@ document.addEventListener("DOMContentLoaded", () => {
       author: "จป. ปฏิบัติการ",
       type: "urgent",
       pinned: false,
-      image: "",
+      image: BANNER_SAFETY,
       createdAt: Date.now() - 3600000 * 12
     }
   ];
@@ -1266,6 +1270,11 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
         return DEFAULT_ANNOUNCEMENTS;
       }
+      // If default items have empty image, update them with default banners
+      parsed.forEach(item => {
+        if (item.id === "ann-init-1" && !item.image) item.image = BANNER_WELCOME;
+        if (item.id === "ann-init-3" && !item.image) item.image = BANNER_SAFETY;
+      });
       return parsed;
     } catch(e) {
       return DEFAULT_ANNOUNCEMENTS;
@@ -1283,6 +1292,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const h = String(d.getHours()).padStart(2,"0");
     const m = String(d.getMinutes()).padStart(2,"0");
     return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()+543}, ${h}:${m} น.`;
+  }
+
+  function openLightbox(src, caption = "") {
+    const overlay = document.getElementById("imageLightboxOverlay");
+    const img = document.getElementById("lightboxImg");
+    const cap = document.getElementById("lightboxCaption");
+    if (img) img.src = src;
+    if (cap) cap.textContent = caption;
+    overlay?.classList.add("show");
+  }
+
+  function closeLightbox() {
+    const overlay = document.getElementById("imageLightboxOverlay");
+    overlay?.classList.remove("show");
   }
 
   function renderAnnouncements() {
@@ -1320,8 +1343,8 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <div class="announce-card-content">${escHtml(item.content)}</div>
             ${item.image ? `
-              <div class="announce-card-img-wrap">
-                <img src="${item.image}" alt="รูปภาพประกอบ" class="announce-card-img" title="คลิกเพื่อดูรูปภาพขนาดเต็ม" onclick="window.open(this.src, '_blank')">
+              <div class="announce-card-img-wrap" title="คลิกเพื่อดูรูปภาพขนาดเต็ม">
+                <img src="${item.image}" alt="รูปภาพประกาศ" class="announce-card-img" data-lightbox-src="${escHtml(item.image)}" data-lightbox-cap="${escHtml(item.title)}">
               </div>
             ` : ""}
             <div class="announce-card-meta">
@@ -1348,6 +1371,13 @@ document.addEventListener("DOMContentLoaded", () => {
     feed.querySelectorAll("[data-delete]").forEach(btn => {
       btn.addEventListener("click", () => deleteAnnouncement(btn.getAttribute("data-delete")));
     });
+
+    // Lightbox image clicks
+    feed.querySelectorAll("[data-lightbox-src]").forEach(img => {
+      img.addEventListener("click", () => {
+        openLightbox(img.getAttribute("data-lightbox-src"), img.getAttribute("data-lightbox-cap"));
+      });
+    });
   }
 
   function escHtml(str) {
@@ -1360,7 +1390,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const img = new Image();
       img.onload = function() {
         const canvas = document.createElement("canvas");
-        const maxDim = 850;
+        const maxDim = 900;
         let width = img.width;
         let height = img.height;
         if (width > maxDim || height > maxDim) {
@@ -1376,12 +1406,36 @@ document.addEventListener("DOMContentLoaded", () => {
         canvas.height = height;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
         callback(dataUrl);
       };
       img.src = e.target.result;
     };
     reader.readAsDataURL(file);
+  }
+
+  function setPreviewImage(dataUrl) {
+    const imageData = document.getElementById("announceImageData");
+    const previewBox = document.getElementById("announceImagePreviewBox");
+    const previewImg = document.getElementById("announcePreviewImg");
+    const uploadBox = document.getElementById("announceUploadBox");
+    if (imageData) imageData.value = dataUrl;
+    if (previewImg) previewImg.src = dataUrl;
+    if (previewBox) previewBox.style.display = "block";
+    if (uploadBox) uploadBox.style.display = "none";
+  }
+
+  function clearPreviewImage() {
+    const imageInput = document.getElementById("announceImageInput");
+    const imageData = document.getElementById("announceImageData");
+    const previewBox = document.getElementById("announceImagePreviewBox");
+    const previewImg = document.getElementById("announcePreviewImg");
+    const uploadBox = document.getElementById("announceUploadBox");
+    if (imageInput) imageInput.value = "";
+    if (imageData) imageData.value = "";
+    if (previewImg) previewImg.src = "";
+    if (previewBox) previewBox.style.display = "none";
+    if (uploadBox) uploadBox.style.display = "block";
   }
 
   function openModal(editId) {
@@ -1394,13 +1448,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const authorInput = document.getElementById("announceAuthor");
     const pinCb = document.getElementById("announcePin");
     const typeSelect = document.getElementById("announceType");
-    const imageInput = document.getElementById("announceImageInput");
-    const imageData = document.getElementById("announceImageData");
-    const previewBox = document.getElementById("announceImagePreviewBox");
-    const previewImg = document.getElementById("announcePreviewImg");
-    const uploadBox = document.getElementById("announceUploadBox");
-
-    if (imageInput) imageInput.value = "";
 
     if (editId) {
       const list = getAnnouncements();
@@ -1416,14 +1463,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (typeSelect) typeSelect.value = item.type || "general";
       
       if (item.image) {
-        if (imageData) imageData.value = item.image;
-        if (previewImg) previewImg.src = item.image;
-        if (previewBox) previewBox.style.display = "block";
-        if (uploadBox) uploadBox.style.display = "none";
+        setPreviewImage(item.image);
       } else {
-        if (imageData) imageData.value = "";
-        if (previewBox) previewBox.style.display = "none";
-        if (uploadBox) uploadBox.style.display = "block";
+        clearPreviewImage();
       }
       updateCharCount();
     } else {
@@ -1432,9 +1474,7 @@ document.addEventListener("DOMContentLoaded", () => {
       editIdEl.value = "";
       document.getElementById("announceForm")?.reset();
       if (typeSelect) typeSelect.value = "general";
-      if (imageData) imageData.value = "";
-      if (previewBox) previewBox.style.display = "none";
-      if (uploadBox) uploadBox.style.display = "block";
+      clearPreviewImage();
       updateCharCount();
     }
     overlay?.classList.add("show");
@@ -1474,14 +1514,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.target.id === "announceModalOverlay") closeModal();
     });
 
+    // Close lightbox
+    document.getElementById("closeLightboxBtn")?.addEventListener("click", closeLightbox);
+    document.getElementById("imageLightboxOverlay")?.addEventListener("click", e => {
+      if (e.target.id === "imageLightboxOverlay") closeLightbox();
+    });
+
     // Image Upload triggers
     const uploadTrigger = document.getElementById("announceUploadTrigger");
     const imageInput = document.getElementById("announceImageInput");
     const removeImgBtn = document.getElementById("announceRemoveImgBtn");
-    const previewBox = document.getElementById("announceImagePreviewBox");
-    const previewImg = document.getElementById("announcePreviewImg");
-    const uploadBox = document.getElementById("announceUploadBox");
-    const imageData = document.getElementById("announceImageData");
 
     uploadTrigger?.addEventListener("click", () => {
       imageInput?.click();
@@ -1490,21 +1532,46 @@ document.addEventListener("DOMContentLoaded", () => {
     imageInput?.addEventListener("change", (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
-      compressImage(file, (base64Url) => {
-        if (imageData) imageData.value = base64Url;
-        if (previewImg) previewImg.src = base64Url;
-        if (previewBox) previewBox.style.display = "block";
-        if (uploadBox) uploadBox.style.display = "none";
-      });
+      compressImage(file, setPreviewImage);
     });
 
-    removeImgBtn?.addEventListener("click", () => {
-      if (imageInput) imageInput.value = "";
-      if (imageData) imageData.value = "";
-      if (previewImg) previewImg.src = "";
-      if (previewBox) previewBox.style.display = "none";
-      if (uploadBox) uploadBox.style.display = "block";
+    // Drag and Drop on upload area
+    uploadTrigger?.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      uploadTrigger.style.borderColor = "var(--pt-green)";
+      uploadTrigger.style.background = "#f0fdf4";
     });
+    uploadTrigger?.addEventListener("dragleave", () => {
+      uploadTrigger.style.borderColor = "var(--line)";
+      uploadTrigger.style.background = "#fbfdfc";
+    });
+    uploadTrigger?.addEventListener("drop", (e) => {
+      e.preventDefault();
+      uploadTrigger.style.borderColor = "var(--line)";
+      uploadTrigger.style.background = "#fbfdfc";
+      const file = e.dataTransfer?.files?.[0];
+      if (file && file.type.startsWith("image/")) {
+        compressImage(file, setPreviewImage);
+      }
+    });
+
+    // Paste image from Clipboard (Ctrl+V) anywhere in modal form
+    const modalForm = document.getElementById("announceForm");
+    modalForm?.addEventListener("paste", (e) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") !== -1) {
+          const blob = items[i].getAsFile();
+          if (blob) {
+            compressImage(blob, setPreviewImage);
+            break;
+          }
+        }
+      }
+    });
+
+    removeImgBtn?.addEventListener("click", clearPreviewImage);
 
     // Char counter
     document.getElementById("announceContent")?.addEventListener("input", updateCharCount);
