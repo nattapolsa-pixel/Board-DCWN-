@@ -279,6 +279,18 @@ document.addEventListener("DOMContentLoaded", () => {
       desc: "ระบบติดตามระยะเวลาการปฏิบัติงานแยกตามโซนคลังสินค้า (AA, AL, AN, CA, EA, AG, AI) ควบคุม SLA และรอบส่งมอบ",
       isCustom: false
     },
+    {
+      id: "dc-new-store-ops",
+      name: "DC New Store System (Operation & Prep)",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      category: "operation",
+      categoryName: "Operation",
+      theme: "blue",
+      icon: "🏬",
+      badge: "New Store · Alloc/Pick/QC",
+      desc: "ระบบบริหารจัดการเตรียมสินค้าสาขาเปิดใหม่ (New Store) วางแผน จัดสรร (Alloc), จัดหยิบ (Pick), ตรวจสอบ (QC) และเตรียมส่งมอบ",
+      isCustom: false
+    },
 
     // 📦 INVENTORY
     {
@@ -308,15 +320,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 🦺 SAFETY
     {
-      id: "safety-checklist",
-      name: "Safety & PPE Daily Checklist 2026",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      id: "safety-coming-soon",
+      name: "ระบบความปลอดภัย & จป. (Safety System)",
+      url: "#",
       category: "safety",
       categoryName: "Safety",
       theme: "amber",
       icon: "🦺",
-      badge: "จป. Checklist · Forklift Safety",
-      desc: "ระบบตรวจสอบความปลอดภัยประจำวัน บันทึกการตรวจสภาพรถ Forklift, อุปกรณ์ PPE, และรายงานจุดเสี่ยงอุบัติเหตุในคลัง",
+      badge: "Coming Soon ⏳",
+      desc: "ระบบบริหารจัดการความปลอดภัยและสิ่งแวดล้อม คลังสินค้า PTG วังน้อย กำลังอยู่ระหว่างการพัฒนาระบบ เร็วๆ นี้...",
+      isComingSoon: true,
       isCustom: false
     },
 
@@ -331,6 +344,18 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "📱",
       badge: "Handheld & Dispatch · FastAPI",
       desc: "ระบบสแกนบาร์โค้ด LPN และ Tote บนมือถือหรือเครื่องยิง Handheld สำหรับตรวจนับสินค้า ยิง Wave ปิดกล่อง แยกสี/สายรถจัดส่ง อัปเดตคลังทันที",
+      isCustom: false
+    },
+    {
+      id: "dc-new-store-transport",
+      name: "DC New Store Dispatch & Delivery (Transport)",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      category: "transport",
+      categoryName: "Transport",
+      theme: "blue",
+      icon: "🚚",
+      badge: "New Store · Route & Ship",
+      desc: "ระบบวางแผนสายรถขนส่งและติดตามกำหนดการปล่อยรถส่งมอบสินค้าสำหรับสาขาเปิดใหม่ (New Store Delivery)",
       isCustom: false
     },
     {
@@ -587,24 +612,36 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="system-card-body">
             <h3 class="system-title">${sys.name}</h3>
             <p class="system-desc">${sys.desc}</p>
-            <div class="system-url-box" title="${sys.url}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-              </svg>
-              <span class="system-url-text">${sys.url}</span>
-            </div>
+            ${sys.isComingSoon ? `
+              <div class="system-url-box coming-soon-box">
+                <span class="system-url-text">⏳ อยู่ระหว่างการพัฒนา (Under Development)</span>
+              </div>
+            ` : `
+              <div class="system-url-box" title="${sys.url}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                <span class="system-url-text">${sys.url}</span>
+              </div>
+            `}
           </div>
         </div>
 
         <div class="system-card-footer">
-          <a href="${sys.url}" target="_blank" rel="noopener noreferrer" class="launch-btn" title="เปิดใช้งาน ${sys.name}">
-            <span>เปิดใช้งานระบบ</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="7" y1="17" x2="17" y2="7"/>
-              <polyline points="7 7 17 7 17 17"/>
-            </svg>
-          </a>
+          ${sys.isComingSoon ? `
+            <button type="button" class="launch-btn btn-coming-soon" disabled title="ระบบอยู่ระหว่างการพัฒนา">
+              <span>Coming Soon... ⏳</span>
+            </button>
+          ` : `
+            <a href="${sys.url}" target="_blank" rel="noopener noreferrer" class="launch-btn" title="เปิดใช้งาน ${sys.name}">
+              <span>เปิดใช้งานระบบ</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </a>
+          `}
           ${sys.isCustom ? `
             <button class="card-remove-btn" data-delete-id="${sys.id}" title="ลบระบบนี้ออกจากบอร์ด">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
