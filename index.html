@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=11.0" />
+  <link rel="stylesheet" href="style.css?v=12.0" />
 </head>
 <body class="is-login">
 
@@ -236,15 +236,13 @@
           <div class="workspace-header-inner">
             <div>
               <p class="workspace-kicker">PT ENERGY · DC CENTRAL PORTAL</p>
-              <h1 class="workspace-title" id="homeGreetingTitle">หน้าหลัก</h1>
+              <h1 class="workspace-title" id="homeGreetingTitle">หน้าแรก</h1>
             </div>
             <div class="workspace-actions">
               <button class="btn-primary-action" id="homeGoToSystemsBtn" type="button">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
-                  <rect x="3" y="3" width="7" height="7"/>
-                  <rect x="14" y="3" width="7" height="7"/>
-                  <rect x="14" y="14" width="7" height="7"/>
-                  <rect x="3" y="14" width="7" height="7"/>
+                  <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
                 </svg>
                 <span>ไปที่ บอร์ดรวมระบบ DC →</span>
               </button>
@@ -253,25 +251,62 @@
         </div>
 
         <section class="workspace">
-          <!-- Clean Home Canvas -->
-          <div class="home-canvas-card">
-            <div class="home-canvas-badge">พื้นที่หน้าหลัก</div>
-            <h2 id="homeWelcomeName">ยินดีต้อนรับสู่ระบบศูนย์กลาง DC</h2>
-            <p>พื้นที่หน้าหลักนี้เตรียมพร้อมสำหรับต่อยอดฟีเจอร์และแดชบอร์ดใหม่ในอนาคต</p>
-            <div class="home-canvas-actions">
-              <button class="btn-primary-action" id="homeHeroBtn" type="button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
-                  <rect x="3" y="3" width="7" height="7"/>
-                  <rect x="14" y="3" width="7" height="7"/>
-                  <rect x="14" y="14" width="7" height="7"/>
-                  <rect x="3" y="14" width="7" height="7"/>
-                </svg>
-                <span>เปิดดู บอร์ดรวมระบบ DC (7 ระบบ)</span>
-              </button>
+          <div class="home-calendar-wrap">
+
+            <!-- Today Info Strip -->
+            <div class="today-strip" id="todayStrip"></div>
+
+            <!-- Calendar Card -->
+            <div class="cal-card">
+              <!-- Calendar Nav Header -->
+              <div class="cal-nav">
+                <button class="cal-nav-btn" id="calPrev" type="button" title="เดือนก่อนหน้า">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="cal-month-label" id="calMonthLabel"></div>
+                <button class="cal-nav-btn" id="calNext" type="button" title="เดือนถัดไป">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </div>
+
+              <!-- Day-of-week Headers -->
+              <div class="cal-dow-row">
+                <span class="cal-dow sun">อา</span>
+                <span class="cal-dow">จ</span>
+                <span class="cal-dow">อ</span>
+                <span class="cal-dow">พ</span>
+                <span class="cal-dow">พฤ</span>
+                <span class="cal-dow">ศ</span>
+                <span class="cal-dow sat">ส</span>
+              </div>
+
+              <!-- Calendar Grid -->
+              <div class="cal-grid" id="calGrid"></div>
+
+              <!-- Legend -->
+              <div class="cal-legend">
+                <div class="cal-legend-item"><span class="cal-dot today-dot"></span><span>วันนี้</span></div>
+                <div class="cal-legend-item"><span class="cal-dot holiday-dot"></span><span>วันหยุดบริษัท PTG</span></div>
+                <div class="cal-legend-item"><span class="cal-dot weekend-dot"></span><span>วันหยุดสุดสัปดาห์</span></div>
+              </div>
             </div>
+
+            <!-- Holiday List Card -->
+            <div class="holiday-list-card">
+              <div class="holiday-list-header">
+                <span class="holiday-list-icon">🏖️</span>
+                <div>
+                  <div class="holiday-list-title">วันหยุดประจำปี PTG</div>
+                  <div class="holiday-list-sub" id="holidayListSub"></div>
+                </div>
+              </div>
+              <div class="holiday-list-body" id="holidayListBody"></div>
+            </div>
+
           </div>
         </section>
       </div>
+
 
       <!-- ============================================================
            TAB 2: SYSTEMS BOARD (บอร์ดรวมระบบ DC - กรอบรวมระบบ)
@@ -511,6 +546,6 @@
     <span class="toast-msg" id="toastMsg"></span>
   </div>
 
-  <script src="app.js?v=11.0"></script>
+  <script src="app.js?v=12.0"></script>
 </body>
 </html>

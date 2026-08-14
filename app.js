@@ -1025,3 +1025,187 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.innerWidth > 900) toggleMobileNav(false);
   });
 });
+
+/* ─── HOME CALENDAR ENGINE ─────────────────────────────────────── */
+(function() {
+  // PTG Company Holidays 2026 (BE 2569)
+  const PTG_HOLIDAYS = [
+    { date: "2026-01-01", name: "วันขึ้นปีใหม่" },
+    { date: "2026-03-03", name: "วันมาฆบูชา" },
+    { date: "2026-04-06", name: "วันจักรี" },
+    { date: "2026-04-13", name: "วันสงกรานต์" },
+    { date: "2026-04-14", name: "วันสงกรานต์" },
+    { date: "2026-04-15", name: "วันสงกรานต์" },
+    { date: "2026-05-01", name: "วันแรงงานแห่งชาติ" },
+    { date: "2026-05-04", name: "วันฉัตรมงคล" },
+    { date: "2026-06-01", name: "ชดเชยวันวิสาขบูชา" },
+    { date: "2026-06-03", name: "วันเฉลิมพระชนมพรรษา (ราชินี)" },
+    { date: "2026-07-28", name: "วันเฉลิมพระชนมพรรษา (ร.10)" },
+    { date: "2026-07-29", name: "วันอาสาฬหบูชา" },
+    { date: "2026-08-12", name: "วันแม่แห่งชาติ" },
+    { date: "2026-10-13", name: "วันนวมินทรมหาราช" },
+    { date: "2026-10-23", name: "วันปิยมหาราช" },
+    { date: "2026-12-05", name: "วันพ่อแห่งชาติ" },
+    { date: "2026-12-10", name: "วันรัฐธรรมนูญ" },
+    { date: "2026-12-31", name: "วันสิ้นปี" }
+  ];
+
+  const HOLIDAY_MAP = {};
+  PTG_HOLIDAYS.forEach(h => { HOLIDAY_MAP[h.date] = h.name; });
+
+  const TH_MONTHS = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+  const TH_DAYS_SHORT = ["อา","จ","อ","พ","พฤ","ศ","ส"];
+  const TH_DAYS_FULL = ["วันอาทิตย์","วันจันทร์","วันอังคาร","วันพุธ","วันพฤหัสบดี","วันศุกร์","วันเสาร์"];
+
+  function pad(n) { return String(n).padStart(2,"0"); }
+  function dateKey(y,m,d) { return `${y}-${pad(m+1)}-${pad(d)}`; }
+
+  let viewYear, viewMonth;
+  const today = new Date();
+
+  function initCalendar() {
+    viewYear = today.getFullYear();
+    viewMonth = today.getMonth();
+    renderTodayStrip();
+    renderCalendar();
+    renderHolidayList();
+
+    document.getElementById("calPrev")?.addEventListener("click", () => {
+      viewMonth--;
+      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      renderCalendar();
+    });
+    document.getElementById("calNext")?.addEventListener("click", () => {
+      viewMonth++;
+      if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      renderCalendar();
+    });
+  }
+
+  function renderTodayStrip() {
+    const strip = document.getElementById("todayStrip");
+    if (!strip) return;
+    const todayKey = dateKey(today.getFullYear(), today.getMonth(), today.getDate());
+    const isHoliday = !!HOLIDAY_MAP[todayKey];
+    const dayName = TH_DAYS_FULL[today.getDay()];
+    const dateStr = `${today.getDate()} ${TH_MONTHS[today.getMonth()]} ${today.getFullYear() + 543}`;
+
+    strip.innerHTML = `
+      <span class="today-strip-icon">📅</span>
+      <div>
+        <div class="today-strip-main">${dayName} ที่ ${dateStr}</div>
+        <div class="today-strip-sub">วันทำงานศูนย์กระจายสินค้า PTG วังน้อย</div>
+      </div>
+      ${isHoliday ? `<div class="today-strip-holiday"><span class="hol-dot"></span> ${HOLIDAY_MAP[todayKey]}</div>` : ""}
+    `;
+  }
+
+  function renderCalendar() {
+    const label = document.getElementById("calMonthLabel");
+    if (label) {
+      label.innerHTML = `${TH_MONTHS[viewMonth]}<span class="cal-year-tag">พ.ศ. ${viewYear + 543} &nbsp;·&nbsp; ค.ศ. ${viewYear}</span>`;
+    }
+
+    const grid = document.getElementById("calGrid");
+    if (!grid) return;
+
+    const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+    // Prev month fill
+    const prevDays = new Date(viewYear, viewMonth, 0).getDate();
+
+    let cells = "";
+
+    // Leading empty cells from prev month
+    for (let i = firstDay - 1; i >= 0; i--) {
+      const d = prevDays - i;
+      cells += `<div class="cal-day other-month is-${["sun","","","","","","sat"][((firstDay - 1 - i) + 7) % 7] || "wd"}"><span class="cal-day-num">${d}</span></div>`;
+    }
+
+    // This month
+    for (let d = 1; d <= daysInMonth; d++) {
+      const thisDate = new Date(viewYear, viewMonth, d);
+      const dow = thisDate.getDay();
+      const key = dateKey(viewYear, viewMonth, d);
+      const isToday = (d === today.getDate() && viewMonth === today.getMonth() && viewYear === today.getFullYear());
+      const isHol = !!HOLIDAY_MAP[key];
+      const isSun = dow === 0, isSat = dow === 6;
+
+      let cls = "cal-day";
+      if (isToday) cls += " is-today";
+      if (isHol) cls += " is-holiday";
+      if (isSun) cls += " is-sun";
+      if (isSat) cls += " is-sat";
+
+      const dot = isHol ? `<span class="cal-day-holiday-dot" title="${HOLIDAY_MAP[key]}"></span>` : "";
+      cells += `<div class="${cls}" title="${isHol ? HOLIDAY_MAP[key] : ""}"><span class="cal-day-num">${d}</span>${dot}</div>`;
+    }
+
+    // Trailing empty cells
+    const totalCells = firstDay + daysInMonth;
+    const trailing = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+    for (let d = 1; d <= trailing; d++) {
+      cells += `<div class="cal-day other-month"><span class="cal-day-num">${d}</span></div>`;
+    }
+
+    grid.innerHTML = cells;
+  }
+
+  function renderHolidayList() {
+    const body = document.getElementById("holidayListBody");
+    const sub = document.getElementById("holidayListSub");
+    if (!body) return;
+
+    const todayMs = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+    const remaining = PTG_HOLIDAYS.filter(h => new Date(h.date).getTime() >= todayMs).length;
+    if (sub) sub.textContent = `เหลืออีก ${remaining} วัน ในปี ${today.getFullYear() + 543}`;
+
+    let html = "";
+    PTG_HOLIDAYS.forEach((h, i) => {
+      const d = new Date(h.date);
+      const dMs = d.getTime();
+      const dayStr = `${d.getDate()} ${TH_MONTHS[d.getMonth()]}`;
+      const dowStr = TH_DAYS_FULL[d.getDay()];
+      const isToday = (dMs === todayMs);
+      const isPast = dMs < todayMs;
+      // Next upcoming holiday
+      const isNext = !isPast && PTG_HOLIDAYS.slice(0, i).every(hh => new Date(hh.date).getTime() < todayMs);
+
+      let rowCls = "holiday-row";
+      let badge = "";
+      if (isToday) { rowCls += " is-today-row"; badge = `<span class="holiday-badge-today">วันนี้!</span>`; }
+      else if (isPast) { rowCls += " is-past"; badge = `<span class="holiday-badge-past">ผ่านแล้ว</span>`; }
+      else if (isNext) { rowCls += " is-upcoming"; badge = `<span class="holiday-badge-soon">ถัดไป</span>`; }
+
+      html += `
+        <div class="${rowCls}">
+          <span class="holiday-num">${i + 1}</span>
+          <div class="holiday-date-block">
+            <span class="holiday-date">${dayStr}</span>
+            <span class="holiday-dow">${dowStr}</span>
+          </div>
+          <span class="holiday-name">${h.name}</span>
+          ${badge}
+        </div>`;
+    });
+    body.innerHTML = html;
+  }
+
+  // Init when portal view is ready (after login)
+  const origLogin = window._calendarInitDone;
+  if (!origLogin) {
+    window._calendarInitDone = true;
+    // Watch for portal view appearing
+    const observer = new MutationObserver(() => {
+      const calGrid = document.getElementById("calGrid");
+      if (calGrid && !calGrid._initialized) {
+        calGrid._initialized = true;
+        initCalendar();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, attributeFilter: ["class"] });
+    // Also try immediately in case already visible
+    if (document.getElementById("calGrid")) initCalendar();
+  }
+})();
