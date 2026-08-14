@@ -267,14 +267,12 @@ document.addEventListener("DOMContentLoaded", () => {
       desc: "ระบบสแกนบาร์โค้ด LPN และ Tote บนมือถือหรือเครื่องยิง Handheld สำหรับตรวจนับสินค้า ยิง Wave ปิดกล่อง แยกสี/สาขา อัปเดตคลังทันที",
       isCustom: false
     },
-
-    // 📦 INVENTORY
     {
       id: "put-away-system",
       name: "Put-away & Storage Master (Put-away 2026)",
       url: "https://pro-warehouse.github.io/pro-scanner/",
-      category: "inventory",
-      categoryName: "Inventory",
+      category: "operation",
+      categoryName: "Operation",
       theme: "green",
       icon: "📥",
       badge: "Location & Shelf Sync",
@@ -285,12 +283,38 @@ document.addEventListener("DOMContentLoaded", () => {
       id: "zone-time-monitor",
       name: "Warehouse Monitor Time by Zone",
       url: "https://dc-ops-monitor-v2.onrender.com/",
-      category: "inventory",
-      categoryName: "Inventory",
+      category: "operation",
+      categoryName: "Operation",
       theme: "blue",
       icon: "⏱️",
       badge: "Zone SLA · Cycle Time",
       desc: "ระบบติดตามระยะเวลาการปฏิบัติงานแยกตามโซนคลังสินค้า (AA, AL, AN, CA, EA, AG, AI) ควบคุม SLA และรอบส่งมอบ",
+      isCustom: false
+    },
+
+    // 📦 INVENTORY
+    {
+      id: "inventory-cycle-count",
+      name: "Inventory Cycle Count & Stock Balance",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      category: "inventory",
+      categoryName: "Inventory",
+      theme: "green",
+      icon: "📦",
+      badge: "Stock Balance · Cycle Count",
+      desc: "ระบบตรวจนับสต็อกสินค้าประจำรอบ (Cycle Count) ตรวจสอบยอดคงเหลือจริงในคลังสินค้า และกระทบยอดสต็อก",
+      isCustom: false
+    },
+    {
+      id: "inventory-relocation",
+      name: "Inventory Slotting & Relocation System",
+      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      category: "inventory",
+      categoryName: "Inventory",
+      theme: "light-green",
+      icon: "🔄",
+      badge: "Space & Slotting Transfer",
+      desc: "ระบบบริหารจัดการพื้นที่จัดเก็บและโยกย้ายตำแหน่งสินค้า (Relocation) เพิ่มความหนาแน่นและประสิทธิภาพการเข้าถึงสินค้า",
       isCustom: false
     },
 
