@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=12.0" />
+  <link rel="stylesheet" href="style.css?v=13.0" />
 </head>
 <body class="is-login">
 
@@ -308,6 +308,85 @@
       </div>
 
 
+        <!-- ── ANNOUNCEMENT BOARD ──────────────────────────────────── -->
+        <section class="workspace" style="margin-top:0;padding-top:0;">
+          <div class="announce-board-wrap">
+            <div class="announce-board-header">
+              <div class="announce-board-title-row">
+                <span class="announce-board-icon">📢</span>
+                <div>
+                  <div class="announce-board-title">บอร์ดประชาสัมพันธ์ DC</div>
+                  <div class="announce-board-sub">ข่าวสาร ประกาศ และแจ้งเตือนสำหรับทีม DC</div>
+                </div>
+              </div>
+              <button class="announce-post-btn" id="openAnnounceModalBtn" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <span>โพสต์ประกาศใหม่</span>
+              </button>
+            </div>
+            <div class="announce-feed" id="announceFeed"></div>
+            <div class="announce-empty" id="announceEmpty" style="display:none;">
+              <div class="announce-empty-icon">📭</div>
+              <div class="announce-empty-text">ยังไม่มีประกาศในขณะนี้</div>
+              <div class="announce-empty-sub">กดปุ่ม "โพสต์ประกาศใหม่" เพื่อเริ่มต้น</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- MODAL: POST ANNOUNCEMENT -->
+      <div class="modal-overlay" id="announceModalOverlay" role="dialog" aria-modal="true" style="display:none;">
+        <div class="modal-box announce-modal-box">
+          <div class="modal-header">
+            <h2 class="modal-title">📢 <span id="announceModalTitle">โพสต์ประกาศใหม่</span></h2>
+            <button class="modal-close-btn" id="closeAnnounceModalBtn" type="button" aria-label="ปิด">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <form id="announceForm" autocomplete="off">
+            <input type="hidden" id="announceEditId" value="">
+            <div class="form-row">
+              <label class="form-label">ประเภทประกาศ <span class="req">*</span></label>
+              <div class="announce-type-selector" id="announceTypeSelector">
+                <button type="button" class="announce-type-btn active" data-type="general">📋 ทั่วไป</button>
+                <button type="button" class="announce-type-btn" data-type="urgent">🚨 ด่วน!</button>
+                <button type="button" class="announce-type-btn" data-type="event">🎉 กิจกรรม</button>
+                <button type="button" class="announce-type-btn" data-type="maintenance">🔧 แจ้งซ่อม</button>
+                <button type="button" class="announce-type-btn" data-type="holiday">🏖️ วันหยุด</button>
+              </div>
+              <input type="hidden" id="announceType" value="general">
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="announceTitle">หัวข้อประกาศ <span class="req">*</span></label>
+              <input type="text" class="form-input" id="announceTitle" placeholder="เช่น แจ้งปิดระบบชั่วคราว..." maxlength="100" required>
+            </div>
+            <div class="form-row">
+              <label class="form-label" for="announceContent">รายละเอียด <span class="req">*</span></label>
+              <textarea class="form-textarea" id="announceContent" rows="4" placeholder="รายละเอียดประกาศ..." maxlength="500" required></textarea>
+              <div class="form-hint" id="announceCharCount">0 / 500 ตัวอักษร</div>
+            </div>
+            <div class="form-row-split">
+              <div class="form-row" style="margin-bottom:0;flex:1;">
+                <label class="form-label" for="announceAuthor">ผู้ประกาศ</label>
+                <input type="text" class="form-input" id="announceAuthor" placeholder="ชื่อ - ตำแหน่ง" maxlength="60">
+              </div>
+              <div class="form-row" style="margin-bottom:0;display:flex;align-items:flex-end;padding-bottom:2px;">
+                <label class="announce-pin-label">
+                  <input type="checkbox" id="announcePin" class="announce-pin-cb">
+                  <span class="announce-pin-text">📌 ปักหมุด</span>
+                </label>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="modal-btn-cancel" id="cancelAnnounceBtn">ยกเลิก</button>
+              <button type="submit" class="modal-btn-submit" id="announceSubmitBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span id="announceSubmitLabel">โพสต์ประกาศ</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
       <!-- ============================================================
            TAB 2: SYSTEMS BOARD (บอร์ดรวมระบบ DC - กรอบรวมระบบ)
            ============================================================ -->
@@ -546,6 +625,7 @@
     <span class="toast-msg" id="toastMsg"></span>
   </div>
 
-  <script src="app.js?v=12.0"></script>
+  <script src="app.js?v=13.0"></script>
 </body>
 </html>
+

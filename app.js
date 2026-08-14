@@ -1209,3 +1209,219 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("calGrid")) initCalendar();
   }
 })();
+
+/* ─── ANNOUNCEMENT BOARD ENGINE ────────────────────────────────── */
+(function() {
+  const STORAGE_KEY = "ptg_dc_announcements";
+  const TYPE_CONFIG = {
+    general:     { label: "📋 ทั่วไป",    icon: "📋" },
+    urgent:      { label: "🚨 ด่วน!",     icon: "🚨" },
+    event:       { label: "🎉 กิจกรรม",  icon: "🎉" },
+    maintenance: { label: "🔧 แจ้งซ่อม", icon: "🔧" },
+    holiday:     { label: "🏖️ วันหยุด",  icon: "🏖️" }
+  };
+
+  function getAnnouncements() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+    catch(e) { return []; }
+  }
+  function saveAnnouncements(arr) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+    catch(e) {}
+  }
+
+  function formatDateTime(ts) {
+    const d = new Date(ts);
+    const months = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+    const h = String(d.getHours()).padStart(2,"0");
+    const m = String(d.getMinutes()).padStart(2,"0");
+    return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()+543}, ${h}:${m} น.`;
+  }
+
+  function renderAnnouncements() {
+    const feed = document.getElementById("announceFeed");
+    const empty = document.getElementById("announceEmpty");
+    if (!feed) return;
+
+    let list = getAnnouncements();
+    // Pinned first, then by date desc
+    list = list.sort((a,b) => {
+      if (a.pinned && !b.pinned) return -1;
+      if (!a.pinned && b.pinned) return 1;
+      return b.createdAt - a.createdAt;
+    });
+
+    if (list.length === 0) {
+      feed.style.display = "none";
+      if (empty) empty.style.display = "flex";
+      return;
+    }
+    feed.style.display = "flex";
+    if (empty) empty.style.display = "none";
+
+    feed.innerHTML = list.map(item => {
+      const cfg = TYPE_CONFIG[item.type] || TYPE_CONFIG.general;
+      const badgeCls = `announce-badge badge-${item.type || "general"}`;
+      return `
+        <div class="announce-card type-${item.type || "general"} ${item.pinned ? "is-pinned" : ""}" data-id="${item.id}">
+          <div class="announce-card-icon">${cfg.icon}</div>
+          <div class="announce-card-body">
+            <div class="announce-card-top">
+              <div class="announce-card-title">${escHtml(item.title)}</div>
+              <span class="${badgeCls}">${cfg.label}</span>
+              ${item.pinned ? `<span class="announce-card-pin" title="ปักหมุด">📌</span>` : ""}
+            </div>
+            <div class="announce-card-content">${escHtml(item.content)}</div>
+            <div class="announce-card-meta">
+              ${item.author ? `<span class="announce-card-author">👤 ${escHtml(item.author)}</span>` : ""}
+              <span class="announce-card-date">🕐 ${formatDateTime(item.createdAt)}</span>
+            </div>
+          </div>
+          <div class="announce-card-actions">
+            <button class="announce-action-btn" data-edit="${item.id}" title="แก้ไข">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="announce-action-btn del" data-delete="${item.id}" title="ลบ">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    // Edit & Delete listeners
+    feed.querySelectorAll("[data-edit]").forEach(btn => {
+      btn.addEventListener("click", () => openEditModal(btn.getAttribute("data-edit")));
+    });
+    feed.querySelectorAll("[data-delete]").forEach(btn => {
+      btn.addEventListener("click", () => deleteAnnouncement(btn.getAttribute("data-delete")));
+    });
+  }
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  function openModal(editId) {
+    const overlay = document.getElementById("announceModalOverlay");
+    const titleEl = document.getElementById("announceModalTitle");
+    const submitLabel = document.getElementById("announceSubmitLabel");
+    const editIdEl = document.getElementById("announceEditId");
+    const titleInput = document.getElementById("announceTitle");
+    const contentInput = document.getElementById("announceContent");
+    const authorInput = document.getElementById("announceAuthor");
+    const pinCb = document.getElementById("announcePin");
+    const typeInput = document.getElementById("announceType");
+    const typeSelector = document.getElementById("announceTypeSelector");
+
+    if (editId) {
+      const list = getAnnouncements();
+      const item = list.find(x => x.id === editId);
+      if (!item) return;
+      titleEl.textContent = "แก้ไขประกาศ";
+      submitLabel.textContent = "บันทึกการแก้ไข";
+      editIdEl.value = editId;
+      titleInput.value = item.title;
+      contentInput.value = item.content;
+      authorInput.value = item.author || "";
+      pinCb.checked = !!item.pinned;
+      typeInput.value = item.type || "general";
+      typeSelector.querySelectorAll(".announce-type-btn").forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-type") === (item.type || "general"));
+      });
+      updateCharCount();
+    } else {
+      titleEl.textContent = "โพสต์ประกาศใหม่";
+      submitLabel.textContent = "โพสต์ประกาศ";
+      editIdEl.value = "";
+      document.getElementById("announceForm").reset();
+      typeInput.value = "general";
+      typeSelector.querySelectorAll(".announce-type-btn").forEach(b => {
+        b.classList.toggle("active", b.getAttribute("data-type") === "general");
+      });
+      updateCharCount();
+    }
+    overlay.style.display = "flex";
+    titleInput.focus();
+  }
+
+  function closeModal() {
+    const overlay = document.getElementById("announceModalOverlay");
+    if (overlay) overlay.style.display = "none";
+  }
+
+  function openEditModal(id) { openModal(id); }
+
+  function deleteAnnouncement(id) {
+    if (!confirm("ต้องการลบประกาศนี้ใช่ไหม?")) return;
+    let list = getAnnouncements().filter(x => x.id !== id);
+    saveAnnouncements(list);
+    renderAnnouncements();
+  }
+
+  function updateCharCount() {
+    const content = document.getElementById("announceContent");
+    const hint = document.getElementById("announceCharCount");
+    if (content && hint) hint.textContent = `${content.value.length} / 500 ตัวอักษร`;
+  }
+
+  function initAnnounceBoard() {
+    renderAnnouncements();
+
+    // Open modal
+    document.getElementById("openAnnounceModalBtn")?.addEventListener("click", () => openModal(null));
+    document.getElementById("closeAnnounceModalBtn")?.addEventListener("click", closeModal);
+    document.getElementById("cancelAnnounceBtn")?.addEventListener("click", closeModal);
+
+    // Close on overlay click
+    document.getElementById("announceModalOverlay")?.addEventListener("click", e => {
+      if (e.target.id === "announceModalOverlay") closeModal();
+    });
+
+    // Type selector
+    document.getElementById("announceTypeSelector")?.addEventListener("click", e => {
+      const btn = e.target.closest(".announce-type-btn");
+      if (!btn) return;
+      document.querySelectorAll(".announce-type-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("announceType").value = btn.getAttribute("data-type");
+    });
+
+    // Char counter
+    document.getElementById("announceContent")?.addEventListener("input", updateCharCount);
+
+    // Form submit
+    document.getElementById("announceForm")?.addEventListener("submit", e => {
+      e.preventDefault();
+      const title = document.getElementById("announceTitle")?.value.trim();
+      const content = document.getElementById("announceContent")?.value.trim();
+      const author = document.getElementById("announceAuthor")?.value.trim();
+      const pinned = document.getElementById("announcePin")?.checked;
+      const type = document.getElementById("announceType")?.value || "general";
+      const editId = document.getElementById("announceEditId")?.value;
+
+      if (!title || !content) return;
+
+      let list = getAnnouncements();
+      if (editId) {
+        list = list.map(x => x.id === editId ? { ...x, title, content, author, pinned, type, updatedAt: Date.now() } : x);
+      } else {
+        list.unshift({ id: "ann-" + Date.now(), title, content, author, pinned, type, createdAt: Date.now() });
+      }
+      saveAnnouncements(list);
+      renderAnnouncements();
+      closeModal();
+    });
+  }
+
+  // Init when home tab content is visible
+  const boardObserver = new MutationObserver(() => {
+    const feed = document.getElementById("announceFeed");
+    if (feed && !feed._announceInit) {
+      feed._announceInit = true;
+      initAnnounceBoard();
+    }
+  });
+  boardObserver.observe(document.body, { childList: true, subtree: true, attributeFilter: ["class", "style"] });
+  if (document.getElementById("announceFeed")) initAnnounceBoard();
+})();
