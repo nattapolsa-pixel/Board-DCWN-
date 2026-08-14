@@ -1384,13 +1384,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       updateCharCount();
     }
-    overlay.style.display = "flex";
-    titleInput.focus();
+    overlay?.classList.add("show");
+    setTimeout(() => titleInput?.focus(), 150);
   }
 
   function closeModal() {
     const overlay = document.getElementById("announceModalOverlay");
-    if (overlay) overlay.style.display = "none";
+    overlay?.classList.remove("show");
   }
 
   function openEditModal(id) { openModal(id); }

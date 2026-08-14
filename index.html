@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=14.0" />
+  <link rel="stylesheet" href="style.css?v=15.0" />
 </head>
 <body class="is-login">
 
@@ -335,19 +335,34 @@
         </section>
       </div>
 
-      <!-- MODAL: POST ANNOUNCEMENT -->
-      <div class="modal-overlay" id="announceModalOverlay" role="dialog" aria-modal="true" style="display:none;">
-        <div class="modal-box announce-modal-box">
+      <!-- ============================================================
+           MODAL: POST / EDIT ANNOUNCEMENT
+           ============================================================ -->
+      <div class="system-modal-overlay" id="announceModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="system-modal" style="max-width: 580px;">
           <div class="modal-header">
-            <h2 class="modal-title">📢 <span id="announceModalTitle">โพสต์ประกาศใหม่</span></h2>
+            <div class="modal-title-wrap">
+              <div class="modal-icon-badge" style="background: #ecfdf5; color: var(--pt-green-dark);">
+                <span style="font-size: 22px;">📢</span>
+              </div>
+              <div>
+                <h2 class="modal-title" id="announceModalTitle">โพสต์ประกาศใหม่</h2>
+                <p class="modal-sub">ประกาศข่าวสาร กิจกรรม หรือแจ้งเตือนสำหรับทีม DC</p>
+              </div>
+            </div>
             <button class="modal-close-btn" id="closeAnnounceModalBtn" type="button" aria-label="ปิด">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
             </button>
           </div>
-          <form id="announceForm" autocomplete="off">
+
+          <form id="announceForm" class="system-modal-form" autocomplete="off">
             <input type="hidden" id="announceEditId" value="">
-            <div class="form-row">
-              <label class="form-label">ประเภทประกาศ <span class="req">*</span></label>
+
+            <div class="form-group">
+              <label>ประเภทประกาศ <span class="req">*</span></label>
               <div class="announce-type-selector" id="announceTypeSelector">
                 <button type="button" class="announce-type-btn active" data-type="general">📋 ทั่วไป</button>
                 <button type="button" class="announce-type-btn" data-type="urgent">🚨 ด่วน!</button>
@@ -357,31 +372,41 @@
               </div>
               <input type="hidden" id="announceType" value="general">
             </div>
-            <div class="form-row">
-              <label class="form-label" for="announceTitle">หัวข้อประกาศ <span class="req">*</span></label>
-              <input type="text" class="form-input" id="announceTitle" placeholder="เช่น แจ้งปิดระบบชั่วคราว..." maxlength="100" required>
-            </div>
-            <div class="form-row">
-              <label class="form-label" for="announceContent">รายละเอียด <span class="req">*</span></label>
-              <textarea class="form-textarea" id="announceContent" rows="4" placeholder="รายละเอียดประกาศ..." maxlength="500" required></textarea>
-              <div class="form-hint" id="announceCharCount">0 / 500 ตัวอักษร</div>
-            </div>
-            <div class="form-row-split">
-              <div class="form-row" style="margin-bottom:0;flex:1;">
-                <label class="form-label" for="announceAuthor">ผู้ประกาศ</label>
-                <input type="text" class="form-input" id="announceAuthor" placeholder="ชื่อ - ตำแหน่ง" maxlength="60">
+
+            <div class="form-group">
+              <label for="announceTitle">หัวข้อประกาศ <span class="req">*</span></label>
+              <div class="form-input-wrap">
+                <input type="text" id="announceTitle" placeholder="เช่น แจ้งปิดปรับปรุงระบบชั่วคราว..." maxlength="100" required>
               </div>
-              <div class="form-row" style="margin-bottom:0;display:flex;align-items:flex-end;padding-bottom:2px;">
-                <label class="announce-pin-label">
-                  <input type="checkbox" id="announcePin" class="announce-pin-cb">
-                  <span class="announce-pin-text">📌 ปักหมุด</span>
+            </div>
+
+            <div class="form-group">
+              <label for="announceContent">รายละเอียดประกาศ <span class="req">*</span></label>
+              <textarea id="announceContent" rows="4" placeholder="กรอกรายละเอียดข่าวสาร..." maxlength="500" required style="width: 100%; border: 1.5px solid var(--line); border-radius: 11px; padding: 10px 14px; font-size: 14px; background: #fbfdfc; resize: vertical; font-family: inherit;"></textarea>
+              <div id="announceCharCount" style="font-size: 11.5px; color: var(--text-subtle); text-align: right; margin-top: 2px;">0 / 500 ตัวอักษร</div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group" style="margin-bottom:0;">
+                <label for="announceAuthor">ผู้ประกาศ / ตำแหน่ง</label>
+                <div class="form-input-wrap">
+                  <input type="text" id="announceAuthor" placeholder="เช่น Admin DC / ฝ่ายปฏิบัติการ" maxlength="60">
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:0; display:flex; justify-content:flex-end; align-items:flex-end;">
+                <label class="announce-pin-label" style="display:flex; align-items:center; gap:8px; padding:10px 14px; border:1.5px solid var(--line); border-radius:11px; background:#f8faf9; cursor:pointer; width:100%; height:44px; box-sizing:border-box;">
+                  <input type="checkbox" id="announcePin" style="width:18px; height:18px; cursor:pointer; accent-color:var(--pt-green-dark);">
+                  <span style="font-size:13px; font-weight:700; color:var(--text);">📌 ปักหมุด (Pin)</span>
                 </label>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="modal-btn-cancel" id="cancelAnnounceBtn">ยกเลิก</button>
-              <button type="submit" class="modal-btn-submit" id="announceSubmitBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+
+            <div class="modal-actions" style="margin-top: 14px;">
+              <button type="button" class="btn-secondary" id="cancelAnnounceBtn">ยกเลิก</button>
+              <button type="submit" class="btn-primary-action" id="announceSubmitBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
                 <span id="announceSubmitLabel">โพสต์ประกาศ</span>
               </button>
             </div>
@@ -627,7 +652,7 @@
     <span class="toast-msg" id="toastMsg"></span>
   </div>
 
-  <script src="app.js?v=14.0"></script>
+  <script src="app.js?v=15.0"></script>
 </body>
 </html>
 
