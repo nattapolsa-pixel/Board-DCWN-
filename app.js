@@ -1214,11 +1214,11 @@ document.addEventListener("DOMContentLoaded", () => {
 (function() {
   const STORAGE_KEY = "ptg_dc_announcements";
   const TYPE_CONFIG = {
-    general:     { label: "📋 ทั่วไป",    icon: "📋" },
-    urgent:      { label: "🚨 ด่วน!",     icon: "🚨" },
-    event:       { label: "🎉 กิจกรรม",  icon: "🎉" },
-    maintenance: { label: "🔧 แจ้งซ่อม", icon: "🔧" },
-    holiday:     { label: "🏖️ วันหยุด",  icon: "🏖️" }
+    general:     { label: "📋 ข่าวสารทั่วไป",               icon: "📋" },
+    urgent:      { label: "🚨 ด่วนที่สุด / แจ้งเตือนสำคัญ",    icon: "🚨" },
+    event:       { label: "🎉 กิจกรรม / ข่าวประชาสัมพันธ์",   icon: "🎉" },
+    maintenance: { label: "🔧 แจ้งซ่อมบำรุง / ปิดปรับปรุงระบบ", icon: "🔧" },
+    holiday:     { label: "🏖️ วันหยุด / สวัสดิการพนักงาน",   icon: "🏖️" }
   };
 
   const DEFAULT_ANNOUNCEMENTS = [
@@ -1229,6 +1229,7 @@ document.addEventListener("DOMContentLoaded", () => {
       author: "Admin DC",
       type: "general",
       pinned: true,
+      image: "",
       createdAt: Date.now() - 3600000 * 2
     },
     {
@@ -1238,6 +1239,7 @@ document.addEventListener("DOMContentLoaded", () => {
       author: "ฝ่ายปฏิบัติการ DC",
       type: "event",
       pinned: false,
+      image: "",
       createdAt: Date.now() - 3600000 * 5
     },
     {
@@ -1247,6 +1249,7 @@ document.addEventListener("DOMContentLoaded", () => {
       author: "จป. ปฏิบัติการ",
       type: "urgent",
       pinned: false,
+      image: "",
       createdAt: Date.now() - 3600000 * 12
     }
   ];
@@ -1268,6 +1271,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return DEFAULT_ANNOUNCEMENTS;
     }
   }
+
   function saveAnnouncements(arr) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
     catch(e) {}
@@ -1315,6 +1319,11 @@ document.addEventListener("DOMContentLoaded", () => {
               ${item.pinned ? `<span class="announce-card-pin" title="ปักหมุด">📌</span>` : ""}
             </div>
             <div class="announce-card-content">${escHtml(item.content)}</div>
+            ${item.image ? `
+              <div class="announce-card-img-wrap">
+                <img src="${item.image}" alt="รูปภาพประกอบ" class="announce-card-img" title="คลิกเพื่อดูรูปภาพขนาดเต็ม" onclick="window.open(this.src, '_blank')">
+              </div>
+            ` : ""}
             <div class="announce-card-meta">
               ${item.author ? `<span class="announce-card-author">👤 ${escHtml(item.author)}</span>` : ""}
               <span class="announce-card-date">🕐 ${formatDateTime(item.createdAt)}</span>
@@ -1345,6 +1354,36 @@ document.addEventListener("DOMContentLoaded", () => {
     return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
   }
 
+  function compressImage(file, callback) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement("canvas");
+        const maxDim = 850;
+        let width = img.width;
+        let height = img.height;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+        callback(dataUrl);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   function openModal(editId) {
     const overlay = document.getElementById("announceModalOverlay");
     const titleEl = document.getElementById("announceModalTitle");
@@ -1354,8 +1393,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const contentInput = document.getElementById("announceContent");
     const authorInput = document.getElementById("announceAuthor");
     const pinCb = document.getElementById("announcePin");
-    const typeInput = document.getElementById("announceType");
-    const typeSelector = document.getElementById("announceTypeSelector");
+    const typeSelect = document.getElementById("announceType");
+    const imageInput = document.getElementById("announceImageInput");
+    const imageData = document.getElementById("announceImageData");
+    const previewBox = document.getElementById("announceImagePreviewBox");
+    const previewImg = document.getElementById("announcePreviewImg");
+    const uploadBox = document.getElementById("announceUploadBox");
+
+    if (imageInput) imageInput.value = "";
 
     if (editId) {
       const list = getAnnouncements();
@@ -1368,20 +1413,28 @@ document.addEventListener("DOMContentLoaded", () => {
       contentInput.value = item.content;
       authorInput.value = item.author || "";
       pinCb.checked = !!item.pinned;
-      typeInput.value = item.type || "general";
-      typeSelector.querySelectorAll(".announce-type-btn").forEach(b => {
-        b.classList.toggle("active", b.getAttribute("data-type") === (item.type || "general"));
-      });
+      if (typeSelect) typeSelect.value = item.type || "general";
+      
+      if (item.image) {
+        if (imageData) imageData.value = item.image;
+        if (previewImg) previewImg.src = item.image;
+        if (previewBox) previewBox.style.display = "block";
+        if (uploadBox) uploadBox.style.display = "none";
+      } else {
+        if (imageData) imageData.value = "";
+        if (previewBox) previewBox.style.display = "none";
+        if (uploadBox) uploadBox.style.display = "block";
+      }
       updateCharCount();
     } else {
       titleEl.textContent = "โพสต์ประกาศใหม่";
       submitLabel.textContent = "โพสต์ประกาศ";
       editIdEl.value = "";
-      document.getElementById("announceForm").reset();
-      typeInput.value = "general";
-      typeSelector.querySelectorAll(".announce-type-btn").forEach(b => {
-        b.classList.toggle("active", b.getAttribute("data-type") === "general");
-      });
+      document.getElementById("announceForm")?.reset();
+      if (typeSelect) typeSelect.value = "general";
+      if (imageData) imageData.value = "";
+      if (previewBox) previewBox.style.display = "none";
+      if (uploadBox) uploadBox.style.display = "block";
       updateCharCount();
     }
     overlay?.classList.add("show");
@@ -1421,13 +1474,36 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.target.id === "announceModalOverlay") closeModal();
     });
 
-    // Type selector
-    document.getElementById("announceTypeSelector")?.addEventListener("click", e => {
-      const btn = e.target.closest(".announce-type-btn");
-      if (!btn) return;
-      document.querySelectorAll(".announce-type-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      document.getElementById("announceType").value = btn.getAttribute("data-type");
+    // Image Upload triggers
+    const uploadTrigger = document.getElementById("announceUploadTrigger");
+    const imageInput = document.getElementById("announceImageInput");
+    const removeImgBtn = document.getElementById("announceRemoveImgBtn");
+    const previewBox = document.getElementById("announceImagePreviewBox");
+    const previewImg = document.getElementById("announcePreviewImg");
+    const uploadBox = document.getElementById("announceUploadBox");
+    const imageData = document.getElementById("announceImageData");
+
+    uploadTrigger?.addEventListener("click", () => {
+      imageInput?.click();
+    });
+
+    imageInput?.addEventListener("change", (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      compressImage(file, (base64Url) => {
+        if (imageData) imageData.value = base64Url;
+        if (previewImg) previewImg.src = base64Url;
+        if (previewBox) previewBox.style.display = "block";
+        if (uploadBox) uploadBox.style.display = "none";
+      });
+    });
+
+    removeImgBtn?.addEventListener("click", () => {
+      if (imageInput) imageInput.value = "";
+      if (imageData) imageData.value = "";
+      if (previewImg) previewImg.src = "";
+      if (previewBox) previewBox.style.display = "none";
+      if (uploadBox) uploadBox.style.display = "block";
     });
 
     // Char counter
@@ -1441,15 +1517,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const author = document.getElementById("announceAuthor")?.value.trim();
       const pinned = document.getElementById("announcePin")?.checked;
       const type = document.getElementById("announceType")?.value || "general";
+      const image = document.getElementById("announceImageData")?.value || "";
       const editId = document.getElementById("announceEditId")?.value;
 
       if (!title || !content) return;
 
       let list = getAnnouncements();
       if (editId) {
-        list = list.map(x => x.id === editId ? { ...x, title, content, author, pinned, type, updatedAt: Date.now() } : x);
+        list = list.map(x => x.id === editId ? { ...x, title, content, author, pinned, type, image, updatedAt: Date.now() } : x);
       } else {
-        list.unshift({ id: "ann-" + Date.now(), title, content, author, pinned, type, createdAt: Date.now() });
+        list.unshift({ id: "ann-" + Date.now(), title, content, author, pinned, type, image, createdAt: Date.now() });
       }
       saveAnnouncements(list);
       renderAnnouncements();

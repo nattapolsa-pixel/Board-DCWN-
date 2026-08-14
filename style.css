@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    PTG DISTRIBUTION CENTER - UNIFIED DESIGN SYSTEM
    ============================================================ */
 
@@ -2588,33 +2588,102 @@ body.is-portal #portalView {
 .announce-empty-text { font-size: 15px; font-weight: 700; color: var(--text-muted); }
 .announce-empty-sub { font-size: 13px; color: var(--text-subtle); }
 
-/* Announce Modal */
-.announce-modal-box { max-width: 560px; }
-.announce-type-selector {
+/* Announce Image Upload & Card Image */
+.announce-image-upload-wrap {
+  margin-top: 4px;
+}
+
+.announce-upload-trigger {
+  width: 100%;
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 6px;
-}
-.announce-type-btn {
-  padding: 7px 14px;
-  border-radius: 100px;
-  border: 1.5px solid var(--line);
-  background: #f8faf9;
-  font-size: 12.5px;
-  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1.5px dashed var(--line);
+  border-radius: 11px;
+  background: #fbfdfc;
   color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
-  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-family: inherit;
 }
-.announce-type-btn.active {
-  background: var(--pt-green-pale);
-  border-color: var(--pt-green-mid);
+
+.announce-upload-trigger:hover {
+  border-color: var(--pt-green);
+  background: #f0fdf4;
   color: var(--pt-green-dark);
 }
-.announce-type-btn:hover { border-color: var(--pt-green-mid); }
-.form-row-split { display: flex; gap: 16px; align-items: stretch; margin-bottom: 16px; }
+
+.announce-image-preview-box {
+  margin-top: 6px;
+}
+
+.announce-preview-img-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid var(--line);
+  max-height: 200px;
+  background: #f0fdf4;
+}
+
+.announce-preview-img-wrap img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.announce-remove-img-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(220, 38, 38, 0.9);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  backdrop-filter: blur(4px);
+  transition: background 0.15s ease;
+}
+
+.announce-remove-img-btn:hover {
+  background: rgba(185, 28, 28, 1);
+}
+
+/* Card Attached Image */
+.announce-card-img-wrap {
+  margin-top: 10px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  max-height: 320px;
+  background: #f0f4f1;
+}
+
+.announce-card-img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+
+.announce-card-img:hover {
+  transform: scale(1.015);
+}
+
 .announce-pin-label {
   display: flex;
   align-items: center;
@@ -2629,29 +2698,10 @@ body.is-portal #portalView {
 .announce-pin-label:hover { border-color: var(--pt-green-mid); background: var(--pt-green-pale); }
 .announce-pin-cb { width: 16px; height: 16px; cursor: pointer; accent-color: var(--pt-green-dark); }
 .announce-pin-text { font-size: 13px; font-weight: 600; color: var(--text-muted); }
-.form-textarea {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1.5px solid var(--line);
-  border-radius: 10px;
-  font-size: 13.5px;
-  font-family: inherit;
-  color: var(--text);
-  background: #fafafa;
-  resize: vertical;
-  transition: border-color 0.15s;
-  box-sizing: border-box;
-  line-height: 1.55;
-}
-.form-textarea:focus { border-color: var(--pt-green-mid); outline: none; background: #fff; }
-.form-hint { font-size: 11.5px; color: var(--text-subtle); margin-top: 4px; text-align: right; }
 
 @media (max-width: 1060px) {
   .home-dashboard-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   .announce-board-header { flex-direction: column; align-items: flex-start; }
-  .form-row-split { flex-direction: column; }
-  .announce-type-selector { gap: 6px; }
-  .announce-type-btn { padding: 6px 10px; font-size: 12px; }
 }
