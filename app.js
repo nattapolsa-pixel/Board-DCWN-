@@ -294,27 +294,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 📦 INVENTORY
     {
-      id: "inventory-cycle-count",
-      name: "Inventory Cycle Count & Stock Balance",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
+      id: "inventory-coming-soon",
+      name: "ระบบคลังสินค้า & สต็อก (Inventory System)",
+      url: "#",
       category: "inventory",
       categoryName: "Inventory",
       theme: "green",
       icon: "📦",
-      badge: "Stock Balance · Cycle Count",
-      desc: "ระบบตรวจนับสต็อกสินค้าประจำรอบ (Cycle Count) ตรวจสอบยอดคงเหลือจริงในคลังสินค้า และกระทบยอดสต็อก",
-      isCustom: false
-    },
-    {
-      id: "inventory-relocation",
-      name: "Inventory Slotting & Relocation System",
-      url: "https://script.google.com/a/macros/pt.co.th/s/AKfycby2IOrS6rWkt5GNka5H0yFiG-4228lInYqED_5_Zk_p53h-nJLKM2MXkiKYdKrKUArP/exec",
-      category: "inventory",
-      categoryName: "Inventory",
-      theme: "light-green",
-      icon: "🔄",
-      badge: "Space & Slotting Transfer",
-      desc: "ระบบบริหารจัดการพื้นที่จัดเก็บและโยกย้ายตำแหน่งสินค้า (Relocation) เพิ่มความหนาแน่นและประสิทธิภาพการเข้าถึงสินค้า",
+      badge: "Coming Soon ⏳",
+      desc: "ระบบบริหารจัดการสต็อกและคลังสินค้า (Inventory) คลังสินค้า PTG วังน้อย กำลังอยู่ระหว่างการพัฒนาระบบ เร็วๆ นี้...",
+      isComingSoon: true,
       isCustom: false
     },
 
