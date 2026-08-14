@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    PTG DISTRIBUTION CENTER - UNIFIED DESIGN SYSTEM
    ============================================================ */
 
@@ -2243,17 +2243,31 @@ body.is-portal #portalView {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   HOME PAGE - CALENDAR STYLES
+   HOME PAGE - DASHBOARD & CALENDAR & ANNOUNCEMENTS
    ══════════════════════════════════════════════════════════════════ */
-.home-calendar-wrap {
+.home-dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 340px;
-  grid-template-rows: auto 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 400px;
+  gap: 22px;
   align-items: start;
+  margin-top: 18px;
 }
+
+.home-announcements-col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.home-calendar-col {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .today-strip {
-  grid-column: 1 / -1;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -2283,22 +2297,24 @@ body.is-portal #portalView {
 .today-strip .today-strip-holiday .hol-dot {
   width: 8px; height: 8px; border-radius: 50%; background: #fbbf24; flex-shrink: 0;
 }
+
+/* Calendar Card */
 .cal-card {
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 2px 20px rgba(0,0,0,0.07);
-  padding: 24px 24px 20px;
+  padding: 20px 20px 18px;
   border: 1px solid var(--line);
 }
 .cal-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 .cal-nav-btn {
-  width: 36px; height: 36px;
-  border-radius: 10px;
+  width: 34px; height: 34px;
+  border-radius: 9px;
   border: 1.5px solid var(--line);
   background: #f8faf9;
   cursor: pointer;
@@ -2306,15 +2322,15 @@ body.is-portal #portalView {
   color: var(--text-muted);
   transition: all 0.15s ease;
 }
-.cal-nav-btn svg { width: 18px; height: 18px; }
+.cal-nav-btn svg { width: 16px; height: 16px; }
 .cal-nav-btn:hover { background: var(--pt-green-pale); border-color: var(--pt-green-mid); color: var(--pt-green-dark); }
-.cal-month-label { font-size: 18px; font-weight: 800; color: var(--text); text-align: center; }
-.cal-month-label .cal-year-tag { display: block; font-size: 12px; font-weight: 500; color: var(--text-subtle); margin-top: 1px; }
-.cal-dow-row { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 6px; }
-.cal-dow { text-align: center; font-size: 12px; font-weight: 700; color: var(--text-subtle); padding: 6px 0; }
+.cal-month-label { font-size: 16px; font-weight: 800; color: var(--text); text-align: center; }
+.cal-month-label .cal-year-tag { display: block; font-size: 11.5px; font-weight: 500; color: var(--text-subtle); margin-top: 1px; }
+.cal-dow-row { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; }
+.cal-dow { text-align: center; font-size: 11.5px; font-weight: 700; color: var(--text-subtle); padding: 4px 0; }
 .cal-dow.sun { color: #ef4444; }
 .cal-dow.sat { color: #3b82f6; }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
 .cal-day {
   position: relative;
   aspect-ratio: 1;
@@ -2322,8 +2338,8 @@ body.is-portal #portalView {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  font-size: 13.5px;
+  border-radius: 8px;
+  font-size: 12.5px;
   font-weight: 500;
   color: var(--text);
   cursor: default;
@@ -2339,20 +2355,22 @@ body.is-portal #portalView {
   background: var(--pt-green-deep) !important;
   color: #fff !important;
   font-weight: 800;
-  box-shadow: 0 4px 14px rgba(27,116,54,0.3);
+  box-shadow: 0 3px 10px rgba(27,116,54,0.3);
 }
 .cal-day.is-holiday { background: #fff7ed; color: #c2410c; font-weight: 700; }
 .cal-day.is-holiday:hover { background: #ffedd5; }
 .cal-day.is-today.is-holiday { background: var(--pt-green-deep) !important; color: #fff !important; }
 .cal-day-num { line-height: 1; }
-.cal-day-holiday-dot { width: 5px; height: 5px; border-radius: 50%; background: #f97316; margin-top: 3px; }
+.cal-day-holiday-dot { width: 4px; height: 4px; border-radius: 50%; background: #f97316; margin-top: 2px; }
 .cal-day.is-today .cal-day-holiday-dot { background: #fde047; }
-.cal-legend { display: flex; align-items: center; gap: 16px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); flex-wrap: wrap; }
-.cal-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
-.cal-dot { width: 10px; height: 10px; border-radius: 50%; }
+.cal-legend { display: flex; align-items: center; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+.cal-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--text-muted); }
+.cal-dot { width: 8px; height: 8px; border-radius: 50%; }
 .today-dot { background: var(--pt-green-deep); }
 .holiday-dot { background: #f97316; }
 .weekend-dot { background: #3b82f6; }
+
+/* Holiday List Card */
 .holiday-list-card {
   background: #fff;
   border-radius: 20px;
@@ -2365,45 +2383,36 @@ body.is-portal #portalView {
 .holiday-list-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 18px 20px 16px;
+  gap: 10px;
+  padding: 16px 18px 14px;
   border-bottom: 1px solid var(--line);
   background: linear-gradient(135deg, #f0faf4 0%, #fafff7 100%);
 }
-.holiday-list-icon { font-size: 26px; line-height: 1; }
-.holiday-list-title { font-size: 15px; font-weight: 800; color: var(--text); }
-.holiday-list-sub { font-size: 12px; color: var(--text-subtle); margin-top: 2px; }
-.holiday-list-body { overflow-y: auto; max-height: 480px; padding: 8px 0; }
+.holiday-list-icon { font-size: 22px; line-height: 1; }
+.holiday-list-title { font-size: 14.5px; font-weight: 800; color: var(--text); }
+.holiday-list-sub { font-size: 11.5px; color: var(--text-subtle); margin-top: 2px; }
+.holiday-list-body { overflow-y: auto; max-height: 380px; padding: 6px 0; }
 .holiday-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 18px;
+  padding: 8px 16px;
   border-bottom: 1px solid #f3f7f4;
   transition: background 0.12s;
 }
 .holiday-row:last-child { border-bottom: none; }
 .holiday-row:hover { background: #f8fdf9; }
 .holiday-row.is-past { opacity: 0.42; }
-.holiday-row.is-upcoming { background: #fffbeb; border-left: 3px solid #f59e0b; padding-left: 15px; }
-.holiday-row.is-today-row { background: #f0faf4; border-left: 3px solid var(--pt-green-deep); padding-left: 15px; }
-.holiday-num { font-size: 11px; font-weight: 700; color: var(--text-subtle); min-width: 18px; text-align: right; }
-.holiday-date-block { display: flex; flex-direction: column; min-width: 52px; }
-.holiday-date { font-size: 13px; font-weight: 800; color: var(--pt-green-dark); line-height: 1; }
-.holiday-dow { font-size: 10.5px; color: var(--text-subtle); font-weight: 500; margin-top: 2px; }
-.holiday-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.35; flex: 1; }
-.holiday-badge-past { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; background: #f1f5f9; color: #94a3b8; }
-.holiday-badge-soon { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; background: #fef3c7; color: #d97706; }
-.holiday-badge-today { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; background: var(--pt-green-pale); color: var(--pt-green-dark); }
-@media (max-width: 860px) {
-  .home-calendar-wrap { grid-template-columns: 1fr; }
-  .holiday-list-body { max-height: 300px; }
-}
-@media (max-width: 520px) {
-  .cal-card { padding: 14px 10px 14px; }
-  .cal-day { font-size: 12px; border-radius: 7px; }
-  .cal-month-label { font-size: 15px; }
-}
+.holiday-row.is-upcoming { background: #fffbeb; border-left: 3px solid #f59e0b; padding-left: 13px; }
+.holiday-row.is-today-row { background: #f0faf4; border-left: 3px solid var(--pt-green-deep); padding-left: 13px; }
+.holiday-num { font-size: 10.5px; font-weight: 700; color: var(--text-subtle); min-width: 16px; text-align: right; }
+.holiday-date-block { display: flex; flex-direction: column; min-width: 48px; }
+.holiday-date { font-size: 12.5px; font-weight: 800; color: var(--pt-green-dark); line-height: 1; }
+.holiday-dow { font-size: 10px; color: var(--text-subtle); font-weight: 500; margin-top: 2px; }
+.holiday-name { font-size: 12.5px; font-weight: 600; color: var(--text); line-height: 1.35; flex: 1; }
+.holiday-badge-past { font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 100px; background: #f1f5f9; color: #94a3b8; }
+.holiday-badge-soon { font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 100px; background: #fef3c7; color: #d97706; }
+.holiday-badge-today { font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 100px; background: var(--pt-green-pale); color: var(--pt-green-dark); }
 
 /* ══════════════════════════════════════════════════════════════════
    ANNOUNCEMENT BOARD STYLES
@@ -2420,7 +2429,7 @@ body.is-portal #portalView {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 20px 24px;
+  padding: 18px 22px;
   border-bottom: 1px solid var(--line);
   background: linear-gradient(135deg, #f0faf4 0%, #fff 100%);
   flex-wrap: wrap;
@@ -2433,8 +2442,8 @@ body.is-portal #portalView {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 40px;
-  padding: 0 18px;
+  height: 38px;
+  padding: 0 16px;
   background: linear-gradient(135deg, var(--pt-green-deep), var(--pt-green-dark));
   color: #fff;
   font-size: 13px;
@@ -2445,11 +2454,11 @@ body.is-portal #portalView {
   transition: all 0.18s ease;
   white-space: nowrap;
 }
-.announce-post-btn svg { width: 16px; height: 16px; }
+.announce-post-btn svg { width: 15px; height: 15px; }
 .announce-post-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(27,116,54,0.3); }
 
 /* Feed */
-.announce-feed { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+.announce-feed { padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; }
 
 /* Single announcement card */
 .announce-card {
@@ -2460,9 +2469,12 @@ body.is-portal #portalView {
   border: 1px solid var(--line);
   background: #fafcfa;
   position: relative;
-  transition: box-shadow 0.15s ease;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
-.announce-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+.announce-card:hover {
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
 .announce-card.is-pinned {
   background: #fffef0;
   border-color: #fde68a;
@@ -2493,7 +2505,7 @@ body.is-portal #portalView {
 .announce-card-body { flex: 1; min-width: 0; }
 .announce-card-top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 6px;
@@ -2502,7 +2514,7 @@ body.is-portal #portalView {
   font-size: 15px;
   font-weight: 800;
   color: var(--text);
-  line-height: 1.3;
+  line-height: 1.35;
   flex: 1;
 }
 .announce-card-pin {
@@ -2538,7 +2550,7 @@ body.is-portal #portalView {
 }
 .announce-card-author {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--pt-green-dark);
 }
 .announce-card-date { font-size: 11.5px; color: var(--text-subtle); }
@@ -2634,6 +2646,9 @@ body.is-portal #portalView {
 .form-textarea:focus { border-color: var(--pt-green-mid); outline: none; background: #fff; }
 .form-hint { font-size: 11.5px; color: var(--text-subtle); margin-top: 4px; text-align: right; }
 
+@media (max-width: 1060px) {
+  .home-dashboard-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 600px) {
   .announce-board-header { flex-direction: column; align-items: flex-start; }
   .form-row-split { flex-direction: column; }

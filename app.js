@@ -1221,9 +1221,52 @@ document.addEventListener("DOMContentLoaded", () => {
     holiday:     { label: "🏖️ วันหยุด",  icon: "🏖️" }
   };
 
+  const DEFAULT_ANNOUNCEMENTS = [
+    {
+      id: "ann-init-1",
+      title: "ยินดีต้อนรับสู่ DC Central Portal (ศูนย์กลางระบบคลังสินค้า PTG วังน้อย)",
+      content: "ศูนย์กลางรวบรวมระบบปฏิบัติการ แดชบอร์ดมอนิเตอร์ Wave, Picker UPH, Scanner Handheld และบอร์ดติดตามงาน DC ทั้งหมดไว้ในที่เดียว เพื่อการทำงานที่สะดวก รวดเร็ว และมีประสิทธิภาพสูงสุด",
+      author: "Admin DC",
+      type: "general",
+      pinned: true,
+      createdAt: Date.now() - 3600000 * 2
+    },
+    {
+      id: "ann-init-2",
+      title: "ประกาศรอบเวลาการทำงานและกะงาน DC วังน้อย",
+      content: "ขอให้พนักงานทุกท่านตรวจสอบรอบเวลาการเข้างานและกะการปฏิบัติงานตามตารางอย่างเคร่งครัด หากมีข้อสอบถามสามารถติดต่อหัวหน้างานประจำโซนได้ทันที",
+      author: "ฝ่ายปฏิบัติการ DC",
+      type: "event",
+      pinned: false,
+      createdAt: Date.now() - 3600000 * 5
+    },
+    {
+      id: "ann-init-3",
+      title: "มาตรการความปลอดภัยและตรวจเช็คอุปกรณ์ก่อนเริ่มงาน",
+      content: "สวมใส่อุปกรณ์ PPE ครบถ้วน (หมวก, เสื้อสะท้อนแสง, รองเท้าเซฟตี้) และตรวจเช็คสภาพรถโฟล์กลิฟต์/แฮนด์ลิฟต์ทุกครั้งก่อนเริ่มปฏิบัติหน้าที่",
+      author: "จป. ปฏิบัติการ",
+      type: "urgent",
+      pinned: false,
+      createdAt: Date.now() - 3600000 * 12
+    }
+  ];
+
   function getAnnouncements() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
-    catch(e) { return []; }
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!stored) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
+        return DEFAULT_ANNOUNCEMENTS;
+      }
+      const parsed = JSON.parse(stored);
+      if (!Array.isArray(parsed) || parsed.length === 0) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
+        return DEFAULT_ANNOUNCEMENTS;
+      }
+      return parsed;
+    } catch(e) {
+      return DEFAULT_ANNOUNCEMENTS;
+    }
   }
   function saveAnnouncements(arr) {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }

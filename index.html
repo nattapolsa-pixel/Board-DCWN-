@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=13.0" />
+  <link rel="stylesheet" href="style.css?v=14.0" />
 </head>
 <body class="is-login">
 
@@ -231,6 +231,9 @@
       <!-- ============================================================
            TAB 1: HOME (หน้าหลัก)
            ============================================================ -->
+            <!-- ============================================================
+           TAB 1: HOME (หน้าแรก - ประชาสัมพันธ์ & ปฏิทินวันหยุด)
+           ============================================================ -->
       <div id="tabContent-home" class="tab-pane active">
         <div class="workspace-header">
           <div class="workspace-header-inner">
@@ -251,85 +254,83 @@
         </div>
 
         <section class="workspace">
-          <div class="home-calendar-wrap">
+          <!-- Today Info Strip -->
+          <div class="today-strip" id="todayStrip"></div>
 
-            <!-- Today Info Strip -->
-            <div class="today-strip" id="todayStrip"></div>
-
-            <!-- Calendar Card -->
-            <div class="cal-card">
-              <!-- Calendar Nav Header -->
-              <div class="cal-nav">
-                <button class="cal-nav-btn" id="calPrev" type="button" title="เดือนก่อนหน้า">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                </button>
-                <div class="cal-month-label" id="calMonthLabel"></div>
-                <button class="cal-nav-btn" id="calNext" type="button" title="เดือนถัดไป">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                </button>
-              </div>
-
-              <!-- Day-of-week Headers -->
-              <div class="cal-dow-row">
-                <span class="cal-dow sun">อา</span>
-                <span class="cal-dow">จ</span>
-                <span class="cal-dow">อ</span>
-                <span class="cal-dow">พ</span>
-                <span class="cal-dow">พฤ</span>
-                <span class="cal-dow">ศ</span>
-                <span class="cal-dow sat">ส</span>
-              </div>
-
-              <!-- Calendar Grid -->
-              <div class="cal-grid" id="calGrid"></div>
-
-              <!-- Legend -->
-              <div class="cal-legend">
-                <div class="cal-legend-item"><span class="cal-dot today-dot"></span><span>วันนี้</span></div>
-                <div class="cal-legend-item"><span class="cal-dot holiday-dot"></span><span>วันหยุดบริษัท PTG</span></div>
-                <div class="cal-legend-item"><span class="cal-dot weekend-dot"></span><span>วันหยุดสุดสัปดาห์</span></div>
-              </div>
-            </div>
-
-            <!-- Holiday List Card -->
-            <div class="holiday-list-card">
-              <div class="holiday-list-header">
-                <span class="holiday-list-icon">🏖️</span>
-                <div>
-                  <div class="holiday-list-title">วันหยุดประจำปี PTG</div>
-                  <div class="holiday-list-sub" id="holidayListSub"></div>
+          <!-- Home Dashboard Grid (Left: Announcements, Right: Calendar & Holidays) -->
+          <div class="home-dashboard-grid">
+            
+            <!-- LEFT: Announcement Board -->
+            <div class="home-announcements-col">
+              <div class="announce-board-wrap">
+                <div class="announce-board-header">
+                  <div class="announce-board-title-row">
+                    <span class="announce-board-icon">📢</span>
+                    <div>
+                      <div class="announce-board-title">บอร์ดประชาสัมพันธ์ DC</div>
+                      <div class="announce-board-sub">ข่าวสาร ประกาศ และแจ้งเตือนสำหรับทีม DC</div>
+                    </div>
+                  </div>
+                  <button class="announce-post-btn" id="openAnnounceModalBtn" type="button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>โพสต์ประกาศใหม่</span>
+                  </button>
+                </div>
+                <div class="announce-feed" id="announceFeed"></div>
+                <div class="announce-empty" id="announceEmpty" style="display:none;">
+                  <div class="announce-empty-icon">📭</div>
+                  <div class="announce-empty-text">ยังไม่มีประกาศในขณะนี้</div>
+                  <div class="announce-empty-sub">กดปุ่ม "โพสต์ประกาศใหม่" เพื่อเริ่มต้น</div>
                 </div>
               </div>
-              <div class="holiday-list-body" id="holidayListBody"></div>
             </div>
 
-          </div>
-        </section>
-      </div>
+            <!-- RIGHT: Calendar & Holidays -->
+            <div class="home-calendar-col">
+              <!-- Calendar Card -->
+              <div class="cal-card">
+                <div class="cal-nav">
+                  <button class="cal-nav-btn" id="calPrev" type="button" title="เดือนก่อนหน้า">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                  </button>
+                  <div class="cal-month-label" id="calMonthLabel"></div>
+                  <button class="cal-nav-btn" id="calNext" type="button" title="เดือนถัดไป">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
+                </div>
 
+                <div class="cal-dow-row">
+                  <span class="cal-dow sun">อา</span>
+                  <span class="cal-dow">จ</span>
+                  <span class="cal-dow">อ</span>
+                  <span class="cal-dow">พ</span>
+                  <span class="cal-dow">พฤ</span>
+                  <span class="cal-dow">ศ</span>
+                  <span class="cal-dow sat">ส</span>
+                </div>
 
-        <!-- ── ANNOUNCEMENT BOARD ──────────────────────────────────── -->
-        <section class="workspace" style="margin-top:0;padding-top:0;">
-          <div class="announce-board-wrap">
-            <div class="announce-board-header">
-              <div class="announce-board-title-row">
-                <span class="announce-board-icon">📢</span>
-                <div>
-                  <div class="announce-board-title">บอร์ดประชาสัมพันธ์ DC</div>
-                  <div class="announce-board-sub">ข่าวสาร ประกาศ และแจ้งเตือนสำหรับทีม DC</div>
+                <div class="cal-grid" id="calGrid"></div>
+
+                <div class="cal-legend">
+                  <div class="cal-legend-item"><span class="cal-dot today-dot"></span><span>วันนี้</span></div>
+                  <div class="cal-legend-item"><span class="cal-dot holiday-dot"></span><span>วันหยุด PTG</span></div>
+                  <div class="cal-legend-item"><span class="cal-dot weekend-dot"></span><span>วันหยุดสุดสัปดาห์</span></div>
                 </div>
               </div>
-              <button class="announce-post-btn" id="openAnnounceModalBtn" type="button">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>โพสต์ประกาศใหม่</span>
-              </button>
+
+              <!-- Holiday List Card -->
+              <div class="holiday-list-card">
+                <div class="holiday-list-header">
+                  <span class="holiday-list-icon">🏖️</span>
+                  <div>
+                    <div class="holiday-list-title">วันหยุดประจำปี PTG 2569</div>
+                    <div class="holiday-list-sub" id="holidayListSub"></div>
+                  </div>
+                </div>
+                <div class="holiday-list-body" id="holidayListBody"></div>
+              </div>
             </div>
-            <div class="announce-feed" id="announceFeed"></div>
-            <div class="announce-empty" id="announceEmpty" style="display:none;">
-              <div class="announce-empty-icon">📭</div>
-              <div class="announce-empty-text">ยังไม่มีประกาศในขณะนี้</div>
-              <div class="announce-empty-sub">กดปุ่ม "โพสต์ประกาศใหม่" เพื่อเริ่มต้น</div>
-            </div>
+
           </div>
         </section>
       </div>
@@ -387,6 +388,7 @@
           </form>
         </div>
       </div>
+
       <!-- ============================================================
            TAB 2: SYSTEMS BOARD (บอร์ดรวมระบบ DC - กรอบรวมระบบ)
            ============================================================ -->
@@ -625,7 +627,7 @@
     <span class="toast-msg" id="toastMsg"></span>
   </div>
 
-  <script src="app.js?v=13.0"></script>
+  <script src="app.js?v=14.0"></script>
 </body>
 </html>
 
