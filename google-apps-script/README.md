@@ -1,24 +1,22 @@
-# Gmail feed deployment
+# คู่มือ Deploy ฟีดข่าวจาก Gmail
 
-Deploy `Code.gs` as a standalone Google Apps Script project while signed in as
-`nattapol.sa@pt.co.th`.
+ให้ Deploy `Code.gs` เป็นโปรเจกต์ Google Apps Script แบบแยก โดยลงชื่อเข้าใช้
+ด้วยบัญชี `nattapol.sa@pt.co.th`
 
-1. Create a new Apps Script project and paste in `Code.gs`.
-2. Run `doGet` once from the editor and authorize Gmail read access.
-3. Deploy it as a **Web app**. Use the organisation's approved access setting;
-   the Portal browser must be allowed to call the URL.
-4. Copy the `/exec` deployment URL into `GAS_EMAIL_URL` in `app.js`.
+1. สร้างโปรเจกต์ Google Apps Script ใหม่ แล้ววางโค้ดจาก `Code.gs`
+2. กดรันฟังก์ชัน `doGet` หนึ่งครั้งจากหน้า Editor และอนุญาตสิทธิ์อ่าน Gmail
+3. เลือก Deploy เป็น **Web app** โดยกำหนดสิทธิ์เข้าถึงตามนโยบายขององค์กร และ
+   ต้องให้ browser ที่เปิด Portal เรียก URL นี้ได้
+4. คัดลอก URL ที่ลงท้ายด้วย `/exec` มาแทนค่า `GAS_EMAIL_URL` ใน `app.js`
 
-The endpoint has a hard server-side boundary: it only emits messages dated in
-the current calendar month for `Asia/Bangkok`. It accepts `year` and `month`
-only to verify the caller agrees with that current month; it rejects any other
-period.
+API มีเงื่อนไขบังคับจากฝั่ง Server: จะส่งออกเฉพาะอีเมลในเดือนปฏิทินปัจจุบัน
+ตามเวลา `Asia/Bangkok` เท่านั้น ค่า `year` และ `month` ที่ Portal ส่งมาใช้เพื่อ
+ตรวจสอบว่าเรียกเดือนปัจจุบันตรงกัน หากขอเดือนอื่น API จะปฏิเสธทันที
 
-`ALLOWED_NEWS_PATTERN` is the selection rule. Before deployment, test it with
-the actual sender display names or email addresses used by PT Happy Workplace
-and PTG Academy, then adjust the expression if needed.
+ตัวแปร `ALLOWED_NEWS_PATTERN` คือกฎคัดเลือกข่าว ก่อน Deploy ให้ทดสอบกับชื่อผู้ส่ง
+หรืออีเมลผู้ส่งจริงของ PT Happy Workplace และ PTG Academy แล้วปรับ expression นี้
+หากชื่อจริงไม่ตรงกับที่ตั้งไว้
 
-For privacy and payload control, the API returns only the first image attachment
-or inline image per message and skips images above 1.8 MB. The returned image is
-a data URI, which the existing Portal can render without making a Google Drive
-file public.
+เพื่อควบคุมความเป็นส่วนตัวและขนาดข้อมูล API จะคืนเฉพาะรูปแนบหรือรูปที่ฝังในอีเมล
+รูปแรกของแต่ละข้อความ และจะข้ามรูปที่มีขนาดเกิน 1.8 MB รูปที่คืนมาเป็น Data URI
+ทำให้ Portal เดิมแสดงรูปได้เลย โดยไม่ต้องตั้งไฟล์ใน Google Drive ให้เป็นสาธารณะ

@@ -1212,7 +1212,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ─── ANNOUNCEMENT BOARD ENGINE (Email News & Month Filter) ───────── */
 (function() {
-  const STORAGE_KEY = "ptg_dc_announcements_v4";
+  // v5 intentionally starts with an empty board. Earlier versions included
+  // cached/demo announcements that must not be presented as live email news.
+  const STORAGE_KEY = "ptg_dc_announcements_v5";
   const TYPE_CONFIG = {
     general:     { label: "📋 ข่าวสารทั่วไป",               icon: "📋" },
     urgent:      { label: "🚨 ด่วนที่สุด / แจ้งเตือนสำคัญ",    icon: "🚨" },
@@ -1533,20 +1535,21 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("ptg_dc_announcements");
       localStorage.removeItem("ptg_dc_announcements_v2");
       localStorage.removeItem("ptg_dc_announcements_v3");
+      localStorage.removeItem("ptg_dc_announcements_v4");
 
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_EMAIL_ANNOUNCEMENTS));
-        return DEFAULT_EMAIL_ANNOUNCEMENTS;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+        return [];
       }
       const parsed = JSON.parse(stored);
-      if (!Array.isArray(parsed) || parsed.length === 0 || !parsed.some(x => x.id === "ann-happy-ep41")) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_EMAIL_ANNOUNCEMENTS));
-        return DEFAULT_EMAIL_ANNOUNCEMENTS;
+      if (!Array.isArray(parsed)) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
+        return [];
       }
       return parsed;
     } catch(e) {
-      return DEFAULT_EMAIL_ANNOUNCEMENTS;
+      return [];
     }
   }
 
