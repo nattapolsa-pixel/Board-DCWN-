@@ -1938,6 +1938,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const GAS_EMAIL_URL = "https://script.google.com/macros/s/AKfycbwIsLyPnb4J9uEmf7H-ZwfLtmrBTbvfSUxRT5QJK3tR6qi9QOSaifqtDPZV5P_z9KVIJA/exec";
 
+  function getCurrentEmailFeedUrl() {
+    const now = new Date();
+    const url = new URL(GAS_EMAIL_URL);
+    // The Apps Script is the source-of-truth filter. Sending the Bangkok month
+    // here also makes the requested scope explicit in each API call.
+    const bangkokParts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Bangkok", year: "numeric", month: "2-digit"
+    }).formatToParts(now);
+    const part = type => bangkokParts.find(x => x.type === type)?.value;
+    url.searchParams.set("year", part("year"));
+    url.searchParams.set("month", part("month"));
+    return url.toString();
+  }
+
   function normalizeEmailItem(raw) {
     if (!raw) return null;
     const id = raw.id || raw.messageId || "email-" + (raw.timestamp || Date.now()) + "-" + Math.random().toString(36).substr(2, 5);
@@ -2016,7 +2030,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 14000);
 
-      const res = await fetch(GAS_EMAIL_URL, {
+      const res = await fetch(getCurrentEmailFeedUrl(), {
         method: "GET",
         signal: controller.signal
       });
