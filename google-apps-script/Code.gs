@@ -144,16 +144,16 @@ function testCurrentMonthNewsFeed() {
   }
 
   feed.data.forEach(item => {
-    const itemMonth = Utilities.formatDate(new Date(item.createdAt), PORTAL_TIME_ZONE, 'yyyy-MM');
-    if (itemMonth !== expectedMonthKey) failures.push(`Out-of-month item: ${item.title}`);
-    if (!ALLOWED_NEWS_PATTERN.test(`${item.author}\n${item.title}`)) {
-      failures.push(`Unexpected source: ${item.author} — ${item.title}`);
+    const itemMonth = Utilities.formatDate(new Date(item.date), PORTAL_TIME_ZONE, 'yyyy-MM');
+    if (itemMonth !== expectedMonthKey) failures.push(`Out-of-month item: ${item.subject}`);
+    if (!ALLOWED_NEWS_PATTERN.test(`${item.from}\n${item.subject}`)) {
+      failures.push(`Unexpected source: ${item.from} — ${item.subject}`);
     }
-    if (!item.id || !item.title || !item.author || !item.content) {
+    if (!item.id || !item.subject || !item.from || !item.body) {
       failures.push(`Missing required email fields: ${item.id || '(no id)'}`);
     }
-    if (!item.image || !item.image.startsWith('data:image/')) {
-      warnings.push(`No supported image found: ${item.title}`);
+    if (!item.imageBase64 || !item.imageBase64.startsWith('data:image/')) {
+      warnings.push(`No supported image found: ${item.subject}`);
     }
   });
 
@@ -162,14 +162,14 @@ function testCurrentMonthNewsFeed() {
     checkedAt: Utilities.formatDate(now, PORTAL_TIME_ZONE, 'yyyy-MM-dd HH:mm:ss'),
     month: expectedMonthKey,
     totalNews: feed.data.length,
-    newsWithImages: feed.data.filter(item => item.image && item.image.startsWith('data:image/')).length,
+    newsWithImages: feed.data.filter(item => item.imageBase64 && item.imageBase64.startsWith('data:image/')).length,
     failures,
     warnings,
     items: feed.data.map(item => ({
-      date: Utilities.formatDate(new Date(item.createdAt), PORTAL_TIME_ZONE, 'yyyy-MM-dd HH:mm'),
-      source: item.author,
-      subject: item.title,
-      hasImage: Boolean(item.image)
+      date: Utilities.formatDate(new Date(item.date), PORTAL_TIME_ZONE, 'yyyy-MM-dd HH:mm'),
+      source: item.from,
+      subject: item.subject,
+      hasImage: Boolean(item.imageBase64)
     }))
   };
 
