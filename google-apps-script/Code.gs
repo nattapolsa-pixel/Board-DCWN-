@@ -7,7 +7,8 @@
  */
 const PORTAL_TIME_ZONE = 'Asia/Bangkok';
 const MAX_THREADS = 30;
-const MAX_IMAGE_BYTES = 1.8 * 1024 * 1024;
+const MAX_IMAGE_BYTES = 2.5 * 1024 * 1024;
+const MIN_CONTENT_IMAGE_BYTES = 30 * 1024;
 const ALLOWED_NEWS_PATTERN = /pt\s*(happy\s*workplace|g\s*academy)|happy\s*workplace|ptg\s*academy/i;
 // Search Gmail narrowly before reading messages/attachments. Curly braces are
 // Gmail's OR operator: known PT Happy Workplace sender OR PTG Academy text.
@@ -104,7 +105,7 @@ function messageToItem_(message) {
     subject: message.getSubject(),
     from: message.getFrom(),
     date: message.getDate().toISOString(),
-    body: message.getPlainBody(),
+    body: cleanPlainBody_(message.getPlainBody()),
     imageBase64: image,
     type: 'event',
     isPinned: false
@@ -112,13 +113,27 @@ function messageToItem_(message) {
 }
 
 function firstImageDataUri_(message) {
-  const images = message.getAttachments({ includeInlineImages: true, includeAttachments: true })
+  // Gmail returns inline images in MIME order. The first is often a logo or an
+  // App Store badge, not the campaign poster. Pick the largest content-sized
+  // image instead, while ignoring tiny decorative assets.
+  const candidates = message.getAttachments({ includeInlineImages: true, includeAttachments: true })
     .filter(blob => /^image\//i.test(blob.getContentType()))
-    .filter(blob => blob.getBytes().length <= MAX_IMAGE_BYTES);
+    .map(blob => ({ blob, bytes: blob.getBytes() }))
+    .filter(item => item.bytes.length >= MIN_CONTENT_IMAGE_BYTES)
+    .filter(item => item.bytes.length <= MAX_IMAGE_BYTES)
+    .sort((a, b) => b.bytes.length - a.bytes.length);
 
-  if (!images.length) return '';
-  const image = images[0];
-  return `data:${image.getContentType()};base64,${Utilities.base64Encode(image.getBytes())}`;
+  if (!candidates.length) return '';
+  const image = candidates[0];
+  return `data:${image.blob.getContentType()};base64,${Utilities.base64Encode(image.bytes)}`;
+}
+
+function cleanPlainBody_(body) {
+  return body
+    .replace(/^\s*\[image:[^\]]+\]\s*$/gim, '')
+    .replace(/^\s*<https?:\/\/[^>]+>\s*$/gim, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
 /**
