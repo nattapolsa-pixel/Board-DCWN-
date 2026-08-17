@@ -164,8 +164,13 @@ function testCurrentMonthNewsFeed() {
     if (!ALLOWED_NEWS_PATTERN.test(`${item.from}\n${item.subject}`)) {
       failures.push(`Unexpected source: ${item.from} — ${item.subject}`);
     }
-    if (!item.id || !item.subject || !item.from || !item.body) {
+    if (!item.id || !item.subject || !item.from) {
       failures.push(`Missing required email fields: ${item.id || '(no id)'}`);
+    }
+    // Some campaign emails are intentionally image-only. They are valid news
+    // as long as the card has a lead image, so body text is not mandatory.
+    if (!item.body && !item.imageBase64) {
+      failures.push(`No readable content or image: ${item.subject}`);
     }
     if (!item.imageBase64 || !item.imageBase64.startsWith('data:image/')) {
       warnings.push(`No supported image found: ${item.subject}`);
