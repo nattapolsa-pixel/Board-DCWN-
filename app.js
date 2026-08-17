@@ -1212,9 +1212,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ─── ANNOUNCEMENT BOARD ENGINE (Email News & Month Filter) ───────── */
 (function() {
-  // v5 intentionally starts with an empty board. Earlier versions included
-  // cached/demo announcements that must not be presented as live email news.
-  const STORAGE_KEY = "ptg_dc_announcements_v5";
+  // v6 resets every earlier announcement cache, including email-synced items.
+  const STORAGE_KEY = "ptg_dc_announcements_v6";
   const TYPE_CONFIG = {
     general:     { label: "📋 ข่าวสารทั่วไป",               icon: "📋" },
     urgent:      { label: "🚨 ด่วนที่สุด / แจ้งเตือนสำคัญ",    icon: "🚨" },
@@ -1528,10 +1527,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   let currentMonthFilter = "current"; // "current" | "prev" | "all"
-  // Email artwork is returned as Base64 and can exceed browser localStorage's
-  // quota. Keep the live feed in memory; persist only manual announcements.
-  let liveEmailAnnouncements = [];
-
   function getAnnouncements() {
     try {
       // Clear legacy storage keys
@@ -1539,29 +1534,26 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.removeItem("ptg_dc_announcements_v2");
       localStorage.removeItem("ptg_dc_announcements_v3");
       localStorage.removeItem("ptg_dc_announcements_v4");
+      localStorage.removeItem("ptg_dc_announcements_v5");
 
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-        return liveEmailAnnouncements;
+        return [];
       }
       const parsed = JSON.parse(stored);
       if (!Array.isArray(parsed)) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-        return liveEmailAnnouncements;
+        return [];
       }
-      // Ignore email items saved by an older release; they may contain large
-      // Base64 artwork. The current live feed is always the newest API result.
-      return [...parsed.filter(item => !item.isEmail), ...liveEmailAnnouncements];
+      return parsed;
     } catch(e) {
-      return liveEmailAnnouncements;
+      return [];
     }
   }
 
   function saveAnnouncements(arr) {
-    liveEmailAnnouncements = arr.filter(item => item.isEmail);
-    const manualAnnouncements = arr.filter(item => !item.isEmail);
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(manualAnnouncements)); }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
     catch(e) {}
   }
 
@@ -2115,14 +2107,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initAnnounceBoard() {
     renderAnnouncements();
-
-    // Auto sync from Google Apps Script Email on load
-    syncAnnouncementsFromEmail(false);
-
-    // Manual sync button
-    document.getElementById("syncEmailBtn")?.addEventListener("click", () => {
-      syncAnnouncementsFromEmail(true);
-    });
 
     // Month filter pills
     document.querySelectorAll("[data-month-filter]").forEach(btn => {

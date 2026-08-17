@@ -267,18 +267,14 @@
                   <div class="announce-board-title-row">
                     <span class="announce-board-icon">📢</span>
                     <div>
-                      <div class="announce-board-title">บอร์ดประชาสัมพันธ์ DC (Email Broadcasts)</div>
+                      <div class="announce-board-title">บอร์ดประชาสัมพันธ์ DC</div>
                       <div class="announce-board-sub" id="emailSyncStatus">
                         <span class="sync-dot-live"></span>
-                        <span>เชื่อมต่อ Google Apps Script Email แล้ว</span>
+                        <span>ประกาศภายในระบบ</span>
                       </div>
                     </div>
                   </div>
                   <div class="announce-header-actions">
-                    <button class="announce-sync-btn" id="syncEmailBtn" type="button" title="ดึงข่าวสารล่าสุดจาก Email บริษัท">
-                      <svg class="sync-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                      <span>ซิงค์จาก Email</span>
-                    </button>
                     <button class="announce-post-btn" id="openAnnounceModalBtn" type="button">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                       <span>โพสต์ประกาศใหม่</span>
@@ -393,23 +389,6 @@
 
           <form id="announceForm" class="system-modal-form" autocomplete="off">
             <input type="hidden" id="announceEditId" value="">
-
-            <!-- Email Paste Helper / Quick Importer -->
-            <div class="announce-email-helper-wrap">
-              <button type="button" class="btn-email-helper-toggle" id="toggleEmailHelperBtn">
-                <span class="btn-email-helper-icon">📩</span>
-                <span>วางข้อความจาก Email (ระบบช่วยกรอกข้อมูลอัตโนมัติ)</span>
-                <svg class="email-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="announce-email-paste-box" id="emailPasteBox" style="display:none;">
-                <p class="email-helper-sub">คัดลอกข้อความจากอีเมล Outlook / Gmail (รวมถึง Subject, From, Body) แล้ววางลงที่นี่:</p>
-                <textarea id="rawEmailPasteInput" rows="3" placeholder="ตัวอย่าง:&#10;From: hr.dc@pt.co.th&#10;Subject: กิจกรรมตรวจสุขภาพประจำปี 2569&#10;เรียน พนักงานทุกท่าน..."></textarea>
-                <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
-                  <button type="button" class="btn-secondary" id="clearEmailHelperBtn" style="height:32px; padding:0 12px; font-size:12px;">ล้าง</button>
-                  <button type="button" class="btn-primary-action" id="applyEmailHelperBtn" style="height:32px; padding:0 14px; font-size:12px;">✨ ดึงข้อมูลลงฟอร์ม</button>
-                </div>
-              </div>
-            </div>
 
             <div class="form-row">
               <div class="form-group" style="flex:1.2;">
