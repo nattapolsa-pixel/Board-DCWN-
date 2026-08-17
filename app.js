@@ -2031,7 +2031,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 14000);
+      // Gmail messages with real inline campaign artwork can take longer than
+      // a lightweight JSON feed. Give the Apps Script enough time to return
+      // the current month's original attachments instead of falling back to
+      // an empty/cached board.
+      const timeoutId = setTimeout(() => controller.abort(), 45000);
 
       const res = await fetch(getCurrentEmailFeedUrl(), {
         method: "GET",
