@@ -14,7 +14,15 @@ const ALLOWED_NEWS_PATTERN = /pt\s*(happy\s*workplace|g\s*academy)|happy\s*workp
 const GMAIL_NEWS_QUERY = '{from:pt_happyworkplace@pt.co.th "PTG Academy"}';
 
 function doGet(e) {
-  const range = currentBangkokMonth_(e && e.parameter);
+  return jsonOutput_(buildFeed_(e && e.parameter));
+}
+
+/**
+ * Builds the feed independently from HTTP so Test.gs can validate the exact
+ * same Gmail data path used by the Portal.
+ */
+function buildFeed_(params) {
+  const range = currentBangkokMonth_(params);
   const threads = findThreadsInRange_(range);
   const messages = threads
     .flatMap(thread => thread.getMessages())
@@ -23,16 +31,20 @@ function doGet(e) {
     .map(messageToItem_)
     .sort((a, b) => b.createdAt - a.createdAt);
 
+  return {
+    data: messages,
+    meta: {
+      timeZone: PORTAL_TIME_ZONE,
+      year: range.year,
+      month: range.month,
+      count: messages.length
+    }
+  };
+}
+
+function jsonOutput_(payload) {
   return ContentService
-    .createTextOutput(JSON.stringify({
-      data: messages,
-      meta: {
-        timeZone: PORTAL_TIME_ZONE,
-        year: range.year,
-        month: range.month,
-        count: messages.length
-      }
-    }))
+    .createTextOutput(JSON.stringify(payload))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
