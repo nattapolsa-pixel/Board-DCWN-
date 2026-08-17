@@ -23,8 +23,8 @@ API มีเงื่อนไขบังคับจากฝั่ง Server
 
 ## ทดสอบการเชื่อมต่อ Gmail จริง
 
-หลังวางทั้ง `Code.gs` และ `Test.gs` ในโปรเจกต์เดียวกัน ให้เลือกฟังก์ชัน
-`testCurrentMonthNewsFeed` จากเมนู Run ใน Apps Script แล้วกด Run ด้วยบัญชี
+หลังวาง `Code.gs` ในโปรเจกต์ ให้เลือกฟังก์ชัน `testCurrentMonthNewsFeed`
+จากเมนู Run ใน Apps Script แล้วกด Run ด้วยบัญชี
 `nattapol.sa@pt.co.th` ผลทดสอบจะอยู่ใน **Execution log** โดยตรวจ:
 
 - จำนวนข่าวต้องตรงกับรายการที่คืนจาก API
