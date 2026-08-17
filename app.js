@@ -1528,6 +1528,9 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   let currentMonthFilter = "current"; // "current" | "prev" | "all"
+  // Email artwork is returned as Base64 and can exceed browser localStorage's
+  // quota. Keep the live feed in memory; persist only manual announcements.
+  let liveEmailAnnouncements = [];
 
   function getAnnouncements() {
     try {
@@ -1540,21 +1543,25 @@ document.addEventListener("DOMContentLoaded", () => {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-        return [];
+        return liveEmailAnnouncements;
       }
       const parsed = JSON.parse(stored);
       if (!Array.isArray(parsed)) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-        return [];
+        return liveEmailAnnouncements;
       }
-      return parsed;
+      // Ignore email items saved by an older release; they may contain large
+      // Base64 artwork. The current live feed is always the newest API result.
+      return [...parsed.filter(item => !item.isEmail), ...liveEmailAnnouncements];
     } catch(e) {
-      return [];
+      return liveEmailAnnouncements;
     }
   }
 
   function saveAnnouncements(arr) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+    liveEmailAnnouncements = arr.filter(item => item.isEmail);
+    const manualAnnouncements = arr.filter(item => !item.isEmail);
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(manualAnnouncements)); }
     catch(e) {}
   }
 
@@ -2035,7 +2042,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // a lightweight JSON feed. Give the Apps Script enough time to return
       // the current month's original attachments instead of falling back to
       // an empty/cached board.
-      const timeoutId = setTimeout(() => controller.abort(), 45000);
+      const timeoutId = setTimeout(() => controller.abort(), 120000);
 
       const res = await fetch(getCurrentEmailFeedUrl(), {
         method: "GET",

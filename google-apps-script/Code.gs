@@ -6,9 +6,12 @@
  * sender/name/subject/body identifies PT Happy Workplace or PTG Academy.
  */
 const PORTAL_TIME_ZONE = 'Asia/Bangkok';
-const MAX_MESSAGES = 80;
+const MAX_THREADS = 30;
 const MAX_IMAGE_BYTES = 1.8 * 1024 * 1024;
 const ALLOWED_NEWS_PATTERN = /pt\s*(happy\s*workplace|g\s*academy)|happy\s*workplace|ptg\s*academy/i;
+// Search Gmail narrowly before reading messages/attachments. Curly braces are
+// Gmail's OR operator: known PT Happy Workplace sender OR PTG Academy text.
+const GMAIL_NEWS_QUERY = '{from:pt_happyworkplace@pt.co.th "PTG Academy"}';
 
 function doGet(e) {
   const range = currentBangkokMonth_(e && e.parameter);
@@ -59,11 +62,11 @@ function currentBangkokMonth_(params) {
 }
 
 function findThreadsInRange_(range) {
-  const query = `after:${range.after} before:${range.before}`;
+  const query = `after:${range.after} before:${range.before} ${GMAIL_NEWS_QUERY}`;
   const threads = [];
 
-  for (let offset = 0; offset < MAX_MESSAGES; offset += 100) {
-    const page = GmailApp.search(query, offset, Math.min(100, MAX_MESSAGES - offset));
+  for (let offset = 0; offset < MAX_THREADS; offset += 100) {
+    const page = GmailApp.search(query, offset, Math.min(100, MAX_THREADS - offset));
     threads.push(...page);
     if (page.length < 100) break;
   }
@@ -75,7 +78,9 @@ function isInRange_(date, range) {
 }
 
 function isAllowedNews_(message) {
-  const searchable = [message.getFrom(), message.getSubject(), message.getPlainBody()].join('\n');
+  // Gmail has already narrowed the search. Avoid reading every full email body
+  // here because inline campaign images make that unnecessarily slow.
+  const searchable = [message.getFrom(), message.getSubject()].join('\n');
   return ALLOWED_NEWS_PATTERN.test(searchable);
 }
 
